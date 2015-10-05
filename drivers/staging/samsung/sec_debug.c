@@ -337,162 +337,162 @@ static void sec_debug_dump_all_task(void)
 #ifndef arch_irq_stat
 #define arch_irq_stat() 0
 #endif
-#ifdef arch_idle_time
-static cputime64_t get_idle_time(int cpu)
-{
-	cputime64_t idle;
+// #ifdef arch_idle_time
+// static cputime64_t get_idle_time(int cpu)
+// {
+// 	cputime64_t idle;
+// 
+// 	idle = kcpustat_cpu(cpu).cpustat[CPUTIME_IDLE];
+// 	if (cpu_online(cpu) && !nr_iowait_cpu(cpu))
+// 		idle += arch_idle_time(cpu);
+// 	return idle;
+// }
+// 
+// static cputime64_t get_iowait_time(int cpu)
+// {
+// 	cputime64_t iowait;
+// 
+// 	iowait = kcpustat_cpu(cpu).cpustat[CPUTIME_IOWAIT];
+// 	if (cpu_online(cpu) && nr_iowait_cpu(cpu))
+// 		iowait += arch_idle_time(cpu);
+// 	return iowait;
+// }
+// #else
+// static u64 get_idle_time(int cpu)
+// {
+// 	u64 idle, idle_time = -1ULL;
+// 
+// 	if (cpu_online(cpu))
+// 		idle_time = get_cpu_idle_time_us(cpu, NULL);
+// 
+// 	if (idle_time == -1ULL)
+// 		/* !NO_HZ or cpu offline so we can rely on cpustat.idle */
+// 		idle = kcpustat_cpu(cpu).cpustat[CPUTIME_IDLE];
+// 	else
+// 		idle = usecs_to_cputime64(idle_time);
+// 
+// 	return idle;
+// }
 
-	idle = kcpustat_cpu(cpu).cpustat[CPUTIME_IDLE];
-	if (cpu_online(cpu) && !nr_iowait_cpu(cpu))
-		idle += arch_idle_time(cpu);
-	return idle;
-}
+// static u64 get_iowait_time(int cpu)
+// {
+// 	u64 iowait, iowait_time = -1ULL;
+// 
+// 	if (cpu_online(cpu))
+// 		iowait_time = get_cpu_iowait_time_us(cpu, NULL);
+// 
+// 	if (iowait_time == -1ULL)
+// 		/* !NO_HZ or cpu offline so we can rely on cpustat.iowait */
+// 		iowait = kcpustat_cpu(cpu).cpustat[CPUTIME_IOWAIT];
+// 	else
+// 		iowait = usecs_to_cputime64(iowait_time);
+// 
+// 	return iowait;
+// }
+//#endif
 
-static cputime64_t get_iowait_time(int cpu)
-{
-	cputime64_t iowait;
-
-	iowait = kcpustat_cpu(cpu).cpustat[CPUTIME_IOWAIT];
-	if (cpu_online(cpu) && nr_iowait_cpu(cpu))
-		iowait += arch_idle_time(cpu);
-	return iowait;
-}
-#else
-static u64 get_idle_time(int cpu)
-{
-	u64 idle, idle_time = -1ULL;
-
-	if (cpu_online(cpu))
-		idle_time = get_cpu_idle_time_us(cpu, NULL);
-
-	if (idle_time == -1ULL)
-		/* !NO_HZ or cpu offline so we can rely on cpustat.idle */
-		idle = kcpustat_cpu(cpu).cpustat[CPUTIME_IDLE];
-	else
-		idle = usecs_to_cputime64(idle_time);
-
-	return idle;
-}
-
-static u64 get_iowait_time(int cpu)
-{
-	u64 iowait, iowait_time = -1ULL;
-
-	if (cpu_online(cpu))
-		iowait_time = get_cpu_iowait_time_us(cpu, NULL);
-
-	if (iowait_time == -1ULL)
-		/* !NO_HZ or cpu offline so we can rely on cpustat.iowait */
-		iowait = kcpustat_cpu(cpu).cpustat[CPUTIME_IOWAIT];
-	else
-		iowait = usecs_to_cputime64(iowait_time);
-
-	return iowait;
-}
-#endif
-
-static void sec_debug_dump_cpu_stat(void)
-{
-	int i, j;
-	unsigned long jif;
-	u64 user, nice, system, idle, iowait, irq, softirq, steal;
-	u64 guest, guest_nice;
-	u64 sum = 0;
-	u64 sum_softirq = 0;
-	unsigned int per_softirq_sums[NR_SOFTIRQS] = {0};
-	struct timespec boottime;
-	
-	char *softirq_to_name[NR_SOFTIRQS] = { "HI", "TIMER", "NET_TX", "NET_RX", "BLOCK", "BLOCK_IOPOLL", "TASKLET", "SCHED", "HRTIMER", "RCU" };
-
-	user = nice = system = idle = iowait = irq = softirq = steal = 0;
-	guest = guest_nice = 0;
-	getboottime(&boottime);
-	jif = boottime.tv_sec;
-	
-	for_each_possible_cpu(i) {
-		user	+= kcpustat_cpu(i).cpustat[CPUTIME_USER];
-		nice	+= kcpustat_cpu(i).cpustat[CPUTIME_NICE];
-		system	+= kcpustat_cpu(i).cpustat[CPUTIME_SYSTEM];
-		idle	+= get_idle_time(i); 
-		iowait	+= get_iowait_time(i);
-		irq	+= kcpustat_cpu(i).cpustat[CPUTIME_IRQ];
-		softirq	+= kcpustat_cpu(i).cpustat[CPUTIME_SOFTIRQ];
-		steal	+= kcpustat_cpu(i).cpustat[CPUTIME_STEAL];
-		guest	+= kcpustat_cpu(i).cpustat[CPUTIME_GUEST];
-		guest_nice += kcpustat_cpu(i).cpustat[CPUTIME_GUEST_NICE];
-		sum	+= kstat_cpu_irqs_sum(i);
-		sum	+= arch_irq_stat_cpu(i);
-
-		for (j = 0; j < NR_SOFTIRQS; j++) {
-			unsigned int softirq_stat = kstat_softirqs_cpu(j, i);
-
-			per_softirq_sums[j] += softirq_stat;
-			sum_softirq += softirq_stat;
-		}
-	}
-	sum += arch_irq_stat();
-
-	pr_info("\n");
-	pr_info("cpu   user:%llu \tnice:%llu \tsystem:%llu \tidle:%llu \tiowait:%llu \tirq:%llu \tsoftirq:%llu \t %llu %llu %llu\n",
-			(unsigned long long)cputime64_to_clock_t(user),
-			(unsigned long long)cputime64_to_clock_t(nice),
-			(unsigned long long)cputime64_to_clock_t(system),
-			(unsigned long long)cputime64_to_clock_t(idle),
-			(unsigned long long)cputime64_to_clock_t(iowait),
-			(unsigned long long)cputime64_to_clock_t(irq),
-			(unsigned long long)cputime64_to_clock_t(softirq),
-			(unsigned long long)cputime64_to_clock_t(steal),
-			(unsigned long long)cputime64_to_clock_t(guest),
-			(unsigned long long)cputime64_to_clock_t(guest_nice));
-	pr_info("-------------------------------------------------------------------------------------------------------------\n");
-
-	for_each_possible_cpu(i) {
-		/* Copy values here to work around gcc-2.95.3, gcc-2.96 */
-		user	= kcpustat_cpu(i).cpustat[CPUTIME_USER];
-		nice	= kcpustat_cpu(i).cpustat[CPUTIME_NICE];
-		system	= kcpustat_cpu(i).cpustat[CPUTIME_SYSTEM];
-		idle	= get_idle_time(i);
-		iowait	= get_iowait_time(i);
-		irq	= kcpustat_cpu(i).cpustat[CPUTIME_IRQ];
-		softirq	= kcpustat_cpu(i).cpustat[CPUTIME_SOFTIRQ];
-		steal	= kcpustat_cpu(i).cpustat[CPUTIME_STEAL];
-		guest	= kcpustat_cpu(i).cpustat[CPUTIME_GUEST];
-		guest_nice = kcpustat_cpu(i).cpustat[CPUTIME_GUEST_NICE];
-
-		pr_info("cpu%d  user:%llu \tnice:%llu \tsystem:%llu \tidle:%llu \tiowait:%llu \tirq:%llu \tsoftirq:%llu \t %llu %llu %llu\n",
-				i,
-				(unsigned long long)cputime64_to_clock_t(user),
-				(unsigned long long)cputime64_to_clock_t(nice),
-				(unsigned long long)cputime64_to_clock_t(system),
-				(unsigned long long)cputime64_to_clock_t(idle),
-				(unsigned long long)cputime64_to_clock_t(iowait),
-				(unsigned long long)cputime64_to_clock_t(irq),
-				(unsigned long long)cputime64_to_clock_t(softirq),
-				(unsigned long long)cputime64_to_clock_t(steal),
-				(unsigned long long)cputime64_to_clock_t(guest),
-				(unsigned long long)cputime64_to_clock_t(guest_nice));
-	}
-	pr_info("-------------------------------------------------------------------------------------------------------------\n");
-	pr_info("\n");
-	pr_info("irq : %llu", (unsigned long long)sum);
-	pr_info("-------------------------------------------------------------------------------------------------------------\n");
-	/* sum again ? it could be updated? */
-	for_each_irq_nr(j) {
-		unsigned int irq_stat = kstat_irqs(j);
-		if (irq_stat) {
-			pr_info("irq-%-4d : %8u %s\n", j, irq_stat,
-					irq_to_desc(j)->action ? irq_to_desc(j)->action->name ? : "???" : "???");
-		}
-	}
-	pr_info("-------------------------------------------------------------------------------------------------------------\n");
-	pr_info("\n");
-	pr_info("softirq : %llu", (unsigned long long)sum_softirq);
-	pr_info("-------------------------------------------------------------------------------------------------------------\n");
-	for (i = 0; i < NR_SOFTIRQS; i++)
-		if (per_softirq_sums[i])
-			pr_info("softirq-%d : %8u %s\n", i, per_softirq_sums[i], softirq_to_name[i]);
-	pr_info("-------------------------------------------------------------------------------------------------------------\n");
-}
+// static void sec_debug_dump_cpu_stat(void)
+// {
+// 	int i, j;
+// 	unsigned long jif;
+// 	u64 user, nice, system, idle, iowait, irq, softirq, steal;
+// 	u64 guest, guest_nice;
+// 	u64 sum = 0;
+// 	u64 sum_softirq = 0;
+// 	unsigned int per_softirq_sums[NR_SOFTIRQS] = {0};
+// 	struct timespec boottime;
+// 	
+// 	char *softirq_to_name[NR_SOFTIRQS] = { "HI", "TIMER", "NET_TX", "NET_RX", "BLOCK", "BLOCK_IOPOLL", "TASKLET", "SCHED", "HRTIMER", "RCU" };
+// 
+// 	user = nice = system = idle = iowait = irq = softirq = steal = 0;
+// 	guest = guest_nice = 0;
+// 	getboottime(&boottime);
+// 	jif = boottime.tv_sec;
+// 	
+// 	for_each_possible_cpu(i) {
+// 		user	+= kcpustat_cpu(i).cpustat[CPUTIME_USER];
+// 		nice	+= kcpustat_cpu(i).cpustat[CPUTIME_NICE];
+// 		system	+= kcpustat_cpu(i).cpustat[CPUTIME_SYSTEM];
+// 		idle	+= get_idle_time(i); 
+// 		iowait	+= get_iowait_time(i);
+// 		irq	+= kcpustat_cpu(i).cpustat[CPUTIME_IRQ];
+// 		softirq	+= kcpustat_cpu(i).cpustat[CPUTIME_SOFTIRQ];
+// 		steal	+= kcpustat_cpu(i).cpustat[CPUTIME_STEAL];
+// 		guest	+= kcpustat_cpu(i).cpustat[CPUTIME_GUEST];
+// 		guest_nice += kcpustat_cpu(i).cpustat[CPUTIME_GUEST_NICE];
+// 		sum	+= kstat_cpu_irqs_sum(i);
+// 		sum	+= arch_irq_stat_cpu(i);
+// 
+// 		for (j = 0; j < NR_SOFTIRQS; j++) {
+// 			unsigned int softirq_stat = kstat_softirqs_cpu(j, i);
+// 
+// 			per_softirq_sums[j] += softirq_stat;
+// 			sum_softirq += softirq_stat;
+// 		}
+// 	}
+// 	sum += arch_irq_stat();
+// 
+// 	pr_info("\n");
+// 	pr_info("cpu   user:%llu \tnice:%llu \tsystem:%llu \tidle:%llu \tiowait:%llu \tirq:%llu \tsoftirq:%llu \t %llu %llu %llu\n",
+// 			(unsigned long long)cputime64_to_clock_t(user),
+// 			(unsigned long long)cputime64_to_clock_t(nice),
+// 			(unsigned long long)cputime64_to_clock_t(system),
+// 			(unsigned long long)cputime64_to_clock_t(idle),
+// 			(unsigned long long)cputime64_to_clock_t(iowait),
+// 			(unsigned long long)cputime64_to_clock_t(irq),
+// 			(unsigned long long)cputime64_to_clock_t(softirq),
+// 			(unsigned long long)cputime64_to_clock_t(steal),
+// 			(unsigned long long)cputime64_to_clock_t(guest),
+// 			(unsigned long long)cputime64_to_clock_t(guest_nice));
+// 	pr_info("-------------------------------------------------------------------------------------------------------------\n");
+// 
+// 	for_each_possible_cpu(i) {
+// 		/* Copy values here to work around gcc-2.95.3, gcc-2.96 */
+// 		user	= kcpustat_cpu(i).cpustat[CPUTIME_USER];
+// 		nice	= kcpustat_cpu(i).cpustat[CPUTIME_NICE];
+// 		system	= kcpustat_cpu(i).cpustat[CPUTIME_SYSTEM];
+// 		idle	= get_idle_time(i);
+// 		iowait	= get_iowait_time(i);
+// 		irq	= kcpustat_cpu(i).cpustat[CPUTIME_IRQ];
+// 		softirq	= kcpustat_cpu(i).cpustat[CPUTIME_SOFTIRQ];
+// 		steal	= kcpustat_cpu(i).cpustat[CPUTIME_STEAL];
+// 		guest	= kcpustat_cpu(i).cpustat[CPUTIME_GUEST];
+// 		guest_nice = kcpustat_cpu(i).cpustat[CPUTIME_GUEST_NICE];
+// 
+// 		pr_info("cpu%d  user:%llu \tnice:%llu \tsystem:%llu \tidle:%llu \tiowait:%llu \tirq:%llu \tsoftirq:%llu \t %llu %llu %llu\n",
+// 				i,
+// 				(unsigned long long)cputime64_to_clock_t(user),
+// 				(unsigned long long)cputime64_to_clock_t(nice),
+// 				(unsigned long long)cputime64_to_clock_t(system),
+// 				(unsigned long long)cputime64_to_clock_t(idle),
+// 				(unsigned long long)cputime64_to_clock_t(iowait),
+// 				(unsigned long long)cputime64_to_clock_t(irq),
+// 				(unsigned long long)cputime64_to_clock_t(softirq),
+// 				(unsigned long long)cputime64_to_clock_t(steal),
+// 				(unsigned long long)cputime64_to_clock_t(guest),
+// 				(unsigned long long)cputime64_to_clock_t(guest_nice));
+// 	}
+// 	pr_info("-------------------------------------------------------------------------------------------------------------\n");
+// 	pr_info("\n");
+// 	pr_info("irq : %llu", (unsigned long long)sum);
+// 	pr_info("-------------------------------------------------------------------------------------------------------------\n");
+// 	/* sum again ? it could be updated? */
+// 	for_each_irq_nr(j) {
+// 		unsigned int irq_stat = kstat_irqs(j);
+// 		if (irq_stat) {
+// 			pr_info("irq-%-4d : %8u %s\n", j, irq_stat,
+// 					irq_to_desc(j)->action ? irq_to_desc(j)->action->name ? : "???" : "???");
+// 		}
+// 	}
+// 	pr_info("-------------------------------------------------------------------------------------------------------------\n");
+// 	pr_info("\n");
+// 	pr_info("softirq : %llu", (unsigned long long)sum_softirq);
+// 	pr_info("-------------------------------------------------------------------------------------------------------------\n");
+// 	for (i = 0; i < NR_SOFTIRQS; i++)
+// 		if (per_softirq_sums[i])
+// 			pr_info("softirq-%d : %8u %s\n", i, per_softirq_sums[i], softirq_to_name[i]);
+// 	pr_info("-------------------------------------------------------------------------------------------------------------\n");
+// }
 
 void sec_debug_reboot_handler()
 {
@@ -516,14 +516,14 @@ void sec_debug_panic_handler(void *buf, bool dump)
 		sec_debug_set_upload_cause(UPLOAD_CAUSE_KERNEL_PANIC);
 
 	/* dump debugging info */
-	if (dump) {
-#if 0
-		sec_debug_dump_all_task();
-		show_state_filter(TASK_STATE_MAX);
-#endif
-		sec_debug_dump_cpu_stat();
-		debug_show_all_locks();
-	}
+//	if (dump) {
+// #if 0
+// 		sec_debug_dump_all_task();
+// 		show_state_filter(TASK_STATE_MAX);
+// #endif
+// 		sec_debug_dump_cpu_stat();
+// 		debug_show_all_locks();
+//	}
 
 	/* hw reset */
 	pr_emerg("sec_debug: %s\n", linux_banner);

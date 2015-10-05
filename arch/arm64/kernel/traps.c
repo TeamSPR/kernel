@@ -90,13 +90,13 @@ static void dump_mem(const char *lvl, const char *str, unsigned long bottom,
 	set_fs(fs);
 }
 
-static void dump_backtrace_entry(unsigned long where, unsigned long stack)
-{
-	print_ip_sym(where);
-	if (in_exception_text(where))
-		dump_mem("", "Exception stack", stack,
-			 stack + sizeof(struct pt_regs));
-}
+//  static void dump_backtrace_entry(unsigned long where, unsigned long stack)
+//  {
+//  	print_ip_sym(where);
+//  	if (in_exception_text(where))
+//  		dump_mem("", "Exception stack", stack,
+//  			 stack + sizeof(struct pt_regs));
+//  }
 
 static void dump_instr(const char *lvl, struct pt_regs *regs)
 {
@@ -157,16 +157,16 @@ static void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk)
 		frame.pc = thread_saved_pc(tsk);
 	}
 
-	printk("Call trace:\n");
-	while (1) {
-		unsigned long where = frame.pc;
-		int ret;
+	printk("Call trace: Redacted\n");
+	// while (1) {
+	// 	unsigned long where = frame.pc;
+	// 	int ret;
 
-		ret = unwind_frame(&frame);
-		if (ret < 0)
-			break;
-		dump_backtrace_entry(where, frame.sp);
-	}
+	// 	ret = unwind_frame(&frame);
+	// 	if (ret < 0)
+	// 		break;
+	// 	dump_backtrace_entry(where, frame.sp);
+	// }
 }
 
 void show_stack(struct task_struct *tsk, unsigned long *sp)
