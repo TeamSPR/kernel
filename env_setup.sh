@@ -12,6 +12,18 @@ export bldblu=${txtbld}$(tput setaf 4) #  blue
 export bldcya=${txtbld}$(tput setaf 6) #  cyan
 export txtrst=$(tput sgr0)             #  Reset
 
+# check if ccache installed, if not install
+if [ ! -e /usr/bin/ccache ]; then
+	echo "You must install 'ccache' to continue.";
+	sudo apt-get install ccache
+fi
+
+# check if xmllint installed, if not install
+if [ ! -e /usr/bin/xmllint ]; then
+	echo "You must install 'xmllint' to continue.";
+	sudo apt-get install libxml2-utils
+fi
+
 echo "${bldcya}***** Clean up Environment before compile *****${txtrst}";
 
 # Make clean source
@@ -22,10 +34,10 @@ make distclean;
 make mrproper;
 fi;
 
-# clean ccache
-read -t 5 -p "Clean ccache, 5sec timeout (y/n)?";
+# clear ccache
+read -t 5 -p "Clear ccache but keeping the config file, 5sec timeout (y/n)?";
 if [ "$REPLY" == "y" ]; then
-ccache -c;
+ccache -C;
 fi;
 
 TARGET=$1
@@ -49,18 +61,6 @@ fi
 
 # location
 	export KERNELDIR=`readlink -f .`;
-
-# check if ccache installed, if not install
-if [ ! -e /usr/bin/ccache ]; then
-	echo "You must install 'ccache' to continue.";
-	sudo apt-get install ccache
-fi
-
-# check if xmllint installed, if not install
-if [ ! -e /usr/bin/xmllint ]; then
-	echo "You must install 'xmllint' to continue.";
-	sudo apt-get install libxml2-utils
-fi
 
 # kernel
 export ARCH=arm64;
