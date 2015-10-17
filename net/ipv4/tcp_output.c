@@ -2151,13 +2151,21 @@ bool tcp_write_xmit(struct sock *sk, unsigned int mss_now, int nonagle,
 			if (atomic_read(&sk->sk_wmem_alloc) > limit)
 				break;
 		}
-
+#endif
 		limit = mss_now;
 		if (tso_segs > 1 && sk->sk_gso_max_segs && !tcp_urg_mode(tp))
+#ifdef CONFIG_MPTCP
+			limit = tcp_mss_split_point(sk, skb, mss_now,
+						    min_t(unsigned int,
+							  cwnd_quota,
+							  sk->sk_gso_max_segs),
+							  nonagle);
+#else
 			limit = tcp_mss_split_point(sk, skb, mss_now,
 						    min_t(unsigned int,
 							  cwnd_quota,
 							  sk->sk_gso_max_segs));
+#endif
 
 		if (skb->len > limit &&
 		    unlikely(tso_fragment(sk, skb, limit, mss_now, gfp)))
