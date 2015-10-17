@@ -347,9 +347,10 @@
 		PIN_IN(gpr1-2, DOWN, LV1);	/* NC  */
 		PIN_IN(gpr1-3, DOWN, LV1);	/* NC */
 		PIN_IN(gpr1-4, DOWN, LV1);	/* NC */
-		PIN_IN(gpr1-5, DOWN, LV1);	/* NC */
-
+		PIN_IN(gpr1-5, NONE, LV1);	/* 2CA,3CA */
 		PIN_IN(gpr1-7, DOWN, LV1);	/* NC */
+
+		PIN_IN(gpr2-0, DOWN, LV1);	/* NC */
 
 		PIN_IN(gpr3-1, DOWN, LV1);	/* DISPLAY_DET */
 		PIN_IN(gpr3-2, DOWN, LV1);	/* NC */
@@ -367,12 +368,12 @@
 
 		PIN_SLP(gpr1-3, INPUT, DOWN);	/* NC */
 		PIN_SLP(gpr1-4, INPUT, DOWN);	/* NC */
-		PIN_SLP(gpr1-5, INPUT, DOWN);	/* NC */
+		PIN_SLP(gpr1-5, INPUT, NONE);	/* 2CA,3CA */
 
 		PIN_SLP(gpr1-6, INPUT, UP);	/* P2P_EN */
 		PIN_SLP(gpr1-7, INPUT, DOWN);	/* NC */
 
-		PIN_SLP(gpr2-0, INPUT, NONE);	/* PCIE_CLKREQ_L */
+		PIN_SLP(gpr2-0, INPUT, DOWN);	/* NC */
 		PIN_SLP(gpr2-1, INPUT, DOWN);	/* OLED_ID */
 		PIN_SLP(gpr2-2, INPUT, NONE);	/* SUB_PMIC_IRQ_N */
 		PIN_SLP(gpr2-3, PREV, NONE);	/* TDMB_INT */
