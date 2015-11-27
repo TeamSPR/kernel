@@ -254,11 +254,18 @@ int eax_dma_params_register(struct s3c_dma_params *dma)
 
 static void eax_dma_elapsed(int buf_idx)
 {
+	int n;
+
 	di.buf_rd_idx = buf_idx;
 
-	if (--buf_idx < 0)
-		buf_idx += DMA_PERIOD_CNT;
-	di.buf_fill[buf_idx] = false;
+	for (n = 0; n < DMA_PERIOD_CNT; n++) {
+		if (--buf_idx < 0)
+			buf_idx += DMA_PERIOD_CNT;
+
+		di.buf_fill[buf_idx] = false;
+		if (buf_idx == di.buf_wr_idx)
+			break;
+	}
 
 	di.buf_done = true;
 	if (waitqueue_active(&mixer_buf_wq))
@@ -270,11 +277,8 @@ static void eax_adma_buffdone(void *data)
 	dma_addr_t src, dst, pos;
 	int buf_idx;
 
-	spin_lock(&di.lock);
-	if (!di.running) {
-		spin_unlock(&di.lock);
+	if (!di.running)
 		return;
-	}
 
 	di.params->ops->getposition(di.params->ch, &src, &dst);
 	pos = src - di.dma_start;
@@ -287,7 +291,6 @@ static void eax_adma_buffdone(void *data)
 	di.dma_pos = pos;
 
 	eax_dma_elapsed(buf_idx);
-	spin_unlock(&di.lock);
 }
 
 static void eax_adma_hw_params(unsigned long dma_period_bytes)
@@ -405,8 +408,7 @@ out:
 
 static void eax_adma_trigger(bool on)
 {
-	unsigned long flags;
-	spin_lock_irqsave(&di.lock, flags);
+	spin_lock(&di.lock);
 
 	if (on) {
 		di.running = on;
@@ -419,7 +421,7 @@ static void eax_adma_trigger(bool on)
 		di.running = on;
 	}
 
-	spin_unlock_irqrestore(&di.lock, flags);
+	spin_unlock(&di.lock);
 }
 
 static inline void eax_dma_xfer(struct runtime_data *prtd,
@@ -937,7 +939,6 @@ static void eax_mixer_prepare(void)
 
 static void eax_mixer_write(void)
 {
-	unsigned long flags;
 	int ret;
 
 	spin_lock(&mi.lock);
@@ -977,12 +978,10 @@ static void eax_mixer_write(void)
 	mi.buf_fill = false;
 	spin_unlock(&mi.lock);
 
-	spin_lock_irqsave(&di.lock, flags);
 	di.buf_fill[di.buf_wr_idx] = true;
 	di.buf_wr_idx++;
 	if (di.buf_wr_idx == DMA_PERIOD_CNT)
 		di.buf_wr_idx = 0;
-	spin_unlock_irqrestore(&di.lock, flags);
 }
 
 static int eax_mixer_kthread(void *arg)

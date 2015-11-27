@@ -142,13 +142,8 @@ static uint32_t send_cmd_to_user(uint32_t command_id)
 	pr_debug("send_cmd_to_user: give way to ioctl thread\n");
 
 	/* Wait for ioctl thread to complete */
-	if (atomic_read(&fileopened)) {
-		printk(KERN_INFO "TUI TLC is running, waiting for the userland response\n");
-		wait_for_completion_interruptible_timeout(&io_comp, HZ*5);
-	} else {
-		printk(KERN_INFO "TUI TLC seems dead. Not waiting for userland answer\n");
-	}
-
+	wait_for_completion_interruptible(&io_comp);
+	pr_debug("send_cmd_to_user: Got an answer from ioctl thread.\n");
 	INIT_COMPLETION(io_comp);
 
 	/* Check id of the cmd processed by ioctl thread (paranoia) */
@@ -224,11 +219,9 @@ static void tlc_process_cmd(void)
 
 		/* Start android TUI activity */
 		ret = send_cmd_to_user(TLC_TUI_CMD_START_ACTIVITY);
-		if (TUI_DCI_OK != ret){
-//			send_cmd_to_user(TLC_TUI_CMD_STOP_ACTIVITY);
-			pr_info("%s Start Tuiactivity failed : ret = %d\n", __func__, ret);
+		if (TUI_DCI_OK != ret)
 			break;
-		}
+
 			/* allocate TUI frame buffer */
 		ret = hal_tui_alloc(dci->nwd_rsp.alloc_buffer,
 				dci->cmd_nwd.payload.alloc_data.alloc_size,
@@ -269,10 +262,7 @@ static void tlc_process_cmd(void)
 				, __func__, ret_val);
 #endif
 		/* Stop android TUI activity */
-		/* Ignore return code, because an error means the TLC has been
-		* killed, which imply that the activity is stopped already. */
-		send_cmd_to_user(TLC_TUI_CMD_STOP_ACTIVITY);
-		ret = TUI_DCI_OK;
+		ret = send_cmd_to_user(TLC_TUI_CMD_STOP_ACTIVITY);
 		break;
 
 	default:
