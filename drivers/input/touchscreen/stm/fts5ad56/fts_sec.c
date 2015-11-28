@@ -92,6 +92,7 @@ static void boost_level(void *device_data);
 #endif
 static void set_lowpower_mode(void *device_data);
 static void set_deepsleep_mode(void *device_data);
+static void set_wirelesscharger_mode(void *device_data);
 static void active_sleep_enable(void *device_data);
 static void second_screen_enable(void *device_data);
 static void set_longpress_enable(void *device_data);
@@ -207,6 +208,7 @@ struct ft_cmd ft_commands[] = {
 #endif
 	{FT_CMD("set_lowpower_mode", set_lowpower_mode),},
 	{FT_CMD("set_deepsleep_mode", set_deepsleep_mode),},
+	{FT_CMD("set_wirelesscharger_mode", set_wirelesscharger_mode),},
 	{FT_CMD("active_sleep_enable", active_sleep_enable),},
 	{FT_CMD("second_screen_enable", second_screen_enable),},
 	{FT_CMD("set_longpress_enable", set_longpress_enable),},
@@ -1321,6 +1323,7 @@ static void run_rawcap_read(void *device_data)
 	char buff[CMD_STR_LEN] = { 0 };
 	short min = 0x7FFF;
 	short max = 0x8000;
+	bool touch_on = false;
 #ifdef FTS_SUPPORT_PARTIAL_DOWNLOAD
 	//unsigned char regAdd[4] = {0xB0, 0x04, 0x49, 0x00}; // it's for Zero Prj
 	unsigned char regAdd[4] = {0xB0, 0x04, 0x48, 0x00}; // it's for Noble & Zero2 Prj
@@ -1340,6 +1343,11 @@ static void run_rawcap_read(void *device_data)
 		goto rawcap_read;
 	else
 		tsp_debug_info(true, &info->client->dev, "%s: set autotune\n\n", __func__);
+
+	if (info->touch_count > 0) {
+		touch_on = true;
+		tsp_debug_info(true, info->dev, "%s: finger on touch(%d)\n", __func__, info->touch_count);
+	}
 
 	disable_irq(info->irq);
 
@@ -1395,7 +1403,14 @@ static void run_rawcap_read(void *device_data)
 		info->o_afe_ver = info->afe_ver;
 #endif
 
-		fts_execute_autotune(info);
+		if (touch_on) {
+			tsp_debug_info(true, info->dev, "%s: finger! do not run autotune\n", __func__);
+		} else {
+			tsp_debug_info(true, info->dev, "%s: run autotune\n", __func__);
+			fts_execute_autotune(info);
+		}
+
+
 #ifdef FTS_SUPPORT_PARTIAL_DOWNLOAD
 		//STMicro Auto-tune protection disable
 		fts_write_reg(info, regAdd, 4);
@@ -1422,7 +1437,11 @@ rawcap_read:
 	fts_delay(50);
 	fts_read_frame(info, TYPE_FILTERED_DATA, &min, &max);
 
-	snprintf(buff, sizeof(buff), "%d,%d", min, max);
+	if (touch_on)
+		snprintf(buff, sizeof(buff), "%d,%d,NG_FINGER_ON", min, max);
+	else
+		snprintf(buff, sizeof(buff), "%d,%d", min, max);
+
 	set_cmd_result(info, buff, strnlen(buff, sizeof(buff)));
 	info->cmd_state = CMD_STATUS_OK;
 	tsp_debug_info(true, &info->client->dev, "%s: %s\n", __func__, buff);
@@ -2184,21 +2203,40 @@ static void set_status_pureautotune(void *device_data)
 		return;
 	}
 
-	if (info->cmd_param[0]==0) regAdd[0] = 0xC2;
-	else regAdd[0] = 0xC1;
+	fts_command(info, SENSEOFF);
+	fts_delay(50);
+
+	disable_irq(info->irq);
+	fts_interrupt_set(info, INT_DISABLE);
+	fts_delay(50);
+
+	if (info->cmd_param[0] == 0)
+		regAdd[0] = 0xC2;
+	else
+		regAdd[0] = 0xC1;
+
 	tsp_debug_info(true, &info->client->dev, "%s: CMD[%2X]\n",__func__,regAdd[0]);
 
 	rc = fts_write_reg(info, regAdd, 2);
+	msleep(20);
+
+	if (info->cmd_param[0] == 0)
+		fts_fw_wait_for_event(info, STATUS_EVENT_PURE_AUTOTUNE_FLAG_ERASE_FINISH);
+	else
+		fts_fw_wait_for_event(info, STATUS_EVENT_PURE_AUTOTUNE_FLAG_WRITE_FINISH);
 
 	info->fts_command(info, FTS_CMD_SAVE_CX_TUNING);
 	msleep(230);
-    fts_fw_wait_for_event(info, STATUS_EVENT_FLASH_WRITE_CXTUNE_VALUE);
+	fts_fw_wait_for_event(info, STATUS_EVENT_FLASH_WRITE_CXTUNE_VALUE);
 
 	info->fts_systemreset(info);
 	fts_wait_for_ready(info);
 	info->fts_command(info, SLEEPOUT);
 	msleep(50);
 	info->fts_command(info, SENSEON);
+
+	enable_irq(info->irq);
+	fts_interrupt_set(info, INT_ENABLE);
 
 	if (!rc)
 		snprintf(buff, sizeof(buff), "%s", "FAIL");
@@ -3343,6 +3381,49 @@ static void set_deepsleep_mode(void *device_data)
 		info->cmd_state = CMD_STATUS_OK;
 	}
 
+	set_cmd_result(info, buff, strnlen(buff, sizeof(buff)));
+
+	mutex_lock(&info->cmd_lock);
+	info->cmd_is_running = false;
+	mutex_unlock(&info->cmd_lock);
+	info->cmd_state = CMD_STATUS_WAITING;
+
+	tsp_debug_info(true, &info->client->dev, "%s: %s\n", __func__, buff);
+};
+
+static void set_wirelesscharger_mode(void *device_data)
+{
+	struct fts_ts_info *info = (struct fts_ts_info *)device_data;
+	char buff[CMD_STR_LEN] = { 0 };
+	unsigned char regAdd[2] = {0xC2, 0x10};
+	int rc;
+
+	set_default_result(info);
+
+	if (info->touch_stopped) {
+		tsp_debug_info(true, &info->client->dev, "%s: [ERROR] Touch is stopped\n",
+			__func__);
+		snprintf(buff, sizeof(buff), "%s", "TSP turned off");
+		set_cmd_result(info, buff, strnlen(buff, sizeof(buff)));
+		info->cmd_state = CMD_STATUS_NOT_APPLICABLE;
+		return;
+	}
+
+	if (info->cmd_param[0] < 0 || info->cmd_param[0] > 1) {
+		snprintf(buff, sizeof(buff), "%s", "NG");
+		info->cmd_state = CMD_STATUS_FAIL;
+	} else {
+		info->wirelesscharger_mode = info->cmd_param[0];
+
+		if (info->wirelesscharger_mode ==0) regAdd[0] = 0xC2;
+		else regAdd[0] = 0xC1;
+		tsp_debug_info(true, &info->client->dev, "%s: CMD[%2X]\n",__func__,regAdd[0]);
+
+		rc = fts_write_reg(info, regAdd, 2);
+
+		snprintf(buff, sizeof(buff), "%s", "OK");
+		info->cmd_state = CMD_STATUS_OK;
+	}
 	set_cmd_result(info, buff, strnlen(buff, sizeof(buff)));
 
 	mutex_lock(&info->cmd_lock);

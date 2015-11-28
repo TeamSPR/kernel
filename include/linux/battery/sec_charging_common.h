@@ -80,6 +80,7 @@ enum sec_wireless_info_mode {
 	SEC_WIRELESS_TX_FIRM_RESULT,
 	SEC_WIRELESS_TX_FIRM_VER,
 	SEC_TX_FIRMWARE,
+	SEC_WIRELESS_OTP_FIRM_VERIFY,
 };
 
 enum sec_wireless_firm_update_mode {

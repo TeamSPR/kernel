@@ -921,6 +921,7 @@ static int fts_init(struct fts_ts_info *info)
 	info->mainscr_disable = false;
 
 	info->deepsleep_mode = false;
+	info->wirelesscharger_mode = false;
 	info->lowpower_mode = false;
 	info->lowpower_flag = 0x00;
 	info->fts_power_state = 0;
@@ -2424,6 +2425,8 @@ static int fts_input_open(struct input_dev *dev)
 {
 	struct fts_ts_info *info = input_get_drvdata(dev);
 	int retval;
+	unsigned char regAdd[2] = {0xC2, 0x10};
+	int rc;
 
 	tsp_debug_dbg(false, &info->client->dev, "%s\n", __func__);
 
@@ -2448,6 +2451,10 @@ static int fts_input_open(struct input_dev *dev)
 		info->hover_enabled = true;
 	}
 
+	if (info->wirelesscharger_mode ==0) regAdd[0] = 0xC2;
+	else regAdd[0] = 0xC1;
+	tsp_debug_info(true, &info->client->dev, "%s: Set W-Charger Status CMD[%2X]\n",__func__,regAdd[0]);
+	rc = fts_write_reg(info, regAdd, 2);
 out:
 	return 0;
 }

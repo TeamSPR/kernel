@@ -776,6 +776,11 @@ static int datacmp(const char *cs, const char *ct, int count)
 			pr_err("%s, cnt %d\n", __func__, count);
 			return c1 < c2 ? -1 : 1;
 		}
+		/*debug
+		else {
+			pr_err("%s, c1:%x c2:%x\n", __func__, c1, c2);
+		}
+		debug*/
 		count--;
 	}
 	return 0;
@@ -811,6 +816,73 @@ static int LoadOTPLoaderInRAM(struct p9220_charger_data *charger, u16 addr)
 		return 0;
 	}
 	return 1;
+}
+
+static int p9220_firmware_verify(struct p9220_charger_data *charger)
+{
+	int ret = 0;
+	const u16 sendsz = 16;
+	int i = 0;
+	int block_len = 0;
+	int block_addr = 0;
+	u8 rdata[sendsz+2];
+
+/* I2C WR to prepare boot-loader write */
+
+	if (p9220_reg_write(charger->client, 0x3C00, 0x80) < 0) {
+		pr_err("%s: reset FDEM error\n", __func__);
+		return 0;
+	}
+
+	if (p9220_reg_write(charger->client, 0x3000, 0x5a) < 0) {
+		pr_err("%s: key error\n", __func__);
+		return 0;
+	}
+
+	if (p9220_reg_write(charger->client, 0x3040, 0x11) < 0) {
+		pr_err("%s: halt M0, OTP_I2C_EN set error\n", __func__);
+		return 0;
+	}
+
+	if (p9220_reg_write(charger->client, 0x3C04, 0x04) < 0) {
+		pr_err("%s: OTP_VRR 2.98V error\n", __func__);
+		return 0;
+	}
+
+	if (p9220_reg_write(charger->client, 0x5C00, 0x11) < 0) {
+		pr_err("%s: OTP_CTRL VPP_EN set error\n", __func__);
+		return 0;
+	}
+
+	dev_err(&charger->client->dev, "%s, request_firmware\n", __func__);
+	ret = request_firmware(&charger->firm_data_bin, P9220S_OTP_FW_HEX_PATH,
+		&charger->client->dev);
+	if ( ret < 0) {
+		dev_err(&charger->client->dev, "%s: failed to request firmware %s (%d) \n",
+				__func__, P9220S_OTP_FW_HEX_PATH, ret);
+		return 0;
+	}
+	ret = 1;
+	wake_lock(&charger->wpc_update_lock);
+	for (i = 0; i < charger->firm_data_bin->size; i += sendsz) {
+		block_len = (i + sendsz) > charger->firm_data_bin->size ? charger->firm_data_bin->size - i : sendsz;
+		block_addr = 0x8000 + i;
+
+		if (p9220_reg_multi_read(charger->client, block_addr, rdata, block_len) < 0) {
+			pr_err("%s, read failed\n", __func__);
+			ret = 0;
+			break;
+		}
+		if (datacmp(charger->firm_data_bin->data + i, rdata, block_len)) {
+			pr_err("%s, verify data is not matched.\n", __func__);
+			ret = -1;
+			break;
+		}
+	}
+	release_firmware(charger->firm_data_bin);
+
+	wake_unlock(&charger->wpc_update_lock);
+	return ret;
 }
 
 static int p9220_reg_multi_write_verify(struct i2c_client *client, u16 reg, const u8 * val, int size)
@@ -1282,6 +1354,8 @@ static int p9220_chg_get_property(struct power_supply *psy,
 				//	val->intval = -1;
 			} else if(val->intval == SEC_TX_FIRMWARE) {
 				val->intval = charger->pdata->tx_status;
+			} else if(val->intval == SEC_WIRELESS_OTP_FIRM_VERIFY) {
+				val->intval = p9220_firmware_verify(charger);
 			} else{
 				val->intval = -1;
 				pr_err("%s wrong mode \n", __func__);

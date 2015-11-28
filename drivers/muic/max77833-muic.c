@@ -2720,6 +2720,22 @@ static void max77833_muic_detect_dev(struct max77833_muic_data *muic_data, int i
 			return;
 		}
 	}
+
+	/* Workaround for HMT disconnect issue in User binary. */
+	if (muic_data->attached_dev == ATTACHED_DEV_HMT_MUIC) {
+		if (adc == (MAX77833_ADC_HMT - 1)) {
+			pr_warn("%s:%s abandon SMARTDOCK\n", MUIC_DEV_NAME, __func__);
+			return;
+		}
+	}
+
+	/* Workaround for OTG disconnect issue in User binary. */
+	if (muic_data->attached_dev == ATTACHED_DEV_OTG_MUIC) {
+		if (adc != MAX77833_ADC_OPEN) {
+			pr_warn("%s:%s abandon DEVICE(OTG)\n", MUIC_DEV_NAME, __func__);
+			return;
+		}
+	}
 #endif
 
 	new_dev = max77833_muic_check_new_dev(muic_data, &intr, wcvalue.intval);
