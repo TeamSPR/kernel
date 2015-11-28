@@ -108,8 +108,8 @@ fi;
 export USER=`whoami`;
 export TMPFILE=`mktemp -t`;
 
-# system compiler
-export CROSS_COMPILE=/home/upintheair/gcc-linaro-4.9-2014.11-x86_64_aarch64-elf/bin/aarch64-none-elf-
+# system compiler: gcc-linaro/5.2-2015.10
+export CROSS_COMPILE=/home/upintheair/android-toolchain-eabi/bin/aarch64-none-elf-
 
 # CPU Core
 export NUMBEROFCPUS=`grep 'processor' /proc/cpuinfo | wc -l`;
