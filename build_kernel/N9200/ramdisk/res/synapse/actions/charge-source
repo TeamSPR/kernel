@@ -1,4 +1,4 @@
-case $((`cat /sys/devices/battery.54/power_supply/battery/batt_charging_source`)) in
+case $((`cat /sys/devices/battery.52/power_supply/battery/batt_charging_source`)) in
 
 0)	echo "Unknown source"
 	;;

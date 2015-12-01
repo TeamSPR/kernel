@@ -11,28 +11,28 @@ entropy)
   echo "`cat /proc/sys/kernel/random/entropy_avail`";
   ;;
 batttype)
-  echo Charge Type: `cat /sys/devices/battery.54/power_supply/battery/charge_type`
+  echo Charge Type: `cat /sys/devices/battery.52/power_supply/battery/charge_type`
   ;;
 battcurrav)
-  echo Current Average: $(($(cat /sys/devices/battery.54/power_supply/battery/current_avg) )) mA
+  echo Current Average: $(($(cat /sys/devices/battery.52/power_supply/battery/current_avg) )) mA
   ;;
 battcurrnow)
-  echo Current Now: $(($(cat /sys/devices/battery.54/power_supply/battery/current_now) )) mA
+  echo Current Now: $(($(cat /sys/devices/battery.52/power_supply/battery/current_now) )) mA
   ;;
 battvoltnow)
-  echo Voltage Now: $(($(cat /sys/devices/battery.54/power_supply/battery/voltage_now) /1000)) mV
+  echo Voltage Now: $(($(cat /sys/devices/battery.52/power_supply/battery/voltage_now) /1000)) mV
   ;;
 batttemp)
-  echo Temp: $(($(cat /sys/devices/battery.54/power_supply/battery/batt_temp) / 10)) °C
+  echo Temp: $(($(cat /sys/devices/battery.52/power_supply/battery/batt_temp) / 10)) °C
   ;;
 battcapa)
-  echo Capacity: $(($(cat /sys/devices/battery.54/power_supply/battery/capacity) )) %
+  echo Capacity: $(($(cat /sys/devices/battery.52/power_supply/battery/capacity) )) %
   ;;
 battstatus)
-  echo Status: `cat /sys/devices/battery.54/power_supply/battery/status`
+  echo Status: `cat /sys/devices/battery.52/power_supply/battery/status`
   ;;
 batthealth)
-  echo Health: `cat /sys/devices/battery.54/power_supply/battery/health`
+  echo Health: `cat /sys/devices/battery.52/power_supply/battery/health`
   ;;
 LiveMemory)
   while read TYPE MEM KB; do
