@@ -1,0 +1,24 @@
+#
+# ADDITIONAL_DEFAULT_PROPERTIES
+#
+persist.radio.multisim.config=dsds
+ro.multisim.simslotcount=2
+rild.libpath=/system/lib64/libsec-ril.so
+rild.libpath2=/system/lib64/libsec-ril-dsds.so
+persist.cne.feature=0
+persist.radio.lte_vrte_ltd=1
+persist.radio.add_power_save=1
+persist.data.netmgrd.qos.enable=false
+persist.security.ams.enforcing=1
+ro.secure=1
+ro.allow.mock.location=0
+ro.debuggable=0
+ro.adb.secure=1
+persist.sys.usb.config=mtp
+ro.zygote=zygote64_32
+ro.smps.gain.spk=0.8
+dalvik.vm.dex2oat-Xms=64m
+dalvik.vm.dex2oat-Xmx=512m
+dalvik.vm.image-dex2oat-Xms=64m
+dalvik.vm.image-dex2oat-Xmx=64m
+ro.dalvik.vm.native.bridge=0

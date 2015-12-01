@@ -12,6 +12,7 @@ export bldblu=${txtbld}$(tput setaf 4) #  blue
 export bldcya=${txtbld}$(tput setaf 6) #  cyan
 export txtrst=$(tput sgr0)             #  Reset
 
+
 # check if ccache installed, if not install
 if [ ! -e /usr/bin/ccache ]; then
 	echo "You must install 'ccache' to continue.";
@@ -25,6 +26,7 @@ if [ ! -e /usr/bin/xmllint ]; then
 fi
 
 echo "${bldcya}***** Clean up Environment before compile *****${txtrst}";
+
 
 # Make clean source
 read -t 5 -p "Make clean source, 5sec timeout (y/n)?";
@@ -40,8 +42,10 @@ if [ "$REPLY" == "y" ]; then
 ccache -C;
 fi;
 
+
 TARGET=$1
 if [ "$TARGET" != "" ]; then
+	echo
         echo "Starting your build for $TARGET"
 else
         echo ""
@@ -59,12 +63,17 @@ else
         exit 1
 fi
 
+
 # location
 	export KERNELDIR=`readlink -f .`;
 
-# kernel
+
+# set build variables
+BK=build_kernel
+export KCONFIG_NOTIMESTAMP=true
 export ARCH=arm64;
 export SUB_ARCH=arm64;
+
 if [ "$TARGET" = "N920C" ] ; then
 export KERNEL_CONFIG="SkyHigh_defconfig";
 fi;
@@ -104,12 +113,15 @@ if [ "$TARGET" = "N920T" ] ; then
 export KERNEL_CONFIG="SkyHigh_tmo_defconfig";
 fi;
 
+
 # build script
 export USER=`whoami`;
 export TMPFILE=`mktemp -t`;
 
+
 # system compiler
 export CROSS_COMPILE=/home/upintheair/gcc-linaro-4.9-2015.02-3-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
+
 
 # CPU Core
 export NUMBEROFCPUS=`grep 'processor' /proc/cpuinfo | wc -l`;
