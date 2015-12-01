@@ -13,7 +13,7 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"Kernel Thread",
-		description:" <a href='http://forum.xda-developers.com/tmobile-galaxy-note5/orig-development/kernel-skyhigh-tw-5-1-1-kernel-t3217967'>XDA</a>"
+		description:" <a href='http://forum.xda-developers.com/s6-edge-plus/orig-development/kernel-skyhigh-tw-5-1-1-kernel-t3261198'>XDA</a>"
 	}},
 	{ SSpacer:{
 		height:1
