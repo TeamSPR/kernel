@@ -1,0 +1,185 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:NETWORK,
+    elements:[
+    	{ SPane:{
+		title:"TCP Congestion Control",
+		description:" Select your preferred WIFI TCP algorithm. Regulates upload and download affecting throughput in various ways. Default is Westwood+."
+    	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SOptionList:{
+		default:`cat proc/sys/net/ipv4/tcp_congestion_control`,
+		action:"generic proc/sys/net/ipv4/tcp_congestion_control",
+		values:[`while read values; do busybox printf "%s, \n" $values; done < proc/sys/net/ipv4/tcp_available_congestion_control`]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ STitleBar:{
+		title:"Screen mirroring / AllShare Cast fix"
+	}},
+	{ SDescription:{
+		description:" Possible screen mirroring / AllShare Cast fix for rooted devices, works for some. Turn OFF WIFI first. Default is Enabled."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SOptionList:{
+		default:`echo $(/res/synapse/actions/mirror mirror_fix)`,
+		action:"mirror mirror_fix",
+		values:[Disabled, Enabled,]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ STitleBar:{
+		title:"Clean WIFI Lease"
+	}},
+	{ SDescription:{
+		description:" Clean WIFI DHCP IP Lease. Push the button to activate!"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"Clean WIFI Lease",
+		action:"devtools fix_wifi"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"WiFi Power Mode",
+		description:" Control the WiFi power mode during screen ON & OFF.\n\nMax = Maximum power savings, but reduced throughput & increased AP latency.\n\nFast = Good power savings & throughput with a slightly reduced AP latency.\n\nOff = No power savings and normal throughput/AP latency (may help with HD video streaming performance).\n\nForce Off = No power savings and normal AP latency. (force off even if bt is active).\n\n ** Note: You MUST suspend and resume display for changes to take effect!\n"
+        }},
+	{ SSpacer:{
+		height:1
+	}},
+        { SOptionList:{
+		title:"WiFi Power Mode While Screen-ON",
+		description:"",
+		default:"2",
+		unit:"",
+		action:"generic /sys/module/dhd/parameters/wifi_pm_awake",
+		values:{
+		   	"0":"Off",
+		   	"1":"Max",
+		   	"2":"Fast",
+		   	"3":"Force Off"
+		}
+	}},
+	{ SSpacer:{
+		   height:1
+	}},
+	{ SOptionList:{
+		title:"WiFi Power Mode While Screen-OFF",
+		description:"",
+		default:"1",
+		unit:"",
+		action:"generic /sys/module/dhd/parameters/wifi_pm_suspended",
+		values:{
+			"0":"Off",
+		   	"1":"Max",
+		   	"2":"Fast",
+		   	"3":"Force Off"
+		}
+	}},
+	{ SSpacer:{
+		   height:1
+	}},
+	{ SPane:{
+		title:"WiFi DTIM Interval",
+		description:" The Delivery Traffic Indication Message (DTIM) corresponds to every beacon sent by the WiFi access point, and lets clients know data is about to be exchanged. This interval allows your WiFi chip to sleep longer before it has to wake up and listen for broadcasts and multicasts. By default the driver uses a value of 0, which means it defaults to what the WiFi access point defaults to. Often times that default is 1 (as frequently as possible). The higher this number, the less power the WiFi radio will use, but the longer it will take before it knows data has arrived (aka push notifications may be slow).\n\n\ ** Note: You MUST suspend and resume display for changes to take effect!\n\n\ 0 = use access point's default value.\n 1:1 = every time (as fast as possible).\n 1:2 = every other one."
+        }},
+	{ SSpacer:{
+		   height:1
+	}},
+        { SSeekBar:{
+       		title:"WiFi DTIM Interval While Screen-ON",
+		description:" Sets the ratio of how many DTIMs the driver will skip while the screen is ON.\n",
+		default:0,
+		max:100,
+		min:0,
+		step:1,
+		unit:"",
+		action:"generic /sys/module/dhd/parameters/dtim_awake",
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+       		title:"WiFi DTIM Interval While Screen-OFF",
+		description:" Sets the ratio of how many DTIMs the driver will skip while the screen is OFF.\n",
+		default:0,
+		max:100,
+		min:0,
+		step:1,
+		unit:"",
+		action:"generic /sys/module/dhd/parameters/dtim_suspended",
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+        { SPane:{
+                title:"Wakelock control",
+                description:"Enter 1 to 8 (1 = stock, higher = lower wake time) for wlan_rx and wlan_ctrl wakelock control."
+        }},
+	{ SSpacer:{
+		height:1
+	}},
+        { SSeekBar:{
+                title:"Wireless wakelock timeout control",
+                description:"",
+                unit:"",
+                min:1,
+                max:8,
+                step:1,
+                default:`cat /sys/module/dhd/parameters/wl_divide`,
+                action:"generic /sys/module/dhd/parameters/wl_divide"
+        }},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"TCP/IP Network Security Tweak",
+		description:" Protect against SYN & DoS attack etc. Default is Disabled."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SOptionList:{
+		default:`echo $(/res/synapse/actions/network tcp_security)`,
+		action:"network tcp_security",
+		values:[Disabled, Enabled,]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"3G DNS Tweaks",
+		description:" Allows you to set the default DNS (Domain Name System) for 3G connections. Use this to potentially speed up your browsing experience (depending on DNS location) and improve your security. Default is Disabled.",
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SDescription:{
+		description:" * You must have a mobile data network connection before applying new DNS *"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SOptionList:{
+		default:`echo $(/res/synapse/actions/network dns)`,
+		action:"network dns",
+		values:[Disabled, Google, OpenDNS, Comodo, Level3, Norton_DNS, Smart_Viper,]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+    ]
+}
+CTAG
