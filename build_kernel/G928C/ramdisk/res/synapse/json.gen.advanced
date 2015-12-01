@@ -1,0 +1,88 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:ADVANCED,
+    elements:[
+      	{ SPane:{
+		title:"Kernel Entropy"
+      	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SLiveLabel:{
+		title:"Entropy Available",
+		refresh:1000,
+		action:"live entropy"
+	}},
+	{ SSeekBar:{
+		title:"Read Wakeup Threshold",
+        	description:"",
+		max:2048, min:64, step:64,
+		default:`cat /proc/sys/kernel/random/read_wakeup_threshold`,
+		action:"generic /proc/sys/kernel/random/read_wakeup_threshold"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+		title:"Write Wakeup Threshold",
+        	description:"",
+		max:2048, min:64, step:64,
+		default:`cat /proc/sys/kernel/random/write_wakeup_threshold`,
+		action:"generic /proc/sys/kernel/random/write_wakeup_threshold"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+      	{ SPane:{
+		title:"Gentle Fair Sleepers"
+      	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SCheckBox:{
+		description:" Sleeper Fairness is a concept used by CFS which treat sleeping/waiting tasks as if they were in a run queue. This implies tasks which spend most of the time waiting for an user input and such will get a fair share of CPU when they need it. Disabling Gentle Fair Sleepers could improve UI responsiveness. Default is Disabled.\n",
+		label:"Enable Gentle Fair Sleepers",
+		default:`cat /sys/kernel/sched/gentle_fair_sleepers`,
+		action:"generic /sys/kernel/sched/gentle_fair_sleepers"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+      	{ SPane:{
+		title:"Arch Power"
+      	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SCheckBox:{
+		description:" Arch Power uses arch dependent power functions to be used instead of generic high resolution timer ticks and double ticks to reflect the relative capacity of each core. Default is Enabled.\n",
+		label:"Enable Arch Power",
+		default:`cat /sys/kernel/sched/arch_power`,
+		action:"generic /sys/kernel/sched/arch_power"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+      	{ SPane:{
+		title:"Randomisation"
+      	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+		title:"randomize_va_space",
+		description:" Disabling (0) virtual address randomisation may improve GUI responsiveness. Default is Disabled.\n",
+		max:2,
+		min:0,
+		step:1,
+		default:`cat /proc/sys/kernel/randomize_va_space`,
+		action:"generic /proc/sys/kernel/randomize_va_space"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+    ]
+}
+CTAG
