@@ -1,0 +1,83 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:LED,
+    elements:[
+	{ SPane:{
+		title:"LED"
+	}},
+	{ SCheckBox:{
+		description:" Default is Enabled.",
+		label:"Disable LED",
+		default:`cat /sys/class/sec/led/led_always_disable`,
+                action:"generic /sys/class/sec/led/led_always_disable"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"LED Fade-in/out time period",
+		description:" Control LED fade-in/out time period for missed notifications.",
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+        { SCheckBox:{
+                description:" Enable or disable LED fade-in/out control. Default is Disabled.\n",
+		label:"LED Fade Control",
+		default:`cat /sys/class/sec/led/led_fade`,
+                action:"generic /sys/class/sec/led/led_fade"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+		title:"Fade-in",
+		description:" Sets the time period of the rising slope.\n Default is 800.\n\n",
+		unit:" ms",
+		min:100,
+		max:2000,
+		step:100,
+		default:`cat /sys/class/sec/led/led_fade_time_up`,
+		action:"generic /sys/class/sec/led/led_fade_time_up"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+		title:"Fade-out",
+		description:" Sets the time period of the falling slope.\n Default is 800.\n",
+		unit:" ms",
+		min:100,
+		max:2000,
+		step:100,
+		default:`cat /sys/class/sec/led/led_fade_time_down`,
+		action:"generic /sys/class/sec/led/led_fade_time_down"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"Test"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"Test Notification",
+		action:"led 3"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"Stop Notification",
+		action:"led 0"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+    ]
+}
+CTAG
