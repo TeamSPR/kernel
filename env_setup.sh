@@ -79,9 +79,14 @@ if [ "$TARGET" = "G928C" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-G928C_MEA_defconfig";
 fi;
 
+if [ "$TARGET" = "G928T" ] ; then
+export KERNEL_CONFIG="SkyHigh_SM-G928T_defconfig";
+fi;
+
 if [ "$TARGET" = "N920C" ] ; then
 export KERNEL_CONFIG="SkyHigh_defconfig";
 fi;
+
 if [ "$TARGET" = "N920CD" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-N920CD_MEA_defconfig";
 fi;
