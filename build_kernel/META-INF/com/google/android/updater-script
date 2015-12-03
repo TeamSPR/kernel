@@ -1,7 +1,7 @@
 ui_print("");
 ui_print("************************************");
 ui_print("*          SkyHigh Kernel          *");
-ui_print("*   SM-N920 Exynos7420 TW device   *");
+ui_print("*       Exynos7420 TW device       *");
 ui_print("*          by UpInTheAir           *");
 ui_print("************************************");
 ui_print("");
