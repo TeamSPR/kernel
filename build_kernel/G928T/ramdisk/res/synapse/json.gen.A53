@@ -1,0 +1,173 @@
+#!/sbin/sh
+
+cat << CTAG
+{
+    name:"A53 CPU",
+    elements:[
+        { STitleBar:{
+                title:"A53 LITTLE Cores Frequency Scaling"
+        }},
+	{ SDescription:{
+		description:" WARNING: Not all frequencies outside defaults may be stable for your device!"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SLiveLabel:{
+                  title:"A53 LITTLE Cores live frequency",
+                  refresh:500,
+                  action:"FREQ=\$(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq); L=\"\${FREQ%???} MHz\"; echo \$L;"
+        }},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+       		title:"A53 LITTLE Cores MAX frequency",
+		description:" Set the maximum frequency the CPU scales up to.\n",
+		default:`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq`,
+		action:"generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
+		values:{
+`
+			for FREQ in $(cat /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster0_freq_table); do
+				LABEL=$(expr $FREQ / 1000)
+				echo "$FREQ:\"${LABEL} MHz\", "
+			done
+`
+		}
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+       		title:"A53 LITTLE Cores MIN frequency",
+		description:" Set the minimum frequency the CPU scales down to.\n",
+		default:`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq`,
+		action:"generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
+		values:{
+`
+			for FREQ in $(cat /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster0_freq_table); do
+				LABEL=$(expr $FREQ / 1000)
+				echo "$FREQ:\"${LABEL} MHz\", "
+			done
+`
+		}
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"HPM Voltage Control",
+        }},
+	{ SSeekBar:{
+		title:"Apollo HPM voltage margin",
+		description:" Set the maximum voltage margin the APM undervolts down to.\n",
+		default:`cat /sys/kernel/debug/mailbox/apl_cl_margin`,
+		action:"generic /sys/kernel/debug/mailbox/apl_cl_margin",
+		unit:" µV", weight:6250.0, min:0, step:1, max:10
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"A53 LITTLE Cores Voltage Control",
+		description:" Decreasing voltage will lower power consumption of the CPU. Increasing it on overclocked frequencies improves stability. Too low voltage may cause instabilities and freezes."
+        }},
+	{ SSpacer:{
+		height:1
+	}},
+`
+while read FREQ VOLT; do
+	echo '{ SSeekBar:{ default:'$VOLT', title:"'$(expr $FREQ / 1000)' MHz"'
+	echo ', action:"c0volt '${FREQ}'", unit:" mV", weight:0.001, min:500000, step:6250, max:1175000 }},'
+done < /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster0_volt_table
+`
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"A53 LITTLE Cores CPU Governor",
+		description:" The CPU governor determines how the CPU behaves in response to changes in workload."
+        }},
+	{ SSpacer:{
+		height:1
+	}},
+        { SOptionList:{
+		title:"Current governor",
+                default:`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`,
+                action:"governor /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+                values:[
+`
+                        for GOVERNOR in \`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors\` ; do
+                                echo "\"$GOVERNOR\","
+                        done
+`
+                ],
+		notify:[
+			{
+				on:APPLY,
+				do:[ REFRESH, CANCEL ],
+				to:"/sys/devices/system/cpu/cpu0/cpufreq"
+			},
+			{
+				on:REFRESH,
+				do:REFRESH,
+				to:"/sys/devices/system/cpu/cpu0/cpufreq"
+			}
+		]
+        }},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"Governor tunables",
+		description:" The various configuration items which are governor-dependent."
+        }},
+	{ SSpacer:{
+		height:1
+	}},
+	{ STreeDescriptor:{
+		path:"/sys/devices/system/cpu/cpu0/cpufreq",
+		generic: {
+			directory: {
+				STreeDescriptor:{
+					generic: {
+						directory: {},
+						element: {
+							SGeneric: { title:"@BASENAME" }
+						}
+					},
+					exclude: [
+						"above_hispeed_delay",
+						"boostpulse",
+						"cpu_util",
+						"hispeed_freq",
+						"mode",
+						"sampling_rate_min",
+						"target_loads"
+					]
+				},
+			}
+		},
+		exclude: [
+			"affected_cpus",
+			"cpuinfo_cur_freq",
+			"cpuinfo_max_freq",
+			"cpuinfo_min_freq",
+			"cpuinfo_transition_latency",
+			"related_cpus",
+			"scaling_available_governors",
+			"scaling_cur_freq",
+			"scaling_driver",
+			"scaling_governor",
+			"scaling_max_freq",
+			"scaling_min_freq",
+			"scaling_setspeed",
+                        "stats"
+		]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+    ]
+}
+CTAG
