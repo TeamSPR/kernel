@@ -180,6 +180,30 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SPane:{
+		title:"IPV6 Optimistic Detection"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SCheckBox:{
+		description:" Perform Optimistic Duplicate Address Detection. Default is Enabled.\n",
+		label:"IPV6 optimistic_dad",
+		default:`cat /proc/sys/net/ipv6/conf/all/optimistic_dad`,
+		action:"generic /proc/sys/net/ipv6/conf/all/optimistic_dad"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SCheckBox:{
+		description:" If enabled, do not classify optimistic addresses as depreciated during source selection. Preferred addresses will still be chosen before optimistic addresses, subject to other ranking in the source selection algorithm. Default is Enabled.\n",
+		label:"IPV6 use_optimistic",
+		default:`cat /proc/sys/net/ipv6/conf/all/use_optimistic`,
+		action:"generic /proc/sys/net/ipv6/conf/all/use_optimistic"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
     ]
 }
 CTAG
