@@ -18,6 +18,7 @@ cat << CTAG
 		`. /res/synapse/json.gen.audio`,
 		`. /res/synapse/json.gen.battery`,
 		`. /res/synapse/json.gen.led`,
+		`. /res/synapse/json.gen.screen`,
 		`. /res/synapse/json.gen.network`,
 		`. /res/synapse/json.gen.security`,
 		`. /res/synapse/json.gen.fs`,
