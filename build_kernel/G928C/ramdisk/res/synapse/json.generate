@@ -22,6 +22,7 @@ cat << CTAG
 		`. /res/synapse/json.gen.network`,
 		`. /res/synapse/json.gen.security`,
 		`. /res/synapse/json.gen.fs`,
+		`. /res/synapse/json.gen.storage`,
 		`. /res/synapse/json.gen.backup-restore`,
 		`. /res/synapse/json.gen.logs`,
 		`. /res/synapse/json.gen.reboot`,
