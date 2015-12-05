@@ -51,6 +51,7 @@ else
         echo ""
         echo "You need to define your device target!"
         echo "example: build_kernel.sh G928C"
+        echo "example: build_kernel.sh G928T"
         echo "example: build_kernel.sh N920C"
         echo "example: build_kernel.sh N920CD"
         echo "example: build_kernel.sh N920I"

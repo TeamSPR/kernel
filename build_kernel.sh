@@ -45,6 +45,7 @@ echo "${bldcya}***** Clean up first *****${txtrst}"
 
 find . -type f -name "*~" -exec rm -f {} \;
 find . -type f -name "*orig" -exec rm -f {} \;
+find . -type f -name "*rej" -exec rm -f {} \;
 
 # cleanup previous Image files
 if [ -e $KERNELDIR/dt.img ]; then
