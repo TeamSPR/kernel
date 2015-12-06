@@ -25,7 +25,7 @@ cat << CTAG
 	{ SLiveLabel:{
                   title:"A57 big Cores live frequency",
                   refresh:500,
-                  action:"FREQ=\$(cat /sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_cur_freq); L=\"\${FREQ%???} MHz\"; echo \$L;"
+                  action:"live LiveCPUFrequency_big"
         }},
 	{ SSpacer:{
 		height:1
