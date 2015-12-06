@@ -285,8 +285,8 @@ cat << CTAG
 		height:1
 	}},
     	{ SSeekBar:{
-		title:"vfs_cache_pressure",
-		description:" Value used to control the tendency of the kernel to reclaim the memory which is used for caching of directory and inode objects. Low values save battery while idle, but may cause stutter with longer up times. Default: screen is 100.\n",
+		title:"Adaptive vfs_cache_pressure on Suspend / Resume",
+		description:" Value used to control the tendency of the kernel to reclaim the memory which is used for caching of directory and inode objects. Low values save battery while idle, but may cause stutter with longer up times. Default: screen is ON is 100 & screen OFF is fixed at 20.\n",
 		unit:" %",
 		step:1,
 		min:0,
