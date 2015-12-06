@@ -117,4 +117,7 @@ usb_status)
                 echo UNSUPPORTED MODE@nPlease enable USB-Debugging and re-connect cable
 	fi
   ;;
+dns)
+  echo `getprop net.rmnet0.dns1`@n`getprop net.rmnet0.dns2`
+  ;;
 esac

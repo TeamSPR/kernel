@@ -184,6 +184,10 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SLiveLabel:{
+		refresh:3000,
+		action:"live dns"
+	}},
 	{ SOptionList:{
 		default:`echo $(/res/synapse/actions/network dns)`,
 		action:"network dns",
