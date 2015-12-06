@@ -105,6 +105,18 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SSeekBar:{
+		title:"NR Requests",
+		description:" Maximum number of read (or write) requests that can be queued to the scheduler in the block layer.",
+		step:128,
+		min:128,
+		max:2048,
+		default:`cat /sys/block/sda/queue/nr_requests`,
+		action:"generic /sys/block/sda/queue/nr_requests",
+	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SPane:{
 		title:"I/O Scheduler Tunables"
 	}},
