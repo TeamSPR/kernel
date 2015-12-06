@@ -8,7 +8,7 @@ cat << CTAG
 		title:"CPU temperature",
 		description:" Temperature sensor data as read from the A57 cores. The A53 cores do not have dedicated sensors.",
 		refresh:500,
-		action:"echo \$(echo \$(cat /sys/devices/10060000.tmu/curr_temp | tr , \"\\n\") | { read C0 C1 C2 C3; echo \"Core 0: \${C0}°C@nCore 1: \${C1}°C@nCore 2: \${C2}°C@nCore 3: \${C3}°C\"; })"
+		action:"echo \$(echo \$(cat /sys/devices/10060000.tmu/curr_temp | tr , \"\\n\") | { read C4 C5 C6 C7; echo \"Core 4: \${C4}°C@nCore 5: \${C5}°C@nCore 6: \${C6}°C@nCore 7: \${C7}°C\"; })"
         }},
 	{ SSpacer:{
 		height:1
