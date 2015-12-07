@@ -185,8 +185,12 @@ cat << CTAG
 		height:1
 	}},
 	{ SLiveLabel:{
+		title:"Current DNS",
 		refresh:3000,
 		action:"live dns"
+	}},
+	{ SSpacer:{
+		height:1
 	}},
 	{ SOptionList:{
 		default:`echo $(/res/synapse/actions/network dns)`,
