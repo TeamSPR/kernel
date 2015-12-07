@@ -9,12 +9,16 @@ chmod 771 data
 chmod 755 dev
 chmod 755 lib/modules/*
 chmod 755 proc
-chmod 750 sbin
-chmod 750 sbin/*
-chmod 777 sbin/*.sh
+chmod 755 res
+chmod 755 res/*
+chmod 755 sbin
+chmod 755 sbin/*
 cd sbin
 chmod 755 su
-chmod 777 su/*
+chmod 664 su/*
+chmod 644 *.sh
+chmod 644 uci
 cd ../
+chmod 755 init
 chmod 755 sys
 chmod 755 system
