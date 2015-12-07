@@ -6,9 +6,12 @@ cat << CTAG
     sections: [
 		`. /res/synapse/json.gen.myabout`,
 		`. /res/synapse/json.gen.A57`,
+		`. /res/synapse/json.gen.A57_volt`,
 		`. /res/synapse/json.gen.A53`,
+		`. /res/synapse/json.gen.A53_volt`,
                 `. /res/synapse/json.gen.hmp`,
 		`. /res/synapse/json.gen.gpu`,
+		`. /res/synapse/json.gen.gpu_volt`,
 		`. /res/synapse/json.gen.tmu`,
 		`. /res/synapse/json.gen.bus`,
 		`. /res/synapse/json.gen.io`,
