@@ -107,4 +107,118 @@ dns)
     echo Smart_Viper
   fi
   ;;
+gps_zone)
+  mount -o remount,rw /system
+  $BB mount -t rootfs -o remount,rw rootfs
+
+  P=/res/synapse/SkyHigh/gps_zone
+  var_gps="/system/etc/gps.conf";
+
+# Backup original gps.conf in case of user revert.
+  if [ ! -e $var_gps.bkp ]; then
+	cp -a $var_gps $var_gps.bkp;
+  fi;
+
+  if [ ! -z $2 ]; then
+  if [ $2 == No_Action ]; then
+			echo 0 > $P
+  elif [ $2 == Original ]; then
+			echo 1 > $P
+		cp -a $var_gps.bkp $var_gps;
+  elif [ $2 == Asia ]; then
+		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.asia.pool.ntp.org"`;
+		if [ "$CHECKGPS" != "NTP_SERVER=0.asia.pool.ntp.org" ]; then
+			echo 2 > $P
+			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			echo "NTP_SERVER=asia.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=0.asia.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=1.asia.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=2.asia.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=3.asia.pool.ntp.org" >> $var_gps;
+		fi;
+  elif [ $2 == Europe ]; then
+		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.europe.pool.ntp.org"`;
+		if [ "$CHECKGPS" != "NTP_SERVER=0.europe.pool.ntp.org" ]; then
+			echo 3 > $P
+			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			echo "NTP_SERVER=europe.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=0.europe.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=1.europe.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=2.europe.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=3.europe.pool.ntp.org" >> $var_gps;
+		fi;
+  elif [ $2 == Oceania ]; then
+		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.oceania.pool.ntp.org"`;
+		if [ "$CHECKGPS" != "NTP_SERVER=0.oceania.pool.ntp.org" ]; then
+			echo 4 > $P
+			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			echo "NTP_SERVER=oceania.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=0.oceania.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=1.oceania.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=2.oceania.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=3.oceania.pool.ntp.org" >> $var_gps;
+		fi;
+  elif [ $2 == North_America ]; then
+		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.north-america.pool.ntp.org"`;
+		if [ "$CHECKGPS" != "NTP_SERVER=0.north-america.pool.ntp.org" ]; then
+			echo 5 > $P
+			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			echo "NTP_SERVER=north-america.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=0.north-america.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=1.north-america.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=2.north-america.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=3.north-america.pool.ntp.org" >> $var_gps;
+		fi;
+  elif [ $2 == South_America ]; then
+		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.south-america.pool.ntp.org"`;
+		if [ "$CHECKGPS" != "NTP_SERVER=0.south-america.pool.ntp.org" ]; then
+			echo 6 > $P
+			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			echo "NTP_SERVER=south-america.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=0.south-america.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=1.south-america.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=2.south-america.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=3.south-america.pool.ntp.org" >> $var_gps;
+		fi;
+  elif [ $2 == Africa ]; then
+		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.africa.pool.ntp.org"`;
+		if [ "$CHECKGPS" != "NTP_SERVER=0.africa.pool.ntp.org" ]; then
+			echo 7 > $P
+			$BB sed -i "s/NTP_SERVER[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			$BB sed -i "s/-america[.a-zA-Z\=-\0-5\]*//g" $var_gps;
+			echo "NTP_SERVER=africa.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=0.africa.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=1.africa.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=2.africa.pool.ntp.org" >> $var_gps;
+			echo "NTP_SERVER=3.africa.pool.ntp.org" >> $var_gps;
+		fi;
+  fi; fi
+
+# Re-direct to No_Action so Synapse will load chosen gps.conf on next boot !
+  copy=`cat $P`
+  if [ $copy == 0 ]; then
+    echo No_Action
+  elif [ $copy == 1 ]; then
+    echo No_Action
+  elif [ $copy == 2 ]; then
+    echo No_Action
+  elif [ $copy == 3 ]; then
+    echo No_Action
+  elif [ $copy == 4 ]; then
+    echo No_Action
+  elif [ $copy == 5 ]; then
+    echo No_Action
+  elif [ $copy == 6 ]; then
+    echo No_Action
+  elif [ $copy == 7 ]; then
+    echo No_Action
+  fi
+
+  $BB mount -o remount,ro /system /system
+  ;;
 esac

@@ -197,6 +197,35 @@ cat << CTAG
 		height:1
 	}},
 	{ SPane:{
+		title:"GPS Region",
+		description:" Select GPS-Time-Zone for faster GPS lock! Use your region!\n A backup is automatically generated as /system/etc/gps.conf.bak, so by selecting Original will revert to original gps.conf."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SDescription:{
+		description:" Note: No_Action will automatically be set so Synapse will load chosen gps.conf on next boot."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SLiveLabel:{
+                title:"Current region",
+		refresh:3000,
+		action:"live gps"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SOptionList:{
+		default:`echo $(/res/synapse/actions/network gps_zone)`,
+		action:"network gps_zone",
+		values:[No_Action, Original, Asia, Europe, Oceania, North_America, South_America, Africa,]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
 		title:"IPV6 Optimistic Detection"
 	}},
 	{ SSpacer:{
