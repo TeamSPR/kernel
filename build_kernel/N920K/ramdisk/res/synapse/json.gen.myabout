@@ -1,0 +1,57 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:"ABOUT",
+    elements:[
+    	{ SLiveLabel:{
+		description:"\n",
+		refresh:10000000,
+		action:"echo Hello"
+	}},
+	{ SLiveLabel:{
+		refresh:10000000,
+		style:"bold",
+		action:"echo Welcome to SkyHigh kernel !"
+	}},
+    	{ SLiveLabel:{
+		refresh:10000000,
+		action:"echo by"
+	}},
+    	{ SLiveLabel:{
+		refresh:10000000,
+		style:"bold",
+		action:"echo UpInTheAir"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"PayPal Donation",
+		action:"am start -a android.intent.action.VIEW -d http://forum.xda-developers.com/donatetome.php?u=3511708 > /dev/null;
+		echo Opening browser...;"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"SkyHigh kernel thread @ XDA-Developers",
+		action:"am start -a android.intent.action.VIEW -d http://forum.xda-developers.com/note5/orig-development/kernel-skyhigh-tw-5-1-1-kernel-t3189109 > /dev/null;
+		echo Opening browser...;"
+	}},
+	{ SSpacer:{
+		height:2
+	}},
+	{ SPane:{
+		title:"Up Time:"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SLiveLabel:{
+		refresh:1500,
+		action:"live LiveUpTime"
+	}},
+    ]
+}
+CTAG
