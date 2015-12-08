@@ -57,6 +57,7 @@ else
         echo "example: build_kernel.sh N920I"
         echo "example: build_kernel.sh N920P"
         echo "example: build_kernel.sh N920R4"
+        echo "example: build_kernel.sh N920K"
         echo "example: build_kernel.sh N920S"
         echo "example: build_kernel.sh N9200"
         echo "example: build_kernel.sh N9208_SEA"
@@ -102,6 +103,11 @@ fi;
 
 if [ "$TARGET" = "N920R4" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-N920R4_USC_defconfig";
+fi;
+
+# Use same defconfig for S/K/L but specific ramdisks
+if [ "$TARGET" = "N920K" ] ; then
+export KERNEL_CONFIG="SkyHigh_SM-N920S_defconfig";
 fi;
 
 if [ "$TARGET" = "N920S" ] ; then
