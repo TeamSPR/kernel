@@ -1,0 +1,18 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:SCREEN,
+    elements:[
+        { SCheckBox:{
+                description:" Allows you to turn the screen off by swiping the screen just above the HOME key from right > left (or) left > right. Default is Disabled.\n",
+                label:"Sweep2Sleep",
+		default:`cat /sys/sweep2sleep/sweep2sleep`,
+		action:"generic /sys/sweep2sleep/sweep2sleep"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+    ]
+}
+CTAG
