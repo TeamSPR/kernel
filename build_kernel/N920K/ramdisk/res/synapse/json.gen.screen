@@ -4,9 +4,21 @@ cat << CTAG
 {
     name:SCREEN,
     elements:[
+        { SPane:{
+                title:"Sweep-2-Sleep"
+        }},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SDescription:{
+		description:" * Ensure PowerSuspend State is DISABLED *"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
         { SCheckBox:{
                 description:" Allows you to turn the screen off by swiping the screen just above the HOME key from right > left (or) left > right. Default is Disabled.\n",
-                label:"Sweep2Sleep",
+                label:"Enable Sweep2Sleep",
 		default:`cat /sys/sweep2sleep/sweep2sleep`,
 		action:"generic /sys/sweep2sleep/sweep2sleep"
 	}},
