@@ -42,7 +42,13 @@
 
 #include <linux/sec_batt.h>
 
-
+#if defined(CONFIG_CHARGING_VZWCONCEPT)
+#define STORE_MODE_CHARGING_MAX 35
+#define STORE_MODE_CHARGING_MIN 30
+#else
+#define STORE_MODE_CHARGING_MAX 70
+#define STORE_MODE_CHARGING_MIN 60
+#endif
 
 #define ADC_CH_COUNT		10
 #define ADC_SAMPLE_COUNT	10
@@ -179,6 +185,7 @@ struct sec_battery_info {
 	struct wake_lock siop_wake_lock;
 #if defined(CONFIG_WIRELESS_FIRMWARE_UPDATE)
 	struct delayed_work update_work;
+	struct delayed_work fw_init_work;
 #endif
 
 	unsigned int full_check_cnt;

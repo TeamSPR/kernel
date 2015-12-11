@@ -154,6 +154,7 @@ extern sec_battery_platform_data_t sec_battery_pdata;
 #define SIOP_HV_WIRELESS_INPUT_LIMIT_CURRENT	500
 #define SIOP_HV_WIRELESS_CHARGING_LIMIT_CURRENT	1000
 #define SLOW_CHARGING_CURRENT_STANDARD          400
+#define STORE_MODE_INPUT_CURRENT                440
 
 enum chg_adc_value {
 	CHG_ADC_I_IN = CHG_CNFG_20_ADC_CHG_SEL_IIN,
@@ -246,6 +247,7 @@ struct max77833_charger_data {
 	bool afc_detect;
 	bool wc_afc_detect;
 	bool is_mdock;
+	bool store_mode;
 
 	bool iin_current_detecting;
 	int detected_iin_current;

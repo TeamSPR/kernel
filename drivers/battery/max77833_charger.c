@@ -56,6 +56,7 @@ static enum power_supply_property max77833_charger_props[] = {
 	POWER_SUPPLY_PROP_CHARGE_AICL_CONTROL,
 	POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
 	POWER_SUPPLY_PROP_CHARGE_COUNTER_SHADOW,
+	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
 };
 static enum power_supply_property max77833_otg_props[] = {
 	POWER_SUPPLY_PROP_ONLINE,
@@ -405,7 +406,7 @@ static void max77833_check_wpc(struct max77833_charger_data *charger)
 		}
 
 		cnt_iin ++;
-		if(cnt_iin >= 3) {
+		if(cnt_iin >= 4) {
 			cnt_iin = 0;
 			value.intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 			psy_do_property(charger->pdata->wireless_charger_name, set,
@@ -537,6 +538,12 @@ static void max77833_set_input_current(struct max77833_charger_data *charger,
 	int quotient_wpc = 0, remainder_wpc = 0;
 	int i =0;
 	static int pre_current_max = 500;
+
+	if (charger->store_mode &&
+	    (charger->cable_type == POWER_SUPPLY_TYPE_HV_UNKNOWN ||
+	     charger->cable_type == POWER_SUPPLY_TYPE_HV_MAINS ||
+	     charger->cable_type == POWER_SUPPLY_TYPE_HV_ERR))
+		input_current = STORE_MODE_INPUT_CURRENT;
 
 	mutex_lock(&charger->charger_mutex);
 
@@ -1415,6 +1422,8 @@ static int max77833_chg_get_property(struct power_supply *psy,
 		return -ENODATA;
 	case POWER_SUPPLY_PROP_CHARGE_COUNTER_SHADOW:
 		return -ENODATA;
+	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+		return -ENODATA;
 	default:
 		return -EINVAL;
 	}
@@ -1633,6 +1642,11 @@ static int max77833_chg_set_property(struct power_supply *psy,
 				pr_info("%s: OVP_ENB set to LOW. cable(%d)\n", __func__, charger->cable_type);
 			}
 		}
+		break;
+	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+		charger->store_mode = val->intval;
+		max77833_set_input_current(charger, charger->charging_current_max);
+		pr_info("%s : STORE MODE(%d)\n", __func__, charger->store_mode);
 		break;
 	default:
 		return -EINVAL;
@@ -2545,6 +2559,7 @@ static int __devinit max77833_charger_probe(struct platform_device *pdev)
 	charger->afc_detect = false;
 	charger->wc_afc_detect = false;
 	charger->is_mdock = false;
+	charger->store_mode = false;
 	charger->siop_level = 100;
 	charger->siop_event = 0;
 	charger->charging_current_max = 500;

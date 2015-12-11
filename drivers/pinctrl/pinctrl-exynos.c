@@ -1580,8 +1580,10 @@ struct samsung_pin_ctrl exynos7420_pin_ctrl[] = {
 		.svc		= EXYNOS_SVC_OFFSET,
 		.gpio_type	= EXYNOS_GPIO_TYPE_DRV_SEPARATE,
 		.eint_gpio_init = exynos_eint_gpio_init,
+#ifndef CONFIG_ESE_SECURE_ENABLE
 		.suspend	= exynos5430_pinctrl_suspend,
 		.resume		= exynos5430_pinctrl_resume,
+#endif
 		.label		= "exynos7420-gpio-ctrl6",
 	}, {
 		/* pin-controller instance 7 ESE data */

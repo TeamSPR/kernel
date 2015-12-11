@@ -104,6 +104,20 @@ static void initialize_variable(struct ssp_data *data)
 	initialize_function_pointer(data);
 }
 
+static int initialize_6axis(struct ssp_data *data)
+{
+	int new_acc_type = get_6axis_type(data);
+
+	if (new_acc_type < 0)
+		ssp_errf("get_6axis_type failed");
+	else
+		data->acc_type = new_acc_type;
+
+	ssp_infof("6axis type = %d", data->acc_type);
+
+	return SUCCESS;
+}
+
 int initialize_mcu(struct ssp_data *data)
 {
 	int iRet = 0;
@@ -127,6 +141,18 @@ int initialize_mcu(struct ssp_data *data)
 		ssp_errf("set_sensor_position failed");
 		goto out;
 	}
+
+	if (data->accel_dot >= 0) {
+		iRet = set_6axis_dot(data);
+		if (iRet < 0) {
+			ssp_errf("set_6axis_dot failed");
+			goto out;
+		}
+	}
+
+	iRet = initialize_6axis(data);
+	if (iRet < 0)
+		ssp_errf("initialize_6axis err(%d)", iRet);
 
 #ifdef CONFIG_SENSORS_MULTIPLE_GLASS_TYPE
     	iRet = set_glass_type(data);
@@ -236,11 +262,14 @@ static int ssp_parse_dt(struct device *dev,
 	if (of_property_read_u32(np, "ssp,acc-position", &data->accel_position))
 		data->accel_position = 0;
 
+	if (of_property_read_u32(np, "ssp,acc-dot", &data->accel_dot))
+		data->accel_dot = -1;
+
 	if (of_property_read_u32(np, "ssp,mag-position", &data->mag_position))
 		data->mag_position = 0;
 
-	ssp_info("acc-posi[%d] mag-posi[%d]",
-			data->accel_position, data->mag_position);
+	ssp_info("acc-posi[%d] acc-dot[%d] mag-posi[%d]",
+			data->accel_position, data->accel_dot, data->mag_position);
 
 	/* prox thresh */
 	if (of_property_read_u32(np, "ssp,prox-hi_thresh",
@@ -566,7 +595,18 @@ static struct spi_driver ssp_driver = {
 	},
 };
 
-module_spi_driver(ssp_driver);
+static int __init ssp_init(void)
+{
+	return spi_register_driver(&ssp_driver);
+}
+
+static void __exit ssp_exit(void)
+{
+	spi_unregister_driver(&ssp_driver);
+}
+
+late_initcall(ssp_init);
+module_exit(ssp_exit);
 MODULE_DESCRIPTION("Seamless Sensor Platform(SSP) dev driver");
 MODULE_AUTHOR("Samsung Electronics");
 MODULE_LICENSE("GPL");

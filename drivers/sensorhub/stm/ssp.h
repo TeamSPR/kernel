@@ -116,6 +116,8 @@
 #define MSG2SSP_AP_IRDATA_SEND			0x38
 #define MSG2SSP_AP_IRDATA_SEND_RESULT		0x39
 #define MSG2SSP_AP_PROX_GET_TRIM		0x40
+#define MSG2SSP_AP_SET_6AXIS_PIN		0x7D
+#define MSG2SSP_AP_WHOAMI_6AXIS			0x7F
 
 #define SUCCESS					1
 #define FAIL					0
@@ -238,6 +240,13 @@ enum {
 	BIG_TYPE_READ_LIB,
 	BIG_TYPE_MAX,
 };
+
+enum {
+	SIX_AXIS_MPU6500 = 0,
+	SIX_AXIS_K6DS3,
+	SIX_AXIS_BMI160,
+	SIX_AXIS_MAX,
+}; 
 
 extern struct class *sensors_event_class;
 
@@ -442,6 +451,7 @@ struct ssp_data {
 
 	struct ssp_sensorhub_data *hub_data;
 	int accel_position;
+	int accel_dot;
 	int mag_position;
 	int fw_dl_state;
 	unsigned char pdc_matrix[PDC_SIZE];

@@ -806,6 +806,39 @@ static ssize_t set_sensor_axis(struct device *dev,
 	return size;
 }
 
+static ssize_t show_sensor_dot(struct device *dev,
+	struct device_attribute *attr, char *buf)
+{
+	struct ssp_data *data = dev_get_drvdata(dev);
+	return snprintf(buf, PAGE_SIZE, "%d\n", data->accel_dot);
+}
+
+static ssize_t set_sensor_dot(struct device *dev,
+	struct device_attribute *attr, const char *buf, size_t size)
+{
+	struct ssp_data *data = dev_get_drvdata(dev);
+	int64_t new_dot = 0;
+	int old_dot = data->accel_dot;
+	int ret = 0;
+
+	if (kstrtoll(buf, 10, &new_dot) < 0)
+		return -EINVAL;
+
+	if (new_dot < 0 || new_dot > 7)
+		return -EINVAL;
+
+	data->accel_dot = (int)new_dot;
+
+	ret = set_6axis_dot(data);
+	if (ret < 0) {
+		data->accel_dot = old_dot;
+		ssp_errf("set_6axis_dot failed");
+		return -EIO;
+	}
+
+	return size;
+}
+
 static ssize_t set_send_instruction(struct device *dev,
 	struct device_attribute *attr, const char *buf, size_t size)
 {
@@ -937,6 +970,8 @@ static DEVICE_ATTR(debug_enable, S_IRUGO | S_IWUSR | S_IWGRP,
 	show_debug_enable, set_debug_enable);
 static DEVICE_ATTR(sensor_axis, S_IRUGO | S_IWUSR | S_IWGRP,
 	show_sensor_axis, set_sensor_axis);
+static DEVICE_ATTR(sensor_dot, S_IRUGO | S_IWUSR | S_IWGRP,
+	show_sensor_dot, set_sensor_dot);
 static DEVICE_ATTR(send_instruction, S_IWUSR | S_IWGRP,
 	NULL, set_send_instruction);
 static DEVICE_ATTR(int_gyro_enable, S_IRUGO | S_IWUSR | S_IWGRP,
@@ -978,6 +1013,7 @@ static struct device_attribute *mcu_attrs[] = {
 	&dev_attr_ssp_flush,
 	&dev_attr_debug_enable,
 	&dev_attr_sensor_axis,
+	&dev_attr_sensor_dot,
 	&dev_attr_send_instruction,
 	&dev_attr_int_gyro_enable,
 	NULL,

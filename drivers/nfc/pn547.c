@@ -104,6 +104,8 @@ struct pn547_dev {
 #endif
 };
 
+static struct pn547_dev *pn547_dev;
+
 static irqreturn_t pn547_dev_irq_handler(int irq, void *dev_id)
 {
 	struct pn547_dev *pn547_dev = dev_id;
@@ -456,12 +458,15 @@ static int pn547_dev_open(struct inode *inode, struct file *filp)
 	return 0;
 }
 
-static long pn547_dev_ioctl(struct file *filp,
+long pn547_dev_ioctl(struct file *filp,
 			   unsigned int cmd, unsigned long arg)
 {
-	struct pn547_dev *pn547_dev = filp->private_data;
+	/*struct pn547_dev *pn547_dev = filp->private_data;*/
 #ifdef CONFIG_NFC_PN547_ESE_SUPPORT //ese
 	p61_access_lock(pn547_dev);
+
+	pr_info("%s :enter cmd = %u, arg = %ld\n", __func__, cmd, arg);
+
 	switch (cmd) {
 	case PN547_SET_PWR:
 	{
@@ -748,6 +753,8 @@ static long pn547_dev_ioctl(struct file *filp,
 	return 0;
 }
 
+EXPORT_SYMBOL(pn547_dev_ioctl);
+
 static const struct file_operations pn547_dev_fops = {
 	.owner = THIS_MODULE,
 	.llseek = no_llseek,
@@ -866,7 +873,7 @@ static int pn547_probe(struct i2c_client *client,
 	char tmp[4] = {0x20, 0x00, 0x01, 0x01};
 	int addrcnt;
 	struct pn547_i2c_platform_data *platform_data;
-	struct pn547_dev *pn547_dev;
+	/*struct pn547_dev *pn547_dev;*/
 
 	pr_info("%s entered\n", __func__);
 	if (client->dev.of_node) {

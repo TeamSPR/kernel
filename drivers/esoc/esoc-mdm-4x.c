@@ -762,6 +762,18 @@ int mdm_get_fatal_status(void)
 
 EXPORT_SYMBOL(mdm_get_fatal_status);
 
+int mdm_get_modem_status(void)
+{
+	if(!g_mdm) {
+		pr_err("[MIF] %s, esoc driver is not initialized\n", __func__);
+		return 1;
+	}
+
+	return gpio_get_value(MDM_GPIO(g_mdm, MDM2AP_STATUS));
+}
+
+EXPORT_SYMBOL(mdm_get_modem_status);
+
 static void mdm_set_hsic_ready(struct esoc_clink *esoc)
 {
 	struct mdm_ctrl *mdm = get_esoc_clink_data(esoc);

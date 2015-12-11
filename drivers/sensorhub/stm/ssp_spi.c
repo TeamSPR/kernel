@@ -441,6 +441,37 @@ int send_instruction_sync(struct ssp_data *data, u8 uInst,
 	return buffer[0];
 }
 
+static int ssp_readwrite_data(struct ssp_data *data, char command,
+			unsigned short option, char *buffer, int len,
+			int timeout, unsigned char free_buffer)
+{
+	int ret = 0;
+	struct ssp_msg *msg = kzalloc(sizeof(*msg), GFP_KERNEL);
+
+	if (msg == NULL) {
+		ssp_errf("failed to alloc memory for ssp_msg");
+		return -ENOMEM;
+	}
+
+	msg->cmd = command;
+	msg->length = len;
+	msg->options = option;
+	msg->buffer = buffer;
+	msg->free_buffer = free_buffer;
+
+	if (timeout > 0)
+		ret = ssp_spi_sync(data, msg, timeout);
+	else
+		ret = ssp_spi_async(data, msg);
+
+	if (ret != SUCCESS) {
+		ssp_errf("ssp_readwrite_data 0x%x failed %d", command, ret);
+		return ERROR;
+	}
+
+	return SUCCESS;
+}
+
 int flush(struct ssp_data *data, u8 uSensorType)
 {
 	int iRet = 0;
@@ -565,6 +596,43 @@ int set_sensor_position(struct ssp_data *data)
 	}
 
 	return iRet;
+}
+
+int get_6axis_type(struct ssp_data *data)
+{
+	char acc_type = -1;
+	int ret = ssp_readwrite_data(data, MSG2SSP_AP_WHOAMI_6AXIS,
+			AP2HUB_READ, &acc_type, sizeof(acc_type),
+			0, 0);
+
+	if (ret != SUCCESS) {
+		ssp_errf("fail to get_6axis_type %d", ret);
+		return ERROR;
+	}
+
+	ssp_infof("6axis type from mcu: %d", acc_type);
+
+	if (acc_type < SIX_AXIS_MPU6500 || acc_type >= SIX_AXIS_MAX)
+		ssp_errf("wrong 6axis type from mcu");
+
+	return (int)acc_type;
+}
+
+int set_6axis_dot(struct ssp_data *data)
+{
+	char accel_dot = data->accel_dot;
+	int ret = ssp_readwrite_data(data, MSG2SSP_AP_SET_6AXIS_PIN,
+			AP2HUB_WRITE, &accel_dot, sizeof(accel_dot),
+			0, 0);
+
+	ssp_info("6axis sensor dot: %u", data->accel_dot);
+
+	if (ret != SUCCESS) {
+		ssp_errf("fail to set_6axis_dot %d", ret);
+		ret = ERROR;
+	}
+
+	return ret;
 }
 
 void set_proximity_threshold(struct ssp_data *data,

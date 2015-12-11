@@ -2203,13 +2203,6 @@ static void set_status_pureautotune(void *device_data)
 		return;
 	}
 
-	fts_command(info, SENSEOFF);
-	fts_delay(50);
-
-	disable_irq(info->irq);
-	fts_interrupt_set(info, INT_DISABLE);
-	fts_delay(50);
-
 	if (info->cmd_param[0] == 0)
 		regAdd[0] = 0xC2;
 	else
@@ -2227,16 +2220,13 @@ static void set_status_pureautotune(void *device_data)
 
 	info->fts_command(info, FTS_CMD_SAVE_CX_TUNING);
 	msleep(230);
-	fts_fw_wait_for_event(info, STATUS_EVENT_FLASH_WRITE_CXTUNE_VALUE);
+    fts_fw_wait_for_event(info, STATUS_EVENT_FLASH_WRITE_CXTUNE_VALUE);
 
 	info->fts_systemreset(info);
 	fts_wait_for_ready(info);
 	info->fts_command(info, SLEEPOUT);
 	msleep(50);
 	info->fts_command(info, SENSEON);
-
-	enable_irq(info->irq);
-	fts_interrupt_set(info, INT_ENABLE);
 
 	if (!rc)
 		snprintf(buff, sizeof(buff), "%s", "FAIL");

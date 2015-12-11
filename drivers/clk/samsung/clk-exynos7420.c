@@ -2396,7 +2396,7 @@ static struct samsung_gate exynos7420_gate_clks[] __initdata = {
 	GATE(pclk_spi2, "pclk_spi2", "usermux_aclk_peric1_66", \
 			EXYNOS7420_ENABLE_PCLK_PERIC1, 14, 0, NULL),
 	GATE(pclk_spi3, "pclk_spi3", "usermux_aclk_peric1_66", \
-			EXYNOS7420_ENABLE_PCLK_PERIC1, 15, 0, NULL),
+			EXYNOS7420_ENABLE_PCLK_PERIC1, 15, 0, "spi3-pclk"),
 	GATE(pclk_spi4, "pclk_spi4", "usermux_aclk_peric1_66", \
 			EXYNOS7420_ENABLE_PCLK_PERIC1, 16, 0, "fp-spi-pclk"),
 	GATE(pclk_spi5, "pclk_spi5", "usermux_aclk_peric1_66", \
@@ -2418,7 +2418,7 @@ static struct samsung_gate exynos7420_gate_clks[] __initdata = {
 	GATE(sclk_spi2, "sclk_spi2", "usermux_sclk_spi2", \
 			EXYNOS7420_ENABLE_SCLK_PERIC10, 14, CLK_SET_RATE_PARENT, NULL),
 	GATE(sclk_spi3, "sclk_spi3", "usermux_sclk_spi3", \
-			EXYNOS7420_ENABLE_SCLK_PERIC10, 15, CLK_SET_RATE_PARENT, NULL),
+			EXYNOS7420_ENABLE_SCLK_PERIC10, 15, CLK_SET_RATE_PARENT, "spi3-sclk"),
 	GATE(sclk_spi4, "sclk_spi4", "usermux_sclk_spi4", \
 			EXYNOS7420_ENABLE_SCLK_PERIC10, 16, CLK_SET_RATE_PARENT, "fp-spi-sclk"),
 	GATE(sclk_spi5, "sclk_spi5", "usermux_sclk_spi5", \
