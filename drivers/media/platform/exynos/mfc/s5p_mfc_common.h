@@ -37,7 +37,7 @@
 #include <linux/pm_qos.h>
 #endif
 
-#define MFC_DRIVER_INFO		150902
+#define MFC_DRIVER_INFO		150720
 
 #define MFC_MAX_BUFFERS		32
 #define MFC_MAX_REF_BUFS	2
@@ -182,6 +182,15 @@ enum mfc_buf_usage_type {
 	MFCBUF_INVALID = 0,
 	MFCBUF_NORMAL,
 	MFCBUF_DRM,
+};
+
+enum mfc_buf_process_type {
+	MFCBUFPROC_DEFAULT 		= 0x0,
+	MFCBUFPROC_COPY 		= (1 << 0),
+	MFCBUFPROC_SHARE 		= (1 << 1),
+	MFCBUFPROC_META 		= (1 << 2),
+	MFCBUFPROC_ANBSHARE		= (1 << 3),
+	MFCBUFPROC_ANBSHARE_NV12L	= (1 << 4),
 };
 
 struct s5p_mfc_ctx;
@@ -806,8 +815,6 @@ struct s5p_mfc_dec {
 	struct mfc_user_shared_handle sh_handle;
 
 	int dynamic_ref_filled;
-
-	unsigned int err_sync_flag;
 };
 
 struct s5p_mfc_enc {
@@ -951,7 +958,7 @@ struct s5p_mfc_ctx {
 	int qp_max_change;
 
 	int is_max_fps;
-	int use_extra_qos;
+	int buf_process_type;
 
 	struct mfc_timestamp ts_array[MFC_TIME_INDEX];
 	struct list_head ts_list;
