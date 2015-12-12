@@ -225,8 +225,8 @@ cat << CTAG
 		height:1
 	}},
 	{ SSeekBar:{
-		title:"dirty_background_ratio",
-		description:" Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations, buffer is released on need to free RAM. The set value is a percentage of total system memory, the number of pages at which the pdflush background writeback daemon will start writing out dirty data. Default is 20.\n",
+		title:"Adaptive dirty_background_ratio on Suspend / Resume",
+		description:" Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations, buffer is released on need to free RAM. The set value is a percentage of total system memory, the number of pages at which the pdflush background writeback daemon will start writing out dirty data.\nDefault: screen ON is 20 & screen OFF is fixed at 60.\n",
 		min:0,
 		max:100, 
 		unit:" %", 
@@ -238,8 +238,8 @@ cat << CTAG
 		height:1
 	}},
 	{ SSeekBar:{
-		title:"dirty_ratio",
-		description:" Dirty real time memory buffer, more you set, more memory will be used for write buffer for real time operations, buffer is released on need to free RAM. The set value is a percentage of total system memory, the number of pages at which a process which is generating disk writes will itself start writing out dirty data. Default is 40.\n",
+		title:"Adaptive dirty_ratio on Suspend / Resume",
+		description:" Dirty real time memory buffer, more you set, more memory will be used for write buffer for real time operations, buffer is released on need to free RAM. The set value is a percentage of total system memory, the number of pages at which a process which is generating disk writes will itself start writing out dirty data.\nDefault: screen ON is 40 & screen OFF is fixed at 95.\n",
 		min:0,
 		max:100,
 		unit:" %",
