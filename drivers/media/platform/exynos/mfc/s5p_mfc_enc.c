@@ -914,8 +914,8 @@ static struct v4l2_queryctrl controls[] = {
 		.id = V4L2_CID_MPEG_VIDEO_QOS_RATIO,
 		.type = V4L2_CTRL_TYPE_INTEGER,
 		.name = "QoS ratio value",
-		.minimum = 20,
-		.maximum = 200,
+		.minimum = 0,
+		.maximum = 1000,
 		.step = 10,
 		.default_value = 100,
 	},
@@ -3569,9 +3569,10 @@ static int vidioc_qbuf(struct file *file, void *priv, struct v4l2_buffer *buf)
 calc_again:
 #endif
 			if (ctx->last_framerate != 0 &&
-				ctx->last_framerate != ctx->framerate) {
-				mfc_debug(2, "fps changed: %d -> %d\n",
-					ctx->framerate, ctx->last_framerate);
+				((ctx->last_framerate != ctx->framerate) || ctx->use_extra_qos)) {
+				mfc_debug(2, "fps changed: %d -> %d (%s)\n",
+					ctx->framerate, ctx->last_framerate,
+					ctx->use_extra_qos ? "extra" : "normal");
 				ctx->framerate = ctx->last_framerate;
 				s5p_mfc_qos_on(ctx);
 			}
@@ -4430,6 +4431,16 @@ static int set_ctrl_val(struct s5p_mfc_ctx *ctx, struct v4l2_control *ctrl)
 			ctx->cacheable = 0;
 		break;
 	case V4L2_CID_MPEG_VIDEO_QOS_RATIO:
+		if (ctrl->value > 150)
+			ctrl->value = 1000;
+		if (ctrl->value == 0) {
+			ctrl->value = 100;
+			ctx->use_extra_qos = 1;
+			mfc_info_ctx("QOS_RATIO is 0, use extra_qos!\n");
+		} else {
+			ctx->use_extra_qos = 0;
+		}
+		mfc_info_ctx("set %d qos_ratio.\n", ctrl->value);
 		ctx->qos_ratio = ctrl->value;
 		break;
 	case V4L2_CID_MPEG_VIDEO_H264_MAX_QP:

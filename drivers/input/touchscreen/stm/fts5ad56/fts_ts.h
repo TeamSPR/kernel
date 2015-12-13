@@ -402,6 +402,7 @@ struct fts_ts_info {
 	unsigned char lowpower_flag;
 	bool lowpower_mode;
 	bool deepsleep_mode;
+	bool wirelesscharger_mode;
 	int fts_power_state;
 	int wakeful_edge_side;
 #ifdef FTS_SUPPORT_STRINGLIB

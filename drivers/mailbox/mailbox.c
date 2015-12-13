@@ -475,15 +475,12 @@ int mbox_controller_register(struct mbox_controller *mbox)
 		}
 
 	con = kzalloc(sizeof(struct mbox_con), GFP_KERNEL);
-	if (!con) {
-		mutex_unlock(&con_mutex);
+	if (!con)
 		return -ENOMEM;
-	}
 
 	chan = kzalloc(sizeof(struct mbox_chan) * num_links, GFP_KERNEL);
 	if (!chan) {
 		kfree(con);
-		mutex_unlock(&con_mutex);
 		return -ENOMEM;
 	}
 

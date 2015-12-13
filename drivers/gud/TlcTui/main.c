@@ -81,8 +81,11 @@ static long tui_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 		pr_info("TUI_IO_WAITCMD\n");
 
 		ret = tlc_wait_cmd(&cmd_id);
-		if (ret)
+		if (ret) {
+			pr_debug("ERROR %s:%d tlc_wait_cmd returned (0x%08X)\n",
+				__func__, __LINE__, ret);
 			return ret;
+		}
 
 		/* Write command id to user */
 		pr_debug("IOCTL: sending command %d to user.\n", cmd_id);
@@ -91,11 +94,6 @@ static long tui_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 			ret = -EFAULT;
 		else
 			ret = 0;
-
-		/* Reset the value of the command, to ensure that commands sent
-		 * due to interrupted wait_for_completion are TLC_TUI_CMD_NONE.
-		*/
-		reset_global_command_id();
 
 		break;
 	}

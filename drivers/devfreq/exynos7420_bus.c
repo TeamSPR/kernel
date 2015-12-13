@@ -4953,6 +4953,8 @@ static int exynos7_devfreq_mif_set_freq(struct devfreq_data_mif *data,
 	} else {
 		if ((data->pll_safe_idx <= old_idx) && (target_idx < data->pll_safe_idx))
 			voltage = devfreq_mif_opp_list[target_idx].volt;
+		else if ((old_idx <= MIF_LV3) && (target_idx <= MIF_LV3))
+			voltage = devfreq_mif_opp_list[target_idx].volt;
 		else if ((old_idx < data->pll_safe_idx) && (data->pll_safe_idx <= target_idx))
 			voltage = devfreq_mif_opp_list[pll_safe_idx].volt + CMOS_SE_OFFSET;
 		else
@@ -5178,7 +5180,7 @@ static void exynos7_devfreq_thermal_event(struct devfreq_thermal_work *work)
 static int mif_thermal_polling_period[][4] = {
 	/* Freq		2		3		4	*/
 	{400000,	5000,	1000,	100},
-	{1000000,	100,	100,	100},
+	{1000000,	500,	100,	100},
 	{2100000,	100,	100,	100},
 };
 
