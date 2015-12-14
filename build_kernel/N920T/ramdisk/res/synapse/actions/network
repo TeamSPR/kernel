@@ -2,9 +2,10 @@
 
 BB=/sbin/busybox;
 
+$BB mount -t rootfs -o remount,rw rootfs;
+
 case $1 in
 tcp_security)
-  $BB mount -t rootfs -o remount,rw rootfs;
   P=/res/synapse/SkyHigh/tcp_security
   if [ ! -z $2 ]; then
   if [ $2 == Disabled ]; then
@@ -58,7 +59,6 @@ tcp_security)
   fi
   ;;
 dns)
-  $BB mount -t rootfs -o remount,rw rootfs;
   P=/res/synapse/SkyHigh/dns
   if [ ! -z $2 ]; then
   if [ $2 == Disabled ]; then
@@ -108,8 +108,8 @@ dns)
   fi
   ;;
 gps_zone)
-  mount -o remount,rw /system
-  $BB mount -t rootfs -o remount,rw rootfs
+
+  $BB mount -o remount,rw /system;
 
   P=/res/synapse/SkyHigh/gps_zone
   var_gps="/system/etc/gps.conf";
@@ -219,6 +219,8 @@ gps_zone)
     echo No_Action
   fi
 
-  $BB mount -o remount,ro /system /system
+$BB mount -o remount,ro /system;
   ;;
 esac
+
+$BB mount -t rootfs -o remount,ro rootfs;

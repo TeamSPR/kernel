@@ -2,9 +2,10 @@
 
 BB=/sbin/busybox;
 
+$BB mount -t rootfs -o remount,rw rootfs;
+
 case $1 in
 mirror_fix)
-  $BB mount -t rootfs -o remount,rw rootfs;
   P=/res/synapse/SkyHigh/scr_mirror_fix
   if [ ! -z $2 ]; then
   if [ $2 == Disabled ]; then
@@ -22,3 +23,5 @@ mirror_fix)
   fi
   ;;
 esac
+
+$BB mount -t rootfs -o remount,ro rootfs;

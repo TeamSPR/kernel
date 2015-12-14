@@ -1,5 +1,7 @@
 BB=/sbin/busybox;
 
+$BB mount -t rootfs -o remount,rw rootfs;
+
 PATH=/proc/sys/vm/drop_caches;
 
 if [ -f $1 ]; then
@@ -19,3 +21,5 @@ if [ -f $1 ]; then
 else
 	$BB echo "0";
 fi;
+
+$BB mount -t rootfs -o remount,ro rootfs;

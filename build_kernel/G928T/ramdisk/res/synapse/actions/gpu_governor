@@ -1,3 +1,7 @@
+BB=/sbin/busybox;
+
+$BB mount -t rootfs -o remount,rw rootfs;
+
 case $1 in
 gpu_gov)
   P=/res/synapse/SkyHigh/gpu_gov
@@ -27,3 +31,5 @@ gpu_gov)
   fi
   ;;
 esac
+
+$BB mount -t rootfs -o remount,ro rootfs;

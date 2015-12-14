@@ -1,0 +1,11 @@
+BB=/sbin/busybox;
+
+$BB mount -t rootfs -o remount,rw rootfs;
+
+if [[ ! -z $2 ]]; then
+	echo $2 > $1
+fi
+
+echo `cat $1`
+
+$BB mount -t rootfs -o remount,ro rootfs;

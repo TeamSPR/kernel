@@ -1,6 +1,10 @@
 # Modified from original apb_axel & neobuddy89 implementations by UpInTheAir@XDA for SkyHigh kernels
 
 BB=/sbin/busybox;
+
+$BB mount -t rootfs -o remount,rw rootfs;
+$BB mount -o remount,rw /system;
+
 if [ -f "/system/xbin/sqlite3" ]; then SQL3=/system/xbin/sqlite3; else SQL3=/sbin/sqlite3; fi;
 
 SYNAPSE_SD_DIR=/sdcard/SkyHigh/Synapse;
@@ -45,3 +49,6 @@ EOF
 		fi;
 	;;
 esac;
+
+$BB mount -t rootfs -o remount,ro rootfs;
+$BB mount -o remount,ro /system;

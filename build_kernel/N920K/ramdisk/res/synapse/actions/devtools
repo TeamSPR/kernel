@@ -3,6 +3,9 @@ BB=/sbin/busybox;
 # SQLite log location
 LOGS=/sdcard/SkyHigh/Logs/SQLite.txt;
 
+$BB mount -t rootfs -o remount,rw rootfs;
+$BB mount -o remount,rw /system;
+
 case $1 in
   reboot)
 	echo "0" > /sys/kernel/dyn_fsync/Dyn_fsync_active;
@@ -132,7 +135,6 @@ case $1 in
 	echo "Clean up done";
   ;;
 scr_cache)
-  $BB mount -t rootfs -o remount,rw rootfs;
   P=/res/synapse/SkyHigh/scr_cache
   if [ ! -z $2 ]; then
   if [ $2 == 0 ]; then
@@ -160,7 +162,6 @@ scr_cache)
   fi
   ;;
 spcm_service)
-  $BB mount -t rootfs -o remount,rw rootfs;
   P=/res/synapse/SkyHigh/spcm_service
   if [ ! -z $2 ]; then
   if [ $2 == Enabled ]; then
@@ -178,3 +179,6 @@ spcm_service)
   fi
   ;;
 esac;
+
+$BB mount -t rootfs -o remount,ro rootfs;
+$BB mount -o remount,ro /system;

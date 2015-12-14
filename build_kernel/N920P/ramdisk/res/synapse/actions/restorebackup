@@ -23,6 +23,8 @@ reset_uci() {
   /res/synapse/uci;
 }
 
+$BB mount -t rootfs -o remount,rw rootfs;
+
 case "$1" in
 	listboot)
 		$BB echo `$BB ls "$SYNAPSE_BOOT_DIR"`;
@@ -103,3 +105,5 @@ case "$1" in
 		am start -a android.intent.action.MAIN -n com.af.synapse/.MainActivity 2> /dev/null;
 	;;
 esac;
+
+$BB mount -t rootfs -o remount,ro rootfs;

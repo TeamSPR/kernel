@@ -1,5 +1,7 @@
 BB=/sbin/busybox;
 
+$BB mount -t rootfs -o remount,rw rootfs;
+
 P=/sys/module/lowmemorykiller/parameters/minfree;
 
 PERM=`$BB stat -c %a $P`;
@@ -89,3 +91,5 @@ else
 
 	$BB echo $(read $1);
 fi;
+
+$BB mount -t rootfs -o remount,ro rootfs;
