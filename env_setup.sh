@@ -54,8 +54,6 @@ else
         echo "example: build_kernel.sh G928T"
         echo "example: build_kernel.sh G9287C"
         echo "example: build_kernel.sh N920C"
-        echo "example: build_kernel.sh N920CD"
-        echo "example: build_kernel.sh N920I"
         echo "example: build_kernel.sh N920P"
         echo "example: build_kernel.sh N920R4"
         echo "example: build_kernel.sh N920K"
@@ -78,59 +76,62 @@ export KCONFIG_NOTIMESTAMP=true
 export ARCH=arm64;
 export SUB_ARCH=arm64;
 
+# SM-G928 C/F/G/I
 if [ "$TARGET" = "G928C" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-G928C_MEA_defconfig";
 fi;
 
+# SM-G928 T/W8 (T-Mobile)
 if [ "$TARGET" = "G928T" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-G928T_defconfig";
 fi;
 
+# SM-G9278C (dual SIM) use same defconfig as SM-G928 C/F/G/I but specific ramdisks
 if [ "$TARGET" = "G9287C" ] ; then
-export KERNEL_CONFIG="SkyHigh_SM-G9287C_defconfig";
+export KERNEL_CONFIG="SkyHigh_SM-G928C_MEA_defconfig";
 fi;
 
+# SM-N920 C/CD/G/I
 if [ "$TARGET" = "N920C" ] ; then
 export KERNEL_CONFIG="SkyHigh_defconfig";
 fi;
 
-if [ "$TARGET" = "N920CD" ] ; then
-export KERNEL_CONFIG="SkyHigh_SM-N920CD_MEA_defconfig";
-fi;
-
-if [ "$TARGET" = "N920I" ] ; then
-export KERNEL_CONFIG="SkyHigh_SM-N920I_defconfig";
-fi;
-
+# SM-N920 P (Sprint)
 if [ "$TARGET" = "N920P" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-N920P_Sprint_defconfig";
 fi;
 
+# SM-N920 R4 (US.Cellular) ## not supported by SkyHigh
 if [ "$TARGET" = "N920R4" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-N920R4_USC_defconfig";
 fi;
 
-# Use same defconfig for S/K/L but specific ramdisks
+# SM-N920 K (Korea KKT) use same defconfig for SM-N920 S/K/L but specific ramdisks
 if [ "$TARGET" = "N920K" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-N920S_defconfig";
 fi;
 
+# SM-N920 S (Korea SKT) use same defconfig for SM-N920 S/K/L but specific ramdisks
 if [ "$TARGET" = "N920S" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-N920S_defconfig";
 fi;
 
+# SM-N9200 (Hong Kong - dual SIM)
 if [ "$TARGET" = "N9200" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-N9200_HK_defconfig";
 fi;
 
+# SM-N9208 (SEA - dual SIM)
 if [ "$TARGET" = "N9208_SEA" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-N9208_SEA_defconfig";
 fi;
 
+# SM-N9208 (Taiwan - dual SIM) ## not supported by SkyHigh
 if [ "$TARGET" = "N9208_TW" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-N9208_TW_defconfig";
 fi;
 
+# SM-N920 T/W8 (T-Mobile)
 if [ "$TARGET" = "N920T" ] ; then
 export KERNEL_CONFIG="SkyHigh_tmo_defconfig";
 fi;
