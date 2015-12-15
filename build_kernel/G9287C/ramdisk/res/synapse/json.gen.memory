@@ -224,6 +224,33 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SOptionList:{
+		title:"Virtual NAND Swap",
+		description:" VNSwap attempts to increase performance by avoiding paging on physical storage, instead using a compressed virtual device in RAM. Paging takes place in RAM until it is necessary to use the swap space on physical storage. Depending on the amount of swap currently in use, this process can take ~1 minute with Synapse being UNRESPONSIVE during this time. PLEASE WAIT for the process to finish.\n\n Disabling or Enabling will auto set swappiness to 0 or 130 respectively. Default is Enabled.\n",
+		default:Enabled,
+		action:"swaps vnswap0",
+		values:[Disabled, Enabled,],
+		notify:[
+			{
+				on:APPLY,
+				do:[ REFRESH, APPLY ],
+				to:"generic /proc/sys/vm/swappiness"
+			}
+		]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+		title:"ZSwap memory pool",
+		description:" ZSwap memory pool percentage of main memory that may be used as compressed page cache. Default is 20.\n",
+		min:0, max:50, unit:" %", step:1,
+		default:`cat /sys/module/zswap/parameters/max_pool_percent`,
+		action:"generic /sys/module/zswap/parameters/max_pool_percent"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SSeekBar:{
 		title:"Adaptive dirty_background_ratio on Suspend / Resume",
 		description:" Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations, buffer is released on need to free RAM. The set value is a percentage of total system memory, the number of pages at which the pdflush background writeback daemon will start writing out dirty data.\nDefault: screen ON is 20 & screen OFF is fixed at 60.\n",
