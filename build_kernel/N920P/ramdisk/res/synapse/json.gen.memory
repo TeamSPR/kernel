@@ -253,7 +253,7 @@ cat << CTAG
 	{ SOptionList:{
 		title:"Drop Caches (Clear VFS Cache After Boot)",
 		description:" This option will force rebuild of file system cache based on actual app usage rather than boot/startup processes. NOTE: This process can take from 1-2 minutes (Enable for better file system read/write performance).",
-		default:1,
+		default:0,
 		action:"dropcaches /res/synapse/SkyHigh/dropcaches_prof",
 		values:{ 0:"Disabled", 1:"Enabled"
 		}
