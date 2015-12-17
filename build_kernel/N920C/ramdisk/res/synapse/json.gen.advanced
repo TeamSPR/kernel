@@ -83,6 +83,26 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SPane:{
+		title:"Freeze Timeout"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+		title:"pm_freeze_timeout",
+		description:" Controls how long it will cost at most to freeze all user space processes or all freezable kernel threads. Default is 2.\n",
+		unit:" sec",
+		max:2000,
+		min:1000,
+		step:100,
+		weight:0.001,
+		default:`cat /sys/power/pm_freeze_timeout`,
+		action:"generic /sys/power/pm_freeze_timeout"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
     ]
 }
 CTAG
