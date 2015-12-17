@@ -46,6 +46,17 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SOptionList:{
+		title:"On/Off GPU Thermal Manager",
+		description:" Your own risk to disable...\n",
+		default:`cat /sys/devices/14ac0000.mali/tmu`,
+		action:"generic /sys/devices/14ac0000.mali/tmu",
+		values:{ 0:"Disabled", 1:"Enabled"
+		}
+	}},
+	{ SSpacer:{
+		height:1
+	}},
         { SSeekBar:{
                 title:"GPU LEVEL 1 temperature",
                 description:" Exynos TMU control decrease GPU freq from max DVFS step to last DVFS step.\n",
