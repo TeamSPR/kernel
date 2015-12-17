@@ -4,6 +4,14 @@ cat << CTAG
 {
     name:THERMAL,
     elements:[
+	{ SLiveLabel:{
+		title:"Temperature Sensors",
+		refresh:500,
+		action:"echo \$(echo \$(cat /sys/devices/10060000.tmu/curr_temp | tr , \"\\n\") | { read S0 S1 S2 S3; echo \"A57: \${S0}°C@nA53: \${S1}°C@nGPU: \${S2}°C@nISP: \${S3}°C\"; })"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SPane:{ 
 		title:"CPU Thermal Control",
 		description:" In this section can control CPU temperature throttle mechanism at your OWN RISK!"
