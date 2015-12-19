@@ -41,6 +41,12 @@ done
 
 
 #
+# Set UKSM CPU governor to low
+#
+echo "low" > /sys/kernel/mm/uksm/cpu_governor
+
+
+#
 # Fast e/Random Generator (frandom) support on boot
 #
 chmod 444 /dev/erandom
