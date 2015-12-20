@@ -70,6 +70,36 @@ cat << CTAG
 		height:1
 	}},
 	{ SPane:{
+		title:"Adaptive LMK",
+		description:" Make LMK more aggressive dynamically when a page cache thrashing scenario is detected to trigger the LMK to free up some memory faster."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SCheckBox:{
+		description:" Default is Enabled.",
+		label:"Enable Adaptive LMK",
+		default:`cat /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk`,
+		action:"generic /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+		title:"vmpressure_file_min",
+		description:" This parameter controls the behaviour of LMK when vmpressure is in the range of 90-94. Adaptive LMK triggers based on number of file pages wrt vmpressure_file_min, when vmpressure is in the range of 90-94. Usually this is a pseudo minfree value, higher than the highest configured value in minfree array. All values are multiplied by 256 pages.\n",
+		min:0,
+		max:76800,
+		unit:" MB",
+		step:256,
+		weight:0.00390625,
+		default:`cat /sys/module/lowmemorykiller/parameters/vmpressure_file_min`,
+		action:"generic /sys/module/lowmemorykiller/parameters/vmpressure_file_min"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
 		title:"Samsung SPCM Service",
 		description:" Enabling will allow the Samsung SPCM service to kill apps running in the background, but those only that haven't been used for a period of time. Disabling will revert to standard OOM killer and may help prevent apps/services meant to run in the background being killed (eg. Facebook and Swiftkey)."
 	}},
