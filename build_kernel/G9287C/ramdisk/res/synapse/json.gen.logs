@@ -11,11 +11,13 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
-		description:" You must Enable to save the latest logcat. Default is Enabled.",
-		label:"Enable Android logger",
-		default:`cat /sys/kernel/logger_mode/logger_mode`,
-		action:"generic /sys/kernel/logger_mode/logger_mode"
+	{ SOptionList:{
+		title:"Enable Android logger",
+		description:" You must set Enabled or Auto-Suspend to save the latest logcat. Auto-Suspend mode will enable logcat whilst screen-ON & auto disable whilst screen-OFF. Default is Disabled.\n",
+		default:`cat generic /sys/module/logger/parameters/log_mode`,
+		action:"generic /sys/module/logger/parameters/log_mode",
+		values:{ 0:"Enabled", 1:"Auto-Suspend", 2:"Disabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1
