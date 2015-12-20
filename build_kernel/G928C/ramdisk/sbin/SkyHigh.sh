@@ -89,16 +89,17 @@ chmod 444 /dev/frandom
 echo "1" >/sys/class/misc/arizona_control/switch_eq_hp
 
 
-mount -o remount,rw /
-mount -o remount,rw /system /system
-
-
 #
 # Synapse
 #
-$BB mount -t rootfs -o remount,rw rootfs
-$BB chmod -R 755 /res/synapse
-$BB chmod -R 755 /res/synapse/SkyHigh/*
+if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
+	$BB mount -o remount,rw /;
+fi;
+if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
+	$BB mount -o remount,rw /system;
+fi;
+
+$BB chmod -R 755 /res/*
 ln -s /res/synapse/uci /sbin/uci
 /sbin/uci
 
@@ -122,8 +123,12 @@ echo  Kernel script is working !!! >> /data/.SkyHigh_test.log
 echo "excecuted on $(date +"%d-%m-%Y %r" )" >> /data/.SkyHigh_test.log
 
 
-mount -o remount,rw /
-mount -o rw,remount /system
+if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
+	$BB mount -o remount,rw /;
+fi;
+if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
+	$BB mount -o remount,rw /system;
+fi;
 
 #
 # Init.d
@@ -138,8 +143,12 @@ fi;
 $BB run-parts /system/etc/init.d
 
 
-mount -o remount,rw /
-mount -o remount,rw /system /system
+if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
+	$BB mount -o remount,rw /;
+fi;
+if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
+	$BB mount -o remount,rw /system;
+fi;
 mkdir /system/su.d
 chmod 0700 /system/su.d
 

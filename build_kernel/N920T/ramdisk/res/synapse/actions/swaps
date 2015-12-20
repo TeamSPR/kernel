@@ -4,7 +4,9 @@
 BB=/sbin/busybox;
 SWAP=/dev/block/vnswap0;
 
-$BB mount -t rootfs -o remount,rw rootfs;
+if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
+	$BB mount -o remount,rw /;
+fi;
 
 case $1 in
 vnswap0)

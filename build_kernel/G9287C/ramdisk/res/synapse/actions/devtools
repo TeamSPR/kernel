@@ -3,8 +3,12 @@ BB=/sbin/busybox;
 # SQLite log location
 LOGS=/sdcard/SkyHigh/Logs/SQLite.txt;
 
-$BB mount -t rootfs -o remount,rw rootfs;
-$BB mount -o remount,rw /system;
+if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
+	$BB mount -o remount,rw /;
+fi;
+if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
+	$BB mount -o remount,rw /system;
+fi;
 
 case $1 in
   reboot)
