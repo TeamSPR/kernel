@@ -2,7 +2,7 @@
 
 cat << CTAG
 {
-    name:CPU MULTICORE,
+    name:MULTICORE,
     elements:[
         { SPane:{
                 title:"Power Aware Scheduling",
@@ -36,31 +36,6 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-        { SPane:{
-                title:"Exynos Core Control Interface"
-        }},
-	{ SSpacer:{
-		height:1
-	}},
-        { SSeekBar:{
-                title:"MAX CPU Cores",
-                description:" Maximum number of online CPU Cores when screen is on.",
-                default:`cat /sys/power/cpucore_max_num_limit`,
-                action:"generic /sys/power/cpucore_max_num_limit",
-		values:{
-                        "1":"1 Core",
-                        "2":"2 Core",
-                        "3":"3 Core",
-                        "4":"4 Core",
-                        "5":"5 Core",
-                        "6":"6 Core",
-                        "7":"7 Core",
-                        "8":"8 Core"
-                }
-        }},
-	{ SSpacer:{
-		height:1
-	}},
 	{ SPane:{
 		title:"PEWQ (Power-efficient Workqueues)",
 		description:" Enable or disable PEWQ will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PEWQ are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0. Default is Disabled.",
@@ -73,6 +48,27 @@ cat << CTAG
 		action:"generic /sys/module/workqueue/parameters/power_efficient",
 		values:{
 			N:"Disabled", Y:"Enabled"
+		}
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
+		title:"Exynos Core Control Interface"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+		title:"MAX CPU Cores",
+		description:" Maximum number of online CPU Cores when screen is on.",
+		default:`cat /sys/power/cpucore_max_num_limit`,
+		action:"generic /sys/power/cpucore_max_num_limit",
+		values:{
+			"5":"5 Cores",
+			"6":"6 Cores",
+			"7":"7 Cores",
+			"8":"8 Cores"
 		}
 	}},
 	{ SSpacer:{
