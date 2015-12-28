@@ -92,7 +92,8 @@ cat << CTAG
 						"enforced_mode",
 						"hispeed_freq",
 						"mode",
-						"sampling_rate_min"
+						"sampling_rate_min",
+						"target_loads"
 					]
 				},
 			}
