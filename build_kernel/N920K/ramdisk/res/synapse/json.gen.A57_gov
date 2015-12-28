@@ -11,6 +11,12 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SDescription:{
+		description:" WARNING: If you select INTERACTIVE governor, apply it to BOTH A57 & A53 clusters to prevent scaling or other unintended issues !!"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SOptionList:{
 		title:"Current governor",
 		default:`cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor`,
@@ -59,8 +65,8 @@ cat << CTAG
 		height:1
 	}},
 	{ SOptionList:{
-		title:"Turbo",
-		description:" Forces the use of the big cores over LITTLE ones.\n",
+		title:"Turbo Mode",
+		description:" Forces the use of the big cores over LITTLE ones. Increase UI responsiveness at the expense of power efficiency.\n",
 		default:`echo $(/res/synapse/actions/tuning interactive_turbo)`,
 		action:"tuning interactive_turbo",
 		values:[Disabled, Enabled,],
