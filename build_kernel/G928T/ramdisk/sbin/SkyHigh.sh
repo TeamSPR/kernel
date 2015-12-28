@@ -47,6 +47,14 @@ echo "low" > /sys/kernel/mm/uksm/cpu_governor
 
 
 #
+# Set HMP up/down thresholds & prevent TW override
+#
+echo "479" > /sys/kernel/hmp/up_threshold
+$BB chmod 0440 /sys/kernel/hmp/up_threshold
+echo "214" > /sys/kernel/hmp/down_threshold
+$BB chmod 0440 /sys/kernel/hmp/down_threshold
+
+#
 # Fast e/Random Generator (frandom) support on boot
 #
 chmod 444 /dev/erandom
