@@ -12,6 +12,7 @@ cat << CTAG
 		`. /res/synapse/json.gen.A53_volt`,
 		`. /res/synapse/json.gen.A53_gov`,
 		`. /res/synapse/json.gen.hmp`,
+		`. /res/synapse/json.gen.boost`,
 		`. /res/synapse/json.gen.gpu`,
 		`. /res/synapse/json.gen.gpu_volt`,
 		`. /res/synapse/json.gen.tmu`,
