@@ -50,6 +50,12 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SLiveLabel:{
+		title:"Interactive Load",
+		description:"",
+		refresh:500,
+		action:"live Live_A53_interactive"
+	}},
 	{ SOptionList:{
 		title:"Profile",
 		description:" Select your profile for CPU Interactive governor.\n",
