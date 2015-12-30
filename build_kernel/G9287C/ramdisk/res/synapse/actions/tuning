@@ -10,8 +10,8 @@ fi;
 case $1 in
 interactive_turbo)
   P=/res/synapse/SkyHigh/tuning_interactive_turbo
-  CPU0=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
-  CPU4=$(cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq);
+  CPU0=$(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq);
+  CPU4=$(cat /sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_min_freq);
   if [ ! -z $2 ]; then
   if [ $2 == Disabled ]; then
     echo 0 > $P
