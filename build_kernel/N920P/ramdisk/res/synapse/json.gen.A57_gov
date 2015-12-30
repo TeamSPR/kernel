@@ -120,6 +120,7 @@ cat << CTAG
 						"boostpulse",
 						"cpu_util",
 						"enforced_mode",
+						"go_hispeed_load",
 						"hispeed_freq",
 						"mode",
 						"sampling_rate_min",

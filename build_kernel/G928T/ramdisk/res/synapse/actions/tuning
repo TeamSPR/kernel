@@ -42,7 +42,9 @@ interactive_b)
 	echo "59000 1300000:39000 1700000:19000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay;
 	chmod 0440 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay;
 	echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration;
+	chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load;
 	echo "89" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load;
+	chmod 0440 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load;
 	echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy;
 	chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads;
 	echo "65 1500000:75" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads;
@@ -55,7 +57,9 @@ interactive_b)
 	echo "25000 1300000:20000 1700000:20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay;
 	chmod 0440 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay;
 	echo "45000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration;
+	chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load;
 	echo "83" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load;
+	chmod 0440 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load;
 	echo "1" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy;
 	chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads;
 	echo "60 1500000:70" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads;
@@ -68,7 +72,9 @@ interactive_b)
 	echo "70000 1300000:55000 1700000:55000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay;
 	chmod 0440 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay;
 	echo "25000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration;
+	chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load;
 	echo "95" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load;
+	chmod 0440 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load;
 	echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy;
 	chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads;
 	echo "80 1500000:90" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads;
