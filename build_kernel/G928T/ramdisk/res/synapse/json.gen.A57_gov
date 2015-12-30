@@ -66,7 +66,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"Turbo Mode",
-		description:" Forces the use of the big cores over LITTLE ones. Increase UI responsiveness at the expense of power efficiency.\n",
+		description:" Forces the use of the big cores over LITTLE ones to increase UI responsiveness at the expense of power efficiency.\n\nWARNING: REBOOT is required if you DISABLE at ANY TIME !!\n",
 		default:`echo $(/res/synapse/actions/tuning interactive_turbo)`,
 		action:"tuning interactive_turbo",
 		values:[Disabled, Enabled,],
@@ -77,6 +77,13 @@ cat << CTAG
 				to:"/sys/devices/system/cpu/cpu4/cpufreq"
 			}
 		]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"Reboot Device",
+		action:"devtools reboot"
 	}},
 	{ SSpacer:{
 		height:1
