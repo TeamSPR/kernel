@@ -971,6 +971,7 @@
 /system/bin/vcsFPService	u:object_r:vcsFPService_exec:s0
 /system/bin/vfmService		u:object_r:vcsFPService_exec:s0
 /system/bin/vpnclientd          u:object_r:vpnclientd_exec:s0
+/system/bin/StartLogging           u:object_r:StartLogging_exec:s0
 # conflict with Qcom BSP, /system/bin/wcnss_service	u:object_r:wcnss_service_exec:s0
 /system/bin/wpa_supplicant_real u:object_r:wpa_exec:s0
 # to run resopt on system_server
