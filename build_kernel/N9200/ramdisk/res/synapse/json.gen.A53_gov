@@ -96,9 +96,11 @@ cat << CTAG
 						"boostpulse",
 						"cpu_util",
 						"enforced_mode",
+						"go_hispeed_load",
 						"hispeed_freq",
 						"mode",
 						"sampling_rate_min",
+						"single_cluster0_min_freq",
 						"target_loads"
 					]
 				},
