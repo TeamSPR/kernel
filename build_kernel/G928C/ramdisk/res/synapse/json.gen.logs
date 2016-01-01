@@ -14,7 +14,7 @@ cat << CTAG
 	{ SOptionList:{
 		title:"Enable Android logger",
 		description:" You must set Enabled or Auto-Suspend to save the latest logcat. Auto-Suspend mode will enable logcat whilst screen-ON & auto disable whilst screen-OFF. Default is Disabled.\n",
-		default:`cat generic /sys/module/logger/parameters/log_mode`,
+		default:2,
 		action:"generic /sys/module/logger/parameters/log_mode",
 		values:{ 0:"Enabled", 1:"Auto-Suspend", 2:"Disabled"
 		}
