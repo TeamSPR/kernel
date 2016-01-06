@@ -11,6 +11,26 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SOptionList:{
+		title:"Profile",
+		description:" Select your profile for HMP thresholds.\n",
+		default:`echo $(/res/synapse/actions/tuning hmp)`,
+		action:"tuning hmp",
+		values:[Default, Performance, Battery,],
+		notify:[
+			{
+				on:APPLY,
+				do:[ REFRESH, APPLY ],
+				to:[
+					"hmp_up /sys/kernel/hmp/up_threshold",
+					"hmp_down /sys/kernel/hmp/down_threshold"
+				],
+			}
+		]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SSeekBar:{
 		title:"HMP UP Thresholds",
 		description:"",
