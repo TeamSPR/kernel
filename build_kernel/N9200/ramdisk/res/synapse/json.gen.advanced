@@ -110,6 +110,12 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SDescription:{
+		description:"WARNING: Disabling of wakelocks may have impact on various ROM features or apps such as S-Health & Google Fit."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SOptionList:{
 		title:"SensorHub",
 		description:" The SensorHub Wakelock is one of the biggest wake sources. Disable for better deep sleep and less awake time. Enable for stock behavior.\n",
@@ -121,6 +127,19 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SSeekBar:{
+		title:"ssp_sensorhub",
+		description:"default = 1, stock= 3\nlower = lower wake time\n",
+		unit:"",
+		min:1,
+		max:8,
+		step:1,
+		default:`cat /sys/module/ssp_sensorhub/parameters/wl_sensorhub`,
+		action:"generic /sys/module/ssp_sensorhub/parameters/wl_sensorhub"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SOptionList:{
 		title:"SSP",
 		description:" The SSP Wakelock is one of the biggest wake sources after Sensorhub. Disable for better deep sleep and less awake time. Enable for stock behavior.\n",
@@ -128,6 +147,32 @@ cat << CTAG
 		action:"generic /sys/module/wakeup/parameters/enable_ssp_wl",
 		values:{ Y:"Enabled", N:"Disabled"
 		}
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+		title:"ssp_iio",
+		description:"sig_motion_sensor, pickup_gesture, tilt_detector & proximity_sensor wakelock timeout controls.\n\nstock = 3\nlower = lower wake time\n",
+		unit:"",
+		min:1,
+		max:8,
+		step:1,
+		default:`cat /sys/module/ssp_iio/parameters/wl_ssp`,
+		action:"generic /sys/module/ssp_iio/parameters/wl_ssp"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SSeekBar:{
+		title:"grip_sensor",
+		description:"stock = 3\nlower = lower wake time\n",
+		unit:"",
+		min:1,
+		max:8,
+		step:1,
+		default:`cat /sys/module/sx9310/parameters/wl_grip`,
+		action:"generic /sys/module/sx9310/parameters/wl_grip"
 	}},
 	{ SSpacer:{
 		height:1
