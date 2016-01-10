@@ -36,11 +36,13 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
-		description:" You must Enable to save the latest dmesg. Default is Enabled.",
-		label:"Enable printk",
-		default:`cat /sys/kernel/printk_mode/printk_mode`,
-		action:"generic /sys/kernel/printk_mode/printk_mode"
+	{ SOptionList:{
+		description:" Default is Enabled.\n",
+		default:1,
+		action:"generic /sys/kernel/printk_mode/printk_mode",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1

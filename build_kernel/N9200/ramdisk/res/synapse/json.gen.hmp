@@ -58,11 +58,13 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
+	{ SOptionList:{
 		description:" Default is Disabled.\n",
-                title:"Enable Power Aware Scheduling",
-                default:`cat /sys/kernel/hmp/power_migration`,
-                action:"generic /sys/kernel/hmp/power_migration",
+		default:0,
+		action:"generic /sys/kernel/hmp/power_migration",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1
@@ -74,24 +76,27 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
+	{ SOptionList:{
 		description:" Default is Disabled.\n",
-		label:"Enable HMP LITTLE Packing",
-		default:`cat /sys/kernel/hmp/packing_enable`,
-                action:"generic /sys/kernel/hmp/packing_enable"
+		default:0,
+		action:"generic /sys/kernel/hmp/packing_enable",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SPane:{
 		title:"PEWQ (Power-efficient Workqueues)",
-		description:" Enable or disable PEWQ will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PEWQ are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0. Default is Disabled.",
+		description:" Enable or disable PEWQ will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PEWQ are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0."
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
-		default:`cat /sys/module/workqueue/parameters/power_efficient`,
+		description:" Default is Disabled.\n",
+		default:N,
 		action:"generic /sys/module/workqueue/parameters/power_efficient",
 		values:{
 			N:"Disabled", Y:"Enabled"
@@ -108,7 +113,7 @@ cat << CTAG
 	}},
 	{ SSeekBar:{
 		title:"MAX CPU Cores",
-		description:" Maximum number of online CPU Cores when screen is on.",
+		description:" Maximum number of online CPU Cores when screen is on.\n",
 		default:`cat /sys/power/cpucore_max_num_limit`,
 		action:"generic /sys/power/cpucore_max_num_limit",
 		values:{

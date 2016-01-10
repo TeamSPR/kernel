@@ -12,7 +12,7 @@ cat << CTAG
 		height:1
 	}},
 	{ SOptionList:{
-		default:`cat /sys/kernel/power_suspend/power_suspend_mode`,
+		default:3,
 		action:"generic /sys/kernel/power_suspend/power_suspend_mode",
 		values:{
 			0:"Autosleep", 1:"Userspace", 2:"DisplayPanel", 3:"Hybrid"
@@ -21,11 +21,14 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
-		description:" Kernel power management driver when screen is off. Better battery savings if enabled. Note: You can only change this setting if PowerSuspend Mode is set to Userspace.\n",
-		label:"PowerSuspend State",
-		default:`cat /sys/kernel/power_suspend/power_suspend_state`,
-		action:"suspend_state /sys/kernel/power_suspend/power_suspend_state"
+	{ SOptionList:{
+		title:"PowerSuspend State",
+		description:" Kernel power management driver when screen is off. If using Userspace hook, enable for better battery savings. Note: You can only change this setting with Userspace mode.\n",
+		default:0,
+		action:"suspend_state /sys/kernel/power_suspend/power_suspend_state",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1

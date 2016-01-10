@@ -6,12 +6,13 @@ cat << CTAG
     elements:[
     	{ SPane:{
 		title:"TCP Congestion Control",
-		description:" Select your preferred WIFI TCP algorithm. Regulates upload and download affecting throughput in various ways. Default is Westwood+."
+		description:" Select your preferred WIFI TCP algorithm. Regulates upload and download affecting throughput in various ways."
     	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
+		description:" Default is Westwood+.\n",
 		default:`cat proc/sys/net/ipv4/tcp_congestion_control`,
 		action:"generic proc/sys/net/ipv4/tcp_congestion_control",
 		values:[`while read values; do busybox printf "%s, \n" $values; done < proc/sys/net/ipv4/tcp_available_congestion_control`]
@@ -20,15 +21,14 @@ cat << CTAG
 		height:1
 	}},
 	{ STitleBar:{
-		title:"Screen mirroring / AllShare Cast fix"
-	}},
-	{ SDescription:{
-		description:" Possible screen mirroring / AllShare Cast fix for rooted devices, works for some. Turn OFF WIFI first. Default is Enabled."
+		title:"Screen mirroring / AllShare Cast fix",
+		description:" Possible screen mirroring / AllShare Cast fix for rooted devices, works for some. Turn OFF WIFI first."
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
+		description:" Default is Enabled.\n",
 		default:`echo $(/res/synapse/actions/mirror mirror_fix)`,
 		action:"mirror mirror_fix",
 		values:[Disabled, Enabled,]
@@ -61,7 +61,7 @@ cat << CTAG
 	}},
         { SOptionList:{
 		title:"WiFi Power Mode While Screen-ON",
-		description:"",
+		description:" Default is Fast.\n",
 		default:"2",
 		unit:"",
 		action:"generic /sys/module/dhd/parameters/wifi_pm_awake",
@@ -77,7 +77,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"WiFi Power Mode While Screen-OFF",
-		description:"",
+		description:" Default is Max.\n",
 		default:"1",
 		unit:"",
 		action:"generic /sys/module/dhd/parameters/wifi_pm_suspended",
@@ -158,12 +158,13 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"TCP/IP Network Security Tweak",
-		description:" Protect against SYN & DoS attack etc. Default is Disabled."
+		description:" Protect against SYN & DoS attack etc."
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
+		description:" Default is Disabled.\n",
 		default:`echo $(/res/synapse/actions/network tcp_security)`,
 		action:"network tcp_security",
 		values:[Disabled, Enabled,]
@@ -173,7 +174,7 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"3G DNS Tweaks",
-		description:" Allows you to set the default DNS (Domain Name System) for 3G connections. Use this to potentially speed up your browsing experience (depending on DNS location) and improve your security. Default is Disabled.",
+		description:" Allows you to set the default DNS (Domain Name System) for 3G connections. Use this to potentially speed up your browsing experience (depending on DNS location) and improve your security.",
 	}},
 	{ SSpacer:{
 		height:1
@@ -193,6 +194,7 @@ cat << CTAG
 		height:1
 	}},
 	{ SOptionList:{
+		description:" Default is Disabled.\n",
 		default:`echo $(/res/synapse/actions/network dns)`,
 		action:"network dns",
 		values:[Disabled, Google, OpenDNS, Comodo, Level3, Norton_DNS, Smart_Viper,]
@@ -230,25 +232,32 @@ cat << CTAG
 		height:1
 	}},
 	{ SPane:{
-		title:"IPV6 Optimistic Detection"
+		title:"IPv6 Optimistic Detection",
+		description:" Perform Optimistic Duplicate Address Detection."
 	}},
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
-		description:" Perform Optimistic Duplicate Address Detection. Default is Enabled.\n",
-		label:"IPV6 optimistic_dad",
-		default:`cat /proc/sys/net/ipv6/conf/all/optimistic_dad`,
-		action:"generic /proc/sys/net/ipv6/conf/all/optimistic_dad"
+	{ SOptionList:{
+		title:"IPv6 optimistic_dad",
+		description:" Default is Enabled.\n",
+		default:1,
+		action:"generic /proc/sys/net/ipv6/conf/all/optimistic_dad",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
-		description:" If enabled, do not classify optimistic addresses as depreciated during source selection. Preferred addresses will still be chosen before optimistic addresses, subject to other ranking in the source selection algorithm. Default is Enabled.\n",
-		label:"IPV6 use_optimistic",
-		default:`cat /proc/sys/net/ipv6/conf/all/use_optimistic`,
-		action:"generic /proc/sys/net/ipv6/conf/all/use_optimistic"
+	{ SOptionList:{
+		title:"IPv6 use_optimistic",
+		description:" Default is Enabled.\n",
+		default:1,
+		action:"generic /proc/sys/net/ipv6/conf/all/use_optimistic",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1

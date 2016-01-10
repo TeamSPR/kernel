@@ -13,6 +13,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"Storage scheduler",
+		description:" Default is cfq.\n",
 		default:`cat /sys/block/sda/queue/scheduler | busybox awk 'NR>1{print $1}' RS=[ FS=]`,
 		action:"scheduler /sys/block/sda/queue/scheduler",
 		values:[`while read values; do busybox printf "%s, \n" $values | busybox tr -d '[]'; done < /sys/block/sda/queue/scheduler`],
@@ -34,7 +35,7 @@ cat << CTAG
 	}},
 	{ SSeekBar:{
 		title:"Storage Read-Ahead",
-		description:" ",
+		description:" Default is 256.\n",
 		max:4096,
 		min:64,
 		unit:" KB",
@@ -52,41 +53,49 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
-		description:" Draw entropy from spinning (rotational) storage. Default is Disabled.\n",
-		label:"Add Random",
-		default:`cat /sys/block/sda/queue/add_random`,
-		action:"generic /sys/block/sda/queue/add_random"
+	{ SOptionList:{
+		title:"Add Random",
+		description:" Draw entropy from spinning (rotational) storage.\n Default is Disabled.\n",
+		default:0,
+		action:"generic /sys/block/sda/queue/add_random",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
+	{ SOptionList:{
+		title:"I/O Stats",
 		description:" Maintain I/O statistics for this storage device. Disabling will break I/O monitoring apps but reduce CPU overhead.\n Default is Disabled.\n",
-		label:"I/O Stats",
-		default:`cat /sys/block/sda/queue/iostats`,
-		action:"generic /sys/block/sda/queue/iostats"
+		default:0,
+		action:"generic /sys/block/sda/queue/iostats",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
+	{ SOptionList:{
+		title:"Rotational",
 		description:" Treat device as rotational storage. Default is Disabled.\n",
-		label:"Rotational",
-		default:`cat /sys/block/sda/queue/rotational`,
-		action:"generic /sys/block/sda/queue/rotational"
+		default:0,
+		action:"generic /sys/block/sda/queue/rotational",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
 		title:"No Merges",
-		description:" Types of merges (prioritization) the scheduler queue for this storage device allows. Default is All.",
-		default:`cat /sys/block/sda/queue/nomerges`,
+		description:" Types of merges (prioritization) the scheduler queue for this storage device allows. Default is All.\n",
+		default:0,
 		action:"generic /sys/block/sda/queue/nomerges",
 		values:{
-			`NM='0:"All", 1:"Simple Only", 2:"None",'
-			echo $NM`
+			0:"All", 1:"Simple Only", 2:"None"
 		}
 	}},
 	{ SSpacer:{
@@ -94,12 +103,11 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"RQ Affinity",
-		description:" Try to have scheduler requests complete on the CPU core they were made from. Default is Aggressive.",
-		default:`cat /sys/block/sda/queue/rq_affinity`,
+		description:" Try to have scheduler requests complete on the CPU core they were made from. Default is Aggressive.\n",
+		default:2,
 		action:"generic /sys/block/sda/queue/rq_affinity",
 		values:{
-			`RQA='0:"Disabled", 1:"Enabled", 2:"Aggressive"'
-			echo $RQA`
+			0:"Disabled", 1:"Enabled", 2:"Aggressive"
 		}
 	}},
 	{ SSpacer:{
@@ -107,7 +115,7 @@ cat << CTAG
 	}},
 	{ SSeekBar:{
 		title:"NR Requests",
-		description:" Maximum number of read (or write) requests that can be queued to the scheduler in the block layer.",
+		description:" Maximum number of read (or write) requests that can be queued to the scheduler in the block layer. Default is 128.\n",
 		step:128,
 		min:128,
 		max:2048,

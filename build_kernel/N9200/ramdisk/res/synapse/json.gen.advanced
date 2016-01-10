@@ -17,7 +17,7 @@ cat << CTAG
 	}},
 	{ SSeekBar:{
 		title:"Read Wakeup Threshold",
-        	description:"",
+		description:" Default is 256.\n",
 		max:2048, min:64, step:64,
 		default:`cat /proc/sys/kernel/random/read_wakeup_threshold`,
 		action:"generic /proc/sys/kernel/random/read_wakeup_threshold"
@@ -27,7 +27,7 @@ cat << CTAG
 	}},
 	{ SSeekBar:{
 		title:"Write Wakeup Threshold",
-        	description:"",
+		description:" Default is 320.\n",
 		max:2048, min:64, step:64,
 		default:`cat /proc/sys/kernel/random/write_wakeup_threshold`,
 		action:"generic /proc/sys/kernel/random/write_wakeup_threshold"
@@ -36,31 +36,37 @@ cat << CTAG
 		height:1
 	}},
       	{ SPane:{
-		title:"Gentle Fair Sleepers"
+		title:"Gentle Fair Sleepers",
+		description:" Sleeper Fairness is a concept used by CFS which treat sleeping/waiting tasks as if they were in a run queue. This implies tasks which spend most of the time waiting for an user input and such will get a fair share of CPU when they need it. Disabling Gentle Fair Sleepers could improve UI responsiveness."
       	}},
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
-		description:" Sleeper Fairness is a concept used by CFS which treat sleeping/waiting tasks as if they were in a run queue. This implies tasks which spend most of the time waiting for an user input and such will get a fair share of CPU when they need it. Disabling Gentle Fair Sleepers could improve UI responsiveness. Default is Disabled.\n",
-		label:"Enable Gentle Fair Sleepers",
-		default:`cat /sys/kernel/sched/gentle_fair_sleepers`,
-		action:"generic /sys/kernel/sched/gentle_fair_sleepers"
+	{ SOptionList:{
+		description:" Default is Disabled.\n",
+		default:0,
+		action:"generic /sys/kernel/sched/gentle_fair_sleepers",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1
 	}},
       	{ SPane:{
-		title:"Arch Power"
+		title:"Arch Power",
+		description:" Arch Power uses arch dependent power functions to be used instead of generic high resolution timer ticks and double ticks to reflect the relative capacity of each core."
       	}},
 	{ SSpacer:{
 		height:1
 	}},
-	{ SCheckBox:{
-		description:" Arch Power uses arch dependent power functions to be used instead of generic high resolution timer ticks and double ticks to reflect the relative capacity of each core. Default is Enabled.\n",
-		label:"Enable Arch Power",
-		default:`cat /sys/kernel/sched/arch_power`,
-		action:"generic /sys/kernel/sched/arch_power"
+	{ SOptionList:{
+		description:" Default is Enabled.\n",
+		default:1,
+		action:"generic /sys/kernel/sched/arch_power",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1

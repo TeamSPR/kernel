@@ -7,11 +7,14 @@ cat << CTAG
 	{ SPane:{
 		title:"LED"
 	}},
-	{ SCheckBox:{
-		description:" Default is Enabled.",
-		label:"Disable LED",
-		default:`cat /sys/class/sec/led/led_always_disable`,
-                action:"generic /sys/class/sec/led/led_always_disable"
+	{ SOptionList:{
+		title:"Disable LED",
+		description:" Default is Disabled.\n",
+		default:0,
+		action:"generic /sys/class/sec/led/led_always_disable",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1
@@ -23,11 +26,14 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-        { SCheckBox:{
-                description:" Enable or disable LED fade-in/out control. Default is Disabled.\n",
-		label:"LED Fade Control",
-		default:`cat /sys/class/sec/led/led_fade`,
-                action:"generic /sys/class/sec/led/led_fade"
+	{ SOptionList:{
+		title:"LED Fade Control",
+		description:" Default is Disabled.\n",
+		default:0,
+		action:"generic /sys/class/sec/led/led_fade",
+		values:{
+			0:"Disabled", 1:"Enabled"
+		}
 	}},
 	{ SSpacer:{
 		height:1

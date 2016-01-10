@@ -10,6 +10,7 @@ cat << CTAG
 	}},
 	{ SGeneric:{
 		title:"Profile Name",
+		description:"",
 		default:"None",
 		action:"backup /res/synapse/SkyHigh/bck_prof",
 	}},
@@ -38,7 +39,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"Selected Profile",
-		description:" Choose the settings you want and [APPLY] your choice in Synapse before using the action buttons below.",
+		description:" Choose the settings you want and [APPLY] your choice in Synapse before using the action buttons below.\n",
 		action:"restorebackup pickconfig",
 		default:"None",
 		values:[ "None",
@@ -99,6 +100,7 @@ cat << CTAG
 	}},
 	{ SGeneric:{
 		title:"Kernel Name",
+		description:"",
 		default:"None",
 		action:"backup /res/synapse/SkyHigh/bck_kernel",
 	}},
@@ -127,7 +129,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"Selected Image",
-		description:" Choose the settings you want and [APPLY] your choice in Synapse before using the action buttons below.",
+		description:" Choose the settings you want and [APPLY] your choice in Synapse before using the action buttons below.\n",
 		action:"restorebackup pickboot",
        		default:"None",
 		values:[ "None",

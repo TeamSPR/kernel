@@ -38,18 +38,19 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-        { SOptionList:{
-                title:"Mali power policy control",
-                default:`echo $(/res/synapse/actions/bracket-option /sys/devices/14ac0000.mali/power_policy)`,
-                action:"bracket-option /sys/devices/14ac0000.mali/power_policy",
-                values:[
+	{ SOptionList:{
+		title:"Mali power policy control",
+		description:" Default is coarse_demand.\n",
+		default:`echo $(/res/synapse/actions/bracket-option /sys/devices/14ac0000.mali/power_policy)`,
+		action:"bracket-option /sys/devices/14ac0000.mali/power_policy",
+		values:[
 `
-                        for POLICY in \`cat /sys/devices/14ac0000.mali/power_policy | sed -e 's/\]//;s/\[//'\`; do
-                          echo "\"$POLICY\","
-                        done
+			for POLICY in \`cat /sys/devices/14ac0000.mali/power_policy | sed -e 's/\]//;s/\[//'\`; do
+				echo "\"$POLICY\","
+			done
 `
-                ]
-        }},
+		]
+	}},
 	{ SSpacer:{
 		height:1
 	}},
@@ -98,12 +99,13 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"GPU Governor",
-                description:" Booster may give improved graphic & benchmark performance at the expense of battery. Default is Interactive"
+                description:" Booster may give improved graphic & benchmark performance at the expense of battery."
         }},
 	{ SSpacer:{
 		height:1
 	}},
         { SOptionList:{
+                description:" Default is Interactive.\n",
                 default:`echo $(/res/synapse/actions/gpu_governor gpu_gov)`,
                 action:"gpu_governor gpu_gov",
                 values:[Default, Interactive, Static, Booster]
