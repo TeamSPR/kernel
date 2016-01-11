@@ -53,6 +53,27 @@ cat << CTAG
 		height:1
 	}},
 	{ SPane:{
+		title:"WiFi Passwords",
+		description:" Save or restore your WiFi Passwords in /sdcard/SkyHigh/wifi/ folder."
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"Save WiFi Passwords",
+		action:"network wifi_passwords_save"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SButton:{
+		label:"Restore WiFi Passwords",
+		action:"network wifi_passwords_restore"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
+	{ SPane:{
 		title:"WiFi Power Mode",
 		description:" Control the WiFi power mode during screen ON & OFF.\n\nMax = Maximum power savings, but reduced throughput & increased AP latency.\n\nFast = Good power savings & throughput with a slightly reduced AP latency.\n\nOff = No power savings and normal throughput/AP latency (may help with HD video streaming performance).\n\nForce Off = No power savings and normal AP latency. (force off even if bt is active).\n\n ** Note: You MUST suspend and resume display for changes to take effect!\n"
         }},
