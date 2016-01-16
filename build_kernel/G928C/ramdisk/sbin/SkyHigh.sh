@@ -7,6 +7,21 @@ mount -o remount,rw /system /system
 
 
 #
+# Setup for Cron Task
+#
+if [ ! -d /data/.SkyHigh ]; then
+	$BB mkdir -p /data/.SkyHigh
+	$BB chmod -R 0777 /.SkyHigh/
+fi;
+# Copy Cron files
+$BB cp -a /res/crontab/ /data/
+if [ ! -e /data/crontab/custom_jobs ]; then
+	$BB touch /data/crontab/custom_jobs;
+	$BB chmod 777 /data/crontab/custom_jobs;
+fi;
+
+
+#
 # Stop Google Service and restart it on boot (dorimanx)
 # This removes high CPU load and ram leak!
 #
