@@ -248,6 +248,25 @@ wifi_passwords_restore)
 	echo "No backup file found";
   fi
   ;;
+IPv6)
+  P=/res/synapse/SkyHigh/IPv6
+  if [ ! -z $2 ]; then
+  if [ $2 == Disabled ]; then
+	echo 0 > $P
+	echo 0 > /proc/sys/net/ipv6/conf/wlan0/accept_ra
+	echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
+  elif [ $2 == Enabled ]; then
+	echo 1 > $P
+	echo 1 > /proc/sys/net/ipv6/conf/wlan0/accept_ra
+	echo 0 > /proc/sys/net/ipv6/conf/all/disable_ipv6
+  fi; fi
+  copy=`cat $P`
+  if [ $copy == 0 ]; then
+    echo Disabled
+  elif [ $copy == 1 ]; then
+    echo Enabled
+  fi
+  ;;
 esac
 
 $BB mount -t rootfs -o remount,ro rootfs;
