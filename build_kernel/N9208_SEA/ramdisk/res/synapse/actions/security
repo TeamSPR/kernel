@@ -9,10 +9,10 @@ fi;
 case $1 in
 knox_security)
   P=/res/synapse/SkyHigh/knox
-  if [ ! -z $2 ]; then
-  if [ $2 == NO_ACTION ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == NO_ACTION ]; then
     echo 0 > $P
-  elif [ $2 == Disabled ]; then
+  elif [ "$2" == Disabled ]; then
     echo 1 > $P
     am force-stop com.policydm 2> /dev/null;
     am force-stop com.samsung.android.securitylogagent 2> /dev/null;
@@ -57,7 +57,7 @@ knox_security)
     pm disable com.sec.knox.switcher 2> /dev/null;
     pm disable com.sec.knox.switchknoxI 2> /dev/null;
     pm disable com.sec.knox.switchknoxII 2> /dev/null;
-  elif [ $2 == Enabled ]; then
+  elif [ "$2" == Enabled ]; then
     echo 2 > $P
     am start -a com.policydm 2> /dev/null;
     am start -a com.samsung.android.securitylogagent 2> /dev/null;
@@ -107,12 +107,12 @@ knox_security)
 # Re-direct to NO_ACTION so Synapse will complete loading faster every boot. 
 # KNOX will still be Disabled or Enabled as set by the User.
 
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo NO_ACTION
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo NO_ACTION
-  elif [ $copy == 2 ]; then
+  elif [ "$copy" == 2 ]; then
     echo NO_ACTION
   fi
   ;;

@@ -2,51 +2,51 @@ BB=/sbin/busybox;
 
 case $1 in
 gpu)
-  echo Clock: $(($(cat /sys/devices/platform/gpusysfs/gpu_clock))) MHz
+  echo "Clock: $(cat /sys/devices/platform/gpusysfs/gpu_clock) MHz"
   ;;
 gpu_load)
-  echo Load: $(($(cat /sys/class/misc/mali0/device/utilization))) %
+   echo "Load: $(cat /sys/class/misc/mali0/device/utilization) %"
   ;;
 entropy)
-  echo "`cat /proc/sys/kernel/random/entropy_avail`";
+  echo "$(cat /proc/sys/kernel/random/entropy_avail)"
   ;;
 batttype)
-  echo Charge Type: `cat /sys/devices/battery.52/power_supply/battery/charge_type`
+  echo "Charge Type: $(cat /sys/devices/battery.52/power_supply/battery/charge_type)"
   ;;
 battcurrav)
-  echo Current Average: $(($(cat /sys/devices/battery.52/power_supply/battery/current_avg) )) mA
+  echo "Current Average: $(cat /sys/devices/battery.52/power_supply/battery/current_avg) mA"
   ;;
 battcurrnow)
-  echo Current Now: $(($(cat /sys/devices/battery.52/power_supply/battery/current_now) )) mA
+  echo "Current Now: $(cat /sys/devices/battery.52/power_supply/battery/current_now) mA"
   ;;
 battvoltnow)
-  echo Voltage Now: $(($(cat /sys/devices/battery.52/power_supply/battery/voltage_now) /1000)) mV
+  echo "Voltage Now: $(($(cat /sys/devices/battery.52/power_supply/battery/voltage_now) /1000)) mV"
   ;;
 batttemp)
-  echo Temp: $(($(cat /sys/devices/battery.52/power_supply/battery/batt_temp) / 10)) °C
+  echo "Temp: $(($(cat /sys/devices/battery.52/power_supply/battery/batt_temp) /10)) °C"
   ;;
 battcapa)
-  echo Capacity: $(($(cat /sys/devices/battery.52/power_supply/battery/capacity) )) %
+  echo "Capacity: $(cat /sys/devices/battery.52/power_supply/battery/capacity) %"
   ;;
 battstatus)
-  echo Status: `cat /sys/devices/battery.52/power_supply/battery/status`
+  echo "Status: $(cat /sys/devices/battery.52/power_supply/battery/status)"
   ;;
 batthealth)
-  echo Health: `cat /sys/devices/battery.52/power_supply/battery/health`
+  echo "Health: $(cat /sys/devices/battery.52/power_supply/battery/health)"
   ;;
 Live_A57_Time)
   STATE="";
   CNT=0;
-  SUM=`$BB awk '{s+=$2} END {print s}' /sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state`;
+  SUM=$($BB awk '{s+=$2} END {print s}' /sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state);
 		
-  while read FREQ TIME; do
-	if [ "$CNT" -ge $2 ] && [ "$CNT" -le $3 ]; then
+  while read -r FREQ TIME; do
+	if [ "$CNT" -ge "$2" ] && [ "$CNT" -le "$3" ]; then
 		FREQ="$((FREQ / 1000)) MHz:";
-		if [ $TIME -ge "100" ]; then
-			PERC=`$BB awk "BEGIN { print ( ($TIME / $SUM) * 100) }"`;
-			PERC="`$BB printf "%0.1f\n" $PERC`%";
+		if [ "$TIME" -ge "100" ]; then
+			PERC=$($BB awk "BEGIN { print ( ($TIME / $SUM) * 100) }");
+			PERC="$($BB printf "%0.1f\n" $PERC)%";
 			TIME=$((TIME / 100));
-			STATE="$STATE $FREQ `$BB echo - | $BB awk -v "S=$TIME" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}'` ($PERC)@n";
+			STATE="$STATE $FREQ $($BB echo - | $BB awk -v "S=$TIME" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}') ($PERC)@n";
 		fi;
 	fi;
 	CNT=$((CNT+1));
@@ -58,16 +58,16 @@ Live_A57_Time)
 Live_A53_Time)
   STATE="";
   CNT=0;
-  SUM=`$BB awk '{s+=$2} END {print s}' /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state`;
+  SUM=$($BB awk '{s+=$2} END {print s}' /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state);
 		
-  while read FREQ TIME; do
-	if [ "$CNT" -ge $2 ] && [ "$CNT" -le $3 ]; then
+  while read -r FREQ TIME; do
+	if [ "$CNT" -ge "$2" ] && [ "$CNT" -le "$3" ]; then
 		FREQ="$((FREQ / 1000)) MHz:";
-		if [ $TIME -ge "100" ]; then
-			PERC=`$BB awk "BEGIN { print ( ($TIME / $SUM) * 100) }"`;
-			PERC="`$BB printf "%0.1f\n" $PERC`%";
+		if [ "$TIME" -ge "100" ]; then
+			PERC=$($BB awk "BEGIN { print ( ($TIME / $SUM) * 100) }");
+			PERC="$($BB printf "%0.1f\n" $PERC)%";
 			TIME=$((TIME / 100));
-			STATE="$STATE $FREQ `$BB echo - | $BB awk -v "S=$TIME" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}'` ($PERC)@n";
+			STATE="$STATE $FREQ $($BB echo - | $BB awk -v "S=$TIME" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}') ($PERC)@n";
 		fi;
 	fi;
 	CNT=$((CNT+1));
@@ -77,10 +77,10 @@ Live_A53_Time)
   $BB echo "$STATE";
   ;;
 LiveCPUFrequency_LITTLE)
-  CPU0=`$BB cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq 2> /dev/null`;
-  CPU1=`$BB cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq 2> /dev/null`;
-  CPU2=`$BB cat /sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq 2> /dev/null`;
-  CPU3=`$BB cat /sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq 2> /dev/null`;
+  CPU0=$($BB cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq 2> /dev/null);
+  CPU1=$($BB cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq 2> /dev/null);
+  CPU2=$($BB cat /sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq 2> /dev/null);
+  CPU3=$($BB cat /sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq 2> /dev/null);
 
   if [ -z "$CPU0" ]; then CPU0="Offline"; else CPU0="$((CPU0 / 1000)) MHz"; fi;
   if [ -z "$CPU1" ]; then CPU1="Offline"; else CPU1="$((CPU1 / 1000)) MHz"; fi;
@@ -90,10 +90,10 @@ LiveCPUFrequency_LITTLE)
 $BB echo "Core 0: $CPU0@nCore 1: $CPU1@nCore 2: $CPU2@nCore 3: $CPU3";
 ;;
 LiveCPUFrequency_big)
-  CPU4=`$BB cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq 2> /dev/null`;
-  CPU5=`$BB cat /sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq 2> /dev/null`;
-  CPU6=`$BB cat /sys/devices/system/cpu/cpu6/cpufreq/scaling_cur_freq 2> /dev/null`;
-  CPU7=`$BB cat /sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq 2> /dev/null`;
+  CPU4=$($BB cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq 2> /dev/null);
+  CPU5=$($BB cat /sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq 2> /dev/null);
+  CPU6=$($BB cat /sys/devices/system/cpu/cpu6/cpufreq/scaling_cur_freq 2> /dev/null);
+  CPU7=$($BB cat /sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq 2> /dev/null);
 
   if [ -z "$CPU4" ]; then CPU4="Offline"; else CPU4="$((CPU4 / 1000)) MHz"; fi;
   if [ -z "$CPU5" ]; then CPU5="Offline"; else CPU5="$((CPU5 / 1000)) MHz"; fi;
@@ -104,34 +104,25 @@ $BB echo "Core 4: $CPU4@nCore 5: $CPU5@nCore 6: $CPU6@nCore 7: $CPU7";
 ;;
 Live_A53_interactive)
 if [ -d /sys/devices/system/cpu/cpu0/cpufreq/interactive ]; then
-  while read C0 C1 C2 C3; do
-
+  while read -r C0 C1 C2 C3; do
   done < /sys/devices/system/cpu/cpu0/cpufreq/interactive/cpu_util 2> /dev/null;
-
   $BB echo "Core 0: $C0@nCore 1: $C1@nCore 2: $C2@nCore 3: $C3";
-
 else
-
   $BB echo "Interactive Offline";
-
 fi;
 ;;
 Live_A57_interactive)
 if [ -d /sys/devices/system/cpu/cpu4/cpufreq/interactive ]; then
-  while read C4 C5 C6 C7; do
-
+  while read -r C4 C5 C6 C7; do
   done < /sys/devices/system/cpu/cpu4/cpufreq/interactive/cpu_util 2> /dev/null;
-
   $BB echo "Core 4: $C4@nCore 5: $C5@nCore 6: $C6@nCore 7: $C7";
-
 else
-
   $BB echo "Interactive Offline";
-
 fi;
 ;;
 LiveMemory)
-  while read TYPE MEM KB; do
+  while read -r TYPE MEM KB; do
+	export KB
 	if [ "$TYPE" = "MemTotal:" ]; then
 		TOTAL="$((MEM / 1024)) MB";
 	elif [ "$TYPE" = "MemFree:" ]; then
@@ -145,33 +136,33 @@ LiveMemory)
   $BB echo "Total: $TOTAL@nFree: $FREE";
 ;;
 LiveUpTime)
-  TOTAL=`$BB awk '{ print $1 }' /proc/uptime`;
-  AWAKE=$((`$BB awk '{s+=$2} END {print s}' /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state` / 100));
-  SLEEP=`$BB awk "BEGIN { print ($TOTAL - $AWAKE) }"`;
+  TOTAL=$($BB awk '{ print $1 }' /proc/uptime);
+  AWAKE=$(($($BB awk '{s+=$2} END {print s}' /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state) / 100));
+  SLEEP=$($BB awk "BEGIN { print ($TOTAL - $AWAKE) }");
 		
-  PERC_A=`$BB awk "BEGIN { print ( ($AWAKE / $TOTAL) * 100) }"`;
-  PERC_A="`$BB printf "%0.1f\n" $PERC_A`%";
-  PERC_S=`$BB awk "BEGIN { print ( ($SLEEP / $TOTAL) * 100) }"`;
-  PERC_S="`$BB printf "%0.1f\n" $PERC_S`%";
+  PERC_A=$($BB awk "BEGIN { print ( ($AWAKE / $TOTAL) * 100) }");
+  PERC_A="$($BB printf "%0.1f\n" $PERC_A)%";
+  PERC_S=$($BB awk "BEGIN { print ( ($SLEEP / $TOTAL) * 100) }");
+  PERC_S="$($BB printf "%0.1f\n" $PERC_S)%";
 		
-  TOTAL=`$BB echo - | $BB awk -v "S=$TOTAL" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}'`;
-  AWAKE=`$BB echo - | $BB awk -v "S=$AWAKE" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}'`;
-  SLEEP=`$BB echo - | $BB awk -v "S=$SLEEP" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}'`;
+  TOTAL=$($BB echo - | $BB awk -v "S=$TOTAL" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}');
+  AWAKE=$($BB echo - | $BB awk -v "S=$AWAKE" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}');
+  SLEEP=$($BB echo - | $BB awk -v "S=$SLEEP" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}');
   $BB echo "Total: $TOTAL (100.0%)@nSleep: $SLEEP ($PERC_S)@nAwake: $AWAKE ($PERC_A)";
 ;;
 LiveGPUTime)
   STATE="";
   CNT=0;
-  SUM=`$BB awk '{s+=$2} END {print s}' /sys/devices/14ac0000.mali/time_in_state`;
+  SUM=$($BB awk '{s+=$2} END {print s}' /sys/devices/14ac0000.mali/time_in_state);
 		
-  while read FREQ TIME; do
-	if [ "$CNT" -ge $2 ] && [ "$CNT" -le $3 ]; then
+  while read -r FREQ TIME; do
+	if [ "$CNT" -ge "$2" ] && [ "$CNT" -le "$3" ]; then
 		FREQ="$((FREQ / 1)) MHz:";
-		if [ $TIME -ge "100" ]; then
-			PERC=`$BB awk "BEGIN { print ( ($TIME / $SUM) * 100) }"`;
-			PERC="`$BB printf "%0.1f\n" $PERC`%";
+		if [ "$TIME" -ge "100" ]; then
+			PERC=$($BB awk "BEGIN { print ( ($TIME / $SUM) * 100) }");
+			PERC="$($BB printf "%0.1f\n" $PERC)%";
 			TIME=$((TIME / 100));
-			STATE="$STATE $FREQ `$BB echo - | $BB awk -v "S=$TIME" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}'` ($PERC)@n";
+			STATE="$STATE $FREQ $($BB echo - | $BB awk -v "S=$TIME" '{printf "%dh:%dm:%ds",S/(60*60),S%(60*60)/60,S%60}') ($PERC)@n";
 		fi;
 	fi;
 	CNT=$((CNT+1));
@@ -181,19 +172,19 @@ LiveGPUTime)
   $BB echo "$STATE";
   ;;
 UKSMStats)
-  UKSM="$(expr `cat /sys/kernel/mm/uksm/run`)"
-	if [ UKSM -eq "1" ]; then
+  UKSM=$(cat /sys/kernel/mm/uksm/run)
+	if [ "$UKSM" == 1 ]; then
 		RUNS=`echo "Number of full scans: $((\`cat /sys/kernel/mm/uksm/full_scans\`))"`
 		SAVEDMEM=`echo "Saved memory: $((\`cat /sys/kernel/mm/uksm/pages_sharing\`*4096/1024/1024)) MB"`
 		SHARDMEM=`echo "Shared memory: $((\`cat /sys/kernel/mm/uksm/pages_shared\`*4096/1024/1024)) MB"`
-		echo $RUNS@n$SAVEDMEM@n$SHARDMEM
+		echo "$RUNS"@n"$SAVEDMEM"@n"$SHARDMEM"
 	else
 		echo UKSM is Disabled
 	fi
   ;;
 selinux_status)
-  SELINUX_STATUS="$(expr `cat /sys/fs/selinux/enforce`)"
-	if [ SELINUX_STATUS -eq "0" ]; then
+  SELINUX_STATUS=$(cat /sys/fs/selinux/enforce);
+	if [ "$SELINUX_STATUS" == 0 ]; then
                 echo PERMISSIVE MODE
 	else
                 echo ENFORCING MODE
@@ -214,12 +205,12 @@ usb_status)
 	fi
   ;;
 dns)
-  echo `getprop net.rmnet0.dns1`@n`getprop net.rmnet0.dns2`
+  $BB echo "$(getprop net.rmnet0.dns1)@n$(getprop net.rmnet0.dns2)"
   ;;
 gps)
   var_gps="/system/etc/gps.conf";
-  CHECKGPS1=`cat $var_gps | grep "NTP_SERVER=0.*"`;
-  CHECKGPS2=`cat $var_gps | grep "NTP_SERVER=*"`;
+  CHECKGPS1=$($BB cat $var_gps | grep "NTP_SERVER=0.*");
+  CHECKGPS2=$($BB cat $var_gps | grep "NTP_SERVER=*");
 	if [ "$CHECKGPS1" == "NTP_SERVER=0.asia.pool.ntp.org" ] || [ "$CHECKGPS2" == "NTP_SERVER=asia.pool.ntp.org" ]; then
                 echo ASIA
 	elif [ "$CHECKGPS1" == "NTP_SERVER=0.europe.pool.ntp.org" ] || [ "$CHECKGPS2" == "NTP_SERVER=europe.pool.ntp.org" ]; then
@@ -238,7 +229,7 @@ gps)
   ;;
 check_cron)
   CRON_SERVICE=$(pidof crond | wc -l);
-	if [ "$CRON_SERVICE" -eq "1" ]; then
+	if [ "$CRON_SERVICE" == 1 ]; then
 		echo "SERVICE ONLINE";
 	else
 		echo "SERVICE OFFLINE";

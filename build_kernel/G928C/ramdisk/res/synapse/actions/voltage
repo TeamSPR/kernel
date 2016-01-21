@@ -1,4 +1,6 @@
-case $(basename $0) in
+BB=/sbin/busybox;
+
+case $(basename "$0") in
 c1volt)
 	P=/sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_volt_table
 	;;
@@ -20,29 +22,29 @@ ispvolt)
 esac
 
 readValue() {
-	while read FREQ UVOLT; do
-		if [ $FREQ == $1 ]; then
-			echo $UVOLT
+	while read -r FREQ UVOLT; do
+		if [ "$FREQ" == "$1" ]; then
+			echo "$UVOLT"
 			return
 		fi
 	done < $P
 }
 
 writeValue() {
-	case $(basename $0) in
+	case $(basename "$0") in
 	intvolt) 	;&
 	mifvolt) 	;&
 	gpuvolt)	;&
 	c1volt)		;&
 	c0volt)		;&
 	ispvolt)
-		echo $1 $2 > $P
+		echo "$1" "$2" > $P
 		return
 	esac
 }
 
 if [[ ! -z $2 ]]; then
-	writeValue $1 $2
+	writeValue "$1" "$2"
 fi
 
-echo $(readValue $1)
+$BB echo "$(readValue "$1")"

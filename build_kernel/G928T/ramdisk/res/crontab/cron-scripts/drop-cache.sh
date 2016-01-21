@@ -6,15 +6,16 @@
 
 BB=/sbin/busybox;
 P=/res/synapse/SkyHigh/cron_drop_cache;
-DROP_CACHE=`cat $P`;
+DROP_CACHE=$(cat $P);
 
 if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
 	$BB mount -o remount,rw /;
 fi;
 
-if [ $DROP_CACHE == 1 ]; then
+if [ "$DROP_CACHE" == 1 ]; then
 
-	while read TYPE MEM KB; do
+	while read -r TYPE MEM KB; do
+		export KB
 		if [ "$TYPE" = "MemTotal:" ]; then
 			TOTAL=$((MEM / 1024));
 		elif [ "$TYPE" = "MemFree:" ]; then
@@ -31,7 +32,7 @@ if [ $DROP_CACHE == 1 ]; then
 	if [ "$MEM_USED_CALC" -gt "50" ]; then
 
 		# wait till CPU is idle.
-		while [ ! `cat /proc/loadavg | cut -c1-4` -lt "3.50" ]; do
+		while [ ! "$($BB cat /proc/loadavg | cut -c1-4)" -lt "3.50" ]; do
 			echo "Waiting For CPU to cool down";
 			sleep 30;
 		done;
@@ -49,7 +50,7 @@ if [ $DROP_CACHE == 1 ]; then
 		echo " Cache below 50%! Cleaning RAM Cache aborted" >> /data/crontab/cron-clear-ram-cache;
 	fi;
 
-elif [ $DROP_CACHE == 0 ]; then
+elif [ "$DROP_CACHE" == 0 ]; then
 
 	date +%R-%F > /data/crontab/cron-clear-ram-cache;
 	echo " Clean RAM Cache is disabled" >> /data/crontab/cron-clear-ram-cache;

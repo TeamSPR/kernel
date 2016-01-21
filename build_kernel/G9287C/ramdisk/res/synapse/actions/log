@@ -1,4 +1,4 @@
-TIMESTAMP=`date +%Y-%m-%d.%H.%M.%S`;
+TIMESTAMP=$(date +%Y-%m-%d.%H.%M.%S);
 LOGS=/sdcard/SkyHigh/Logs;
 
 [ ! -d "$LOGS" ] && mkdir -p "$LOGS";
@@ -7,19 +7,19 @@ chmod 755 $LOGS
 case $1 in
 	logcat)
 		saved="$LOGS/logcat-$TIMESTAMP.txt";
-		logcat -d > $saved;
+		logcat -d > "$saved";
 	;;
 
 	dmesg)
 		saved="$LOGS/dmesg-$TIMESTAMP.txt";
-		dmesg > $saved;
+		dmesg > "$saved";
 	;;
 
 	kmsg)
 		kmsg=/proc/last_kmsg;
 		if [ -f $kmsg ]; then
 			saved="$LOGS/last_kmsg-$TIMESTAMP.txt";
-			cp -f $kmsg $saved;
+			cp -f $kmsg "$saved";
 		else
 			echo "$kmsg not found.";
 		fi;

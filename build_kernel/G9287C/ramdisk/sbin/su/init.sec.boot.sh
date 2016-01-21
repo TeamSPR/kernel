@@ -23,4 +23,3 @@ if [ -d /system/etc/init.d ]; then
 fi
 
 mount -t rootfs -o remount,ro rootfs
-

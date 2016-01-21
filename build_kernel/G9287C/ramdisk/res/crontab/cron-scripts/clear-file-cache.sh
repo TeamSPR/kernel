@@ -6,23 +6,23 @@
 
 BB=/sbin/busybox;
 P=/res/synapse/SkyHigh/cron_cache;
-CACHE=`cat $P`;
+CACHE=$(cat $P);
 
 if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
 	$BB mount -o remount,rw /;
 fi;
 
-if [ $CACHE == 1 ]; then
+if [ "$CACHE" == 1 ]; then
 
 	# wait till CPU is idle.
-	while [ ! `cat /proc/loadavg | cut -c1-4` -lt "3.50" ]; do
+	while [ ! "$($BB cat /proc/loadavg | cut -c1-4)" -lt "3.50" ]; do
 		echo "Waiting For CPU to cool down";
 		sleep 30;
 	done;
 
 	CACHE_JUNK=$(ls -d /data/data/*/cache)
 	for i in $CACHE_JUNK; do
-		rm -rf $i/*
+		rm -rf "$i"/*
 	done;
 
 	# Old logs
@@ -38,7 +38,7 @@ if [ $CACHE == 1 ]; then
 	echo " Cleaned Apps Cache" >> /data/crontab/cron-clear-file-cache;
 	sync;
 
-elif [ $CACHE == 0 ]; then
+elif [ "$CACHE" == 0 ]; then
 
 	date +%R-%F > /data/crontab/cron-clear-file-cache;
 	echo " Clean file-cache is disabled" >> /data/crontab/cron-clear-file-cache;

@@ -5,13 +5,13 @@
 
 BB=/sbin/busybox;
 P=/res/synapse/SkyHigh/cron_google;
-GOOGLE=`cat $P`;
+GOOGLE=$(cat $P);
 
 if [ "$($BB mount | grep rootfs | cut -c 26-27 | grep -c ro)" -eq "1" ]; then
 	$BB mount -o remount,rw /;
 fi;
 
-if [ $GOOGLE == 1 ]; then
+if [ "$GOOGLE" == 1 ]; then
 
 	if [ "$($BB pidof com.google.android.gms | wc -l)" -eq "1" ]; then
 		$BB kill $($BB pidof com.google.android.gms);
@@ -29,7 +29,7 @@ if [ $GOOGLE == 1 ]; then
 	date +%R-%F > /data/crontab/cron-ram-release;
 	echo " Google RAM released" >> /data/crontab/cron-ram-release;
 
-elif [ $GOOGLE == 0 ]; then
+elif [ "$GOOGLE" == 0 ]; then
 
 	date +%R-%F > /data/crontab/cron-ram-release;
 	echo " Google RAM Release is disabled" >> /data/crontab/cron-ram-release;

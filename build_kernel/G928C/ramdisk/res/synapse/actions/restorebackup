@@ -11,15 +11,13 @@ if [ -d /data/data/com.af.synapse ]; then
   SYNAPSE_BOOT_DIR=$SYNAPSE_SD_DIR/kernel_backups;
   SYNAPSE_CONFIG_DIR=$SYNAPSE_SD_DIR/saved_configs;
 
-  SYNAPSE_DATA=/data/data/com.af.synapse/databases;
-
   [ ! -d "$SYNAPSE_BOOT_DIR" ] && $BB mkdir -p "$SYNAPSE_BOOT_DIR";
-  [ ! -f "$SYNAPSE_BOOT_DIR/.selected_boot_img" -o -z `$BB cat "$SYNAPSE_BOOT_DIR/.selected_boot_img" 2> /dev/null` ] && $BB echo "None" > "$SYNAPSE_BOOT_DIR/.selected_boot_img";
+  [ ! -f "$SYNAPSE_BOOT_DIR/.selected_boot_img" -o -z "$($BB cat "$SYNAPSE_BOOT_DIR/.selected_boot_img" 2> /dev/null)" ] && $BB echo "None" > "$SYNAPSE_BOOT_DIR/.selected_boot_img";
   [ ! -d "$SYNAPSE_CONFIG_DIR" ] && $BB mkdir -p "$SYNAPSE_CONFIG_DIR";
-  [ ! -f "$SYNAPSE_CONFIG_DIR/.selected_config_profile" -o -z `$BB cat "$SYNAPSE_CONFIG_DIR/.selected_config_profile" 2> /dev/null` ] && $BB echo "None" > "$SYNAPSE_CONFIG_DIR/.selected_config_profile";
+  [ ! -f "$SYNAPSE_CONFIG_DIR/.selected_config_profile" -o -z "$($BB cat "$SYNAPSE_CONFIG_DIR/.selected_config_profile" 2> /dev/null)" ] && $BB echo "None" > "$SYNAPSE_CONFIG_DIR/.selected_config_profile";
 
-  SYNAPSE_BOOT_IMG=`$BB cat "$SYNAPSE_BOOT_DIR/.selected_boot_img"`;
-  SYNAPSE_CONFIG=`$BB cat "$SYNAPSE_CONFIG_DIR/.selected_config_profile"`;
+  SYNAPSE_BOOT_IMG=$($BB cat "$SYNAPSE_BOOT_DIR/.selected_boot_img");
+  SYNAPSE_CONFIG=$($BB cat "$SYNAPSE_CONFIG_DIR/.selected_config_profile");
 fi;
 
 reset_uci() {
@@ -29,14 +27,14 @@ reset_uci() {
 
 case "$1" in
 	listboot)
-		$BB echo `$BB ls "$SYNAPSE_BOOT_DIR"`;
+		$BB echo "$($BB ls "$SYNAPSE_BOOT_DIR")";
 	;;
 
 	pickboot)
 		if [ -f "$SYNAPSE_BOOT_DIR/$2" -o "$2" == "None" ]; then
 			$BB echo "$2" > "$SYNAPSE_BOOT_DIR/.selected_boot_img";
 		fi;
-		$BB echo `$BB cat "$SYNAPSE_BOOT_DIR/.selected_boot_img"`;
+		$BB echo "$($BB cat "$SYNAPSE_BOOT_DIR/.selected_boot_img")";
 	;;
 
 	flashboot)
@@ -54,8 +52,8 @@ case "$1" in
 	;;
 
 	keepboot)
-		BCK_PROF=`$BB cat /res/synapse/SkyHigh/bck_kernel`;
-		BCK_PROF=`$BB echo ${BCK_PROF// /_}`;
+		BCK_PROF=$($BB cat /res/synapse/SkyHigh/bck_kernel);
+		BCK_PROF=$($BB echo "${BCK_PROF// /_}");
 	
 		if [ "$BCK_PROF" == "None" ]; then
 			$BB echo "Enter a kernel name first and then apply.";
@@ -78,14 +76,14 @@ case "$1" in
 	;;
 
 	listconfig)
-		$BB echo `$BB ls "$SYNAPSE_CONFIG_DIR"`;
+		$BB echo "$($BB ls "$SYNAPSE_CONFIG_DIR")";
 	;;
 	
 	pickconfig)
 		if [ -f "$SYNAPSE_CONFIG_DIR/$2" -o "$2" == "None" ]; then
 			$BB echo "$2" > "$SYNAPSE_CONFIG_DIR/.selected_config_profile";
 		fi;
-		$BB echo `$BB cat "$SYNAPSE_CONFIG_DIR/.selected_config_profile"`;
+		$BB echo "$($BB cat "$SYNAPSE_CONFIG_DIR/.selected_config_profile")";
 	;;
 	
 	delconfig)

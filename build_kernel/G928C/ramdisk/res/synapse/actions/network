@@ -9,8 +9,8 @@ fi;
 case $1 in
 tcp_security)
   P=/res/synapse/SkyHigh/tcp_security
-  if [ ! -z $2 ]; then
-  if [ $2 == Disabled ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
     echo 0 > $P
     	echo 128 > /proc/sys/net/ipv4/tcp_max_syn_backlog
     	echo 6 > /proc/sys/net/ipv4/tcp_syn_retries
@@ -31,7 +31,7 @@ tcp_security)
     	echo 1 > /proc/sys/net/ipv4/conf/default/accept_redirects
     	echo 1 > /proc/sys/net/ipv4/conf/all/secure_redirects
     	echo 1 > /proc/sys/net/ipv4/conf/default/secure_redirects
-  elif [ $2 == Enabled ]; then
+  elif [ "$2" == Enabled ]; then
     echo 1 > $P
 	echo 1024 > /proc/sys/net/ipv4/tcp_max_syn_backlog
 	echo 2 > /proc/sys/net/ipv4/tcp_syn_retries
@@ -53,59 +53,59 @@ tcp_security)
 	echo 0 > /proc/sys/net/ipv4/conf/all/secure_redirects
 	echo 0 > /proc/sys/net/ipv4/conf/default/secure_redirects
   fi; fi
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo Disabled
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo Enabled
   fi
   ;;
 dns)
   P=/res/synapse/SkyHigh/dns
-  if [ ! -z $2 ]; then
-  if [ $2 == Disabled ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
     echo 0 > $P
 	setprop net.rmnet0.dns1 0.0.0.0
 	setprop net.rmnet0.dns2 0.0.0.0
-  elif [ $2 == Google ]; then
+  elif [ "$2" == Google ]; then
     echo 1 > $P
 	setprop net.rmnet0.dns1 8.8.8.8
 	setprop net.rmnet0.dns2 8.8.8.4
-  elif [ $2 == OpenDNS ]; then
+  elif [ "$2" == OpenDNS ]; then
     echo 2 > $P
 	setprop net.rmnet0.dns1 208.67.222.222
 	setprop net.rmnet0.dns2 208.67.220.220
-  elif [ $2 == Comodo ]; then
+  elif [ "$2" == Comodo ]; then
     echo 3 > $P
 	setprop net.rmnet0.dns1 8.26.56.26
 	setprop net.rmnet0.dns2 8.20.247.20
-  elif [ $2 == Level3 ]; then
+  elif [ "$2" == Level3 ]; then
     echo 4 > $P
 	setprop net.rmnet0.dns1 4.2.2.1
 	setprop net.rmnet0.dns2 4.2.2.2
-  elif [ $2 == Norton_DNS ]; then
+  elif [ "$2" == Norton_DNS ]; then
     echo 5 > $P
 	setprop net.rmnet0.dns1 198.153.192.1
 	setprop net.rmnet0.dns2 198.153.194.1
-  elif [ $2 == Smart_Viper ]; then
+  elif [ "$2" == Smart_Viper ]; then
     echo 6 > $P
 	setprop net.rmnet0.dns1 208.76.50.50
 	setprop net.rmnet0.dns2 208.76.51.51
   fi; fi
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo Disabled
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo Google
-  elif [ $copy == 2 ]; then
+  elif [ "$copy" == 2 ]; then
     echo OpenDNS
-  elif [ $copy == 3 ]; then
+  elif [ "$copy" == 3 ]; then
     echo Comodo
-  elif [ $copy == 4 ]; then
+  elif [ "$copy" == 4 ]; then
     echo Level3
-  elif [ $copy == 5 ]; then
+  elif [ "$copy" == 5 ]; then
     echo Norton_DNS
-  elif [ $copy == 6 ]; then
+  elif [ "$copy" == 6 ]; then
     echo Smart_Viper
   fi
   ;;
@@ -123,13 +123,13 @@ fi;
 	cp -a $var_gps $var_gps.bkp;
   fi;
 
-  if [ ! -z $2 ]; then
-  if [ $2 == No_Action ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == No_Action ]; then
 			echo 0 > $P
-  elif [ $2 == Original ]; then
+  elif [ "$2" == Original ]; then
 			echo 1 > $P
 		cp -a $var_gps.bkp $var_gps;
-  elif [ $2 == Asia ]; then
+  elif [ "$2" == Asia ]; then
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.asia.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.asia.pool.ntp.org" ]; then
 			echo 2 > $P
@@ -141,7 +141,7 @@ fi;
 			echo "NTP_SERVER=2.asia.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=3.asia.pool.ntp.org" >> $var_gps;
 		fi;
-  elif [ $2 == Europe ]; then
+  elif [ "$2" == Europe ]; then
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.europe.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.europe.pool.ntp.org" ]; then
 			echo 3 > $P
@@ -153,7 +153,7 @@ fi;
 			echo "NTP_SERVER=2.europe.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=3.europe.pool.ntp.org" >> $var_gps;
 		fi;
-  elif [ $2 == Oceania ]; then
+  elif [ "$2" == Oceania ]; then
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.oceania.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.oceania.pool.ntp.org" ]; then
 			echo 4 > $P
@@ -165,7 +165,7 @@ fi;
 			echo "NTP_SERVER=2.oceania.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=3.oceania.pool.ntp.org" >> $var_gps;
 		fi;
-  elif [ $2 == North_America ]; then
+  elif [ "$2" == North_America ]; then
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.north-america.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.north-america.pool.ntp.org" ]; then
 			echo 5 > $P
@@ -177,7 +177,7 @@ fi;
 			echo "NTP_SERVER=2.north-america.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=3.north-america.pool.ntp.org" >> $var_gps;
 		fi;
-  elif [ $2 == South_America ]; then
+  elif [ "$2" == South_America ]; then
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.south-america.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.south-america.pool.ntp.org" ]; then
 			echo 6 > $P
@@ -189,7 +189,7 @@ fi;
 			echo "NTP_SERVER=2.south-america.pool.ntp.org" >> $var_gps;
 			echo "NTP_SERVER=3.south-america.pool.ntp.org" >> $var_gps;
 		fi;
-  elif [ $2 == Africa ]; then
+  elif [ "$2" == Africa ]; then
 		CHECKGPS=`cat $var_gps | grep "NTP_SERVER=0.africa.pool.ntp.org"`;
 		if [ "$CHECKGPS" != "NTP_SERVER=0.africa.pool.ntp.org" ]; then
 			echo 7 > $P
@@ -204,22 +204,22 @@ fi;
   fi; fi
 
 # Re-direct to No_Action so Synapse will load chosen gps.conf on next boot !
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo No_Action
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo No_Action
-  elif [ $copy == 2 ]; then
+  elif [ "$copy" == 2 ]; then
     echo No_Action
-  elif [ $copy == 3 ]; then
+  elif [ "$copy" == 3 ]; then
     echo No_Action
-  elif [ $copy == 4 ]; then
+  elif [ "$copy" == 4 ]; then
     echo No_Action
-  elif [ $copy == 5 ]; then
+  elif [ "$copy" == 5 ]; then
     echo No_Action
-  elif [ $copy == 6 ]; then
+  elif [ "$copy" == 6 ]; then
     echo No_Action
-  elif [ $copy == 7 ]; then
+  elif [ "$copy" == 7 ]; then
     echo No_Action
   fi
 
@@ -260,10 +260,10 @@ IPv6)
 	echo 1 > /proc/sys/net/ipv6/conf/wlan0/accept_ra
 	echo 0 > /proc/sys/net/ipv6/conf/all/disable_ipv6
   fi; fi
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo Disabled
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo Enabled
   fi
   ;;

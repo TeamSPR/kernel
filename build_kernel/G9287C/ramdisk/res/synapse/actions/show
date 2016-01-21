@@ -2,9 +2,9 @@ BB=/sbin/busybox;
 
 case $1 in
 susp)
-  echo `cat /sys/kernel/power_suspend/power_suspend_version`
+  $BB echo "$(cat /sys/kernel/power_suspend/power_suspend_version)"
   ;;
 asv)
-  echo `cat /sys/kernel/debug/asv_summary`
+  $BB echo "$(cat /sys/kernel/debug/asv_summary)"
   ;;
 esac

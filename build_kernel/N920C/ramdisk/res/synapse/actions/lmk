@@ -6,16 +6,16 @@ fi;
 
 P=/sys/module/lowmemorykiller/parameters/minfree;
 
-PERM=`$BB stat -c %a $P`;
-$BB test $PERM -lt "664" && $BB chmod 664 $P 2> /dev/null;
+PERM=$($BB stat -c %a $P);
+$BB test "$PERM" -lt "664" && $BB chmod 664 $P 2> /dev/null;
 
 #Read/Write
 read() {
 	VALUE=0;
-	NOW=`$BB cat $P`;
+	NOW=$($BB cat $P);
 	for LMK in ${NOW//,/ }; do
 		VALUE=$(($VALUE+1));
-		if [ "$VALUE" == $1 ]; then
+		if [ "$VALUE" == "$1" ]; then
 			$BB echo $((LMK / 256));
 			return
 		fi;
@@ -26,10 +26,10 @@ write() {
 	SET=$2;
 	LMKARR="";
 	VALUE=0;
-	NOW=`$BB cat $P`;
+	NOW=$($BB cat $P);
 	for LMK in ${NOW//,/ }; do
 		VALUE=$(($VALUE+1));
-		if [ "$VALUE" == $1 ]; then
+		if [ "$VALUE" == "$1" ]; then
 			if [ "$VALUE" == 1 ]; then
 				LMKARR="$((SET * 256))";
 			else
@@ -43,7 +43,7 @@ write() {
 			fi;
 		fi;
 	done;
-	$BB echo ${LMKARR// /,} > $P 2> /dev/null;
+	$BB echo "${LMKARR// /,}" > $P 2> /dev/null;
 }
 
 #Profiles
@@ -79,19 +79,19 @@ Exterminate(){
 
 if [ "$1" == "profile" ]; then
 	if [[ ! -z $2 ]]; then
-		$BB echo $2 > /res/synapse/SkyHigh/lmk_prof;
+		$BB echo "$2" > /res/synapse/SkyHigh/lmk_prof;
 			$2;
 			$BB echo "$MINFREE" > $P;
 			$BB echo "$COST" > /sys/module/lowmemorykiller/parameters/cost;
 	fi;
 	
-	$BB echo `$BB cat /res/synapse/SkyHigh/lmk_prof`;
+	$BB echo "$(cat /res/synapse/SkyHigh/lmk_prof)";
 else
 	if [[ ! -z $2 ]]; then
-		write $1 $2;
+		write "$1" "$2";
 	fi;
 
-	$BB echo $(read $1);
+	$BB echo "$(read "$1")";
 fi;
 
 $BB mount -t rootfs -o remount,ro rootfs;

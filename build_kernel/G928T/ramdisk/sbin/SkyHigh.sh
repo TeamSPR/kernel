@@ -51,7 +51,7 @@ $BB chmod 666 /sys/module/lowmemorykiller/parameters/minfree;
 # We need faster I/O so do not try to force moving to other CPU cores (dorimanx)
 #
 for i in /sys/block/*/queue; do
-        echo "2" > $i/rq_affinity
+        echo "2" > "$i"/rq_affinity
 done
 
 
@@ -176,14 +176,6 @@ if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
 fi;
 mkdir /system/su.d
 chmod 0700 /system/su.d
-
-#
-# Deep sleep fix (chainfire)
-#
-#echo "#!/tmp-mksh/tmp-mksh" > /system/su.d/000000deepsleep
-#echo "echo 'temporary none' > /sys/class/scsi_disk/0:0:0:1/cache_type" >> /system/su.d/000000deepsleep
-#echo "echo 'temporary none' > /sys/class/scsi_disk/0:0:0:2/cache_type" >> /system/su.d/000000deepsleep
-#chmod 0700 /system/su.d/000000deepsleep
 
 
 $BB mount -t rootfs -o remount,ro rootfs

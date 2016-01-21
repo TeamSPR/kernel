@@ -10,117 +10,117 @@ fi;
 case $1 in
 master)
   P=/res/synapse/SkyHigh/cron_master
-  if [ ! -z $2 ]; then
-  if [ $2 == Disabled ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
     echo 0 > $P
 	pkill -f crond;
 	pkill -f "/res/crontab_service/service.sh";
-  elif [ $2 == Enabled ]; then
+  elif [ "$2" == Enabled ]; then
     echo 1 > $P
 	if [ "$(pidof crond | wc -l)" -eq "0" ]; then
 		$BB nohup $BB sh /res/crontab_service/service.sh > /dev/null 2>&1;
 	fi;
   fi; fi
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo Disabled
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo Enabled
   fi
   ;;
 
 cache)
   P=/res/synapse/SkyHigh/cron_cache
-  if [ ! -z $2 ]; then
-  if [ $2 == Disabled ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
     echo 0 > $P
-  elif [ $2 == Enabled ]; then
+  elif [ "$2" == Enabled ]; then
     echo 1 > $P
   fi; fi
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo Disabled
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo Enabled
   fi
   ;;
 
 sqlite)
   P=/res/synapse/SkyHigh/cron_sqlite
-  if [ ! -z $2 ]; then
-  if [ $2 == Disabled ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
     echo 0 > $P
-  elif [ $2 == Enabled ]; then
+  elif [ "$2" == Enabled ]; then
     echo 1 > $P
   fi; fi
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo Disabled
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo Enabled
   fi
   ;;
 
 drop_cache)
   P=/res/synapse/SkyHigh/cron_drop_cache
-  if [ ! -z $2 ]; then
-  if [ $2 == Disabled ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
     echo 0 > $P
-  elif [ $2 == Enabled ]; then
+  elif [ "$2" == Enabled ]; then
     echo 1 > $P
   fi; fi
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo Disabled
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo Enabled
   fi
   ;;
 
 fg_reset)
   P=/res/synapse/SkyHigh/cron_fg
-  if [ ! -z $2 ]; then
-  if [ $2 == Disabled ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
     echo 0 > $P
-  elif [ $2 == Enabled ]; then
+  elif [ "$2" == Enabled ]; then
     echo 1 > $P
   fi; fi
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo Disabled
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo Enabled
   fi
   ;;
 
 google)
   P=/res/synapse/SkyHigh/cron_google
-  if [ ! -z $2 ]; then
-  if [ $2 == Disabled ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
     echo 0 > $P
-  elif [ $2 == Enabled ]; then
+  elif [ "$2" == Enabled ]; then
     echo 1 > $P
   fi; fi
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo Disabled
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo Enabled
   fi
   ;;
 
 fstrim)
   P=/res/synapse/SkyHigh/cron_fstrim
-  if [ ! -z $2 ]; then
-  if [ $2 == Disabled ]; then
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
     echo 0 > $P
-  elif [ $2 == Enabled ]; then
+  elif [ "$2" == Enabled ]; then
     echo 1 > $P
   fi; fi
-  copy=`cat $P`
-  if [ $copy == 0 ]; then
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
     echo Disabled
-  elif [ $copy == 1 ]; then
+  elif [ "$copy" == 1 ]; then
     echo Enabled
   fi
   ;;
