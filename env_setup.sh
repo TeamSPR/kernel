@@ -55,8 +55,6 @@ else
         echo "example: build_kernel.sh G9287C"
         echo "example: build_kernel.sh N920C"
         echo "example: build_kernel.sh N920P"
-        echo "example: build_kernel.sh N920K"
-        echo "example: build_kernel.sh N920S"
         echo "example: build_kernel.sh N9200"
         echo "example: build_kernel.sh N9208_SEA"
         echo "example: build_kernel.sh N920T"
@@ -102,16 +100,6 @@ fi;
 # SM-N920 P (Sprint)
 if [ "$TARGET" = "N920P" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-N920P_Sprint_defconfig";
-fi;
-
-# SM-N920 K (Korea KKT) use same defconfig for SM-N920 S/K/L but specific ramdisks
-if [ "$TARGET" = "N920K" ] ; then
-export KERNEL_CONFIG="SkyHigh_SM-N920S_defconfig";
-fi;
-
-# SM-N920 S (Korea SKT) use same defconfig for SM-N920 S/K/L but specific ramdisks
-if [ "$TARGET" = "N920S" ] ; then
-export KERNEL_CONFIG="SkyHigh_SM-N920S_defconfig";
 fi;
 
 # SM-N9200 (Hong Kong - dual SIM)
