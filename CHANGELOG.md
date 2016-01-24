@@ -1,5 +1,8 @@
 # Change Log
 
+## [v3.9](https://github.com/UpInTheAir/SM-N920/tree/v3.9) (2016-01-24)
+[Full Changelog](https://github.com/UpInTheAir/SM-N920/compare/v3.8...v3.9)
+
 ## [v3.8](https://github.com/UpInTheAir/SM-N920/tree/v3.8) (2016-01-22)
 [Full Changelog](https://github.com/UpInTheAir/SM-N920/compare/v3.7...v3.8)
 
