@@ -34,6 +34,9 @@ battstatus)
 batthealth)
   echo "Health: $(cat /sys/devices/battery.53/power_supply/battery/health)"
   ;;
+actual_brightness)
+  echo "$(cat /sys/class/backlight/panel/actual_brightness)"
+  ;;
 Live_A57_Time)
   STATE="";
   CNT=0;
