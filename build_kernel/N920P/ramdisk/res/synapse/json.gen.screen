@@ -9,25 +9,25 @@ cat << CTAG
 		description:"Live panel brightness value 0-255",
 		refresh:500,
 		action:"live actual_brightness"
-        }},
+	}},
 	{ SSpacer:{
 		height:1
 	}},
-        { SPane:{
-                title:"Sweep-2-Sleep",
-                description:" Allows you to turn the screen off by swiping the screen just above the HOME key from right > left (or) left > right."
-        }},
+	{ SPane:{
+		title:"Sweep-2-Sleep",
+		description:"Allows you to turn the screen off by swiping the screen just above the HOME key from right > left (or) left > right."
+	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SDescription:{
-		description:" * Ensure PowerSuspend State is DISABLED *"
+		description:"NOTE: Ensure PowerSuspend 'State' is DISABLED"
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
-		description:" Default is Disabled.\n",
+		description:"Default is Disabled.\n",
 		default:0,
 		action:"generic /sys/sweep2sleep/sweep2sleep",
 		values:{

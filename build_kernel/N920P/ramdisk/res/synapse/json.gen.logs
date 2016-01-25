@@ -6,14 +6,14 @@ cat << CTAG
     elements:[
 	{ SPane:{
 		title:"Android Logger",
-		description:" Save the logcat (app/system debug output) to file."
+		description:"You must set 'Enabled' or 'Auto-Suspend' to save the latest logcat (app/system debug output) to file. Auto-Suspend mode will enable logcat whilst screen-ON & auto disable whilst screen-OFF."
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
 		title:"Enable Android logger",
-		description:" You must set Enabled or Auto-Suspend to save the latest logcat. Auto-Suspend mode will enable logcat whilst screen-ON & auto disable whilst screen-OFF. Default is Disabled.\n",
+		description:"Default is Disabled.\n",
 		default:2,
 		action:"generic /sys/module/logger/parameters/log_mode",
 		values:{ 0:"Enabled", 1:"Auto-Suspend", 2:"Disabled"
@@ -31,13 +31,13 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"Kernel Logger",
-		description:" Save the dmesg (active kernel output) or last_ksmg (same as dmesg but from the last shutdown)."
+		description:"Save the dmesg (active kernel output) or last_ksmg (same as dmesg but from the last shutdown) to file."
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
-		description:" Default is Enabled.\n",
+		description:"Default is Enabled.\n",
 		default:1,
 		action:"generic /sys/kernel/printk_mode/printk_mode",
 		values:{

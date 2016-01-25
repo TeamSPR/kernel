@@ -1,22 +1,24 @@
 #!/sbin/busybox sh
 
+BB=/sbin/busybox;
+
 cat << CTAG
 {
     name:IO,
     elements:[
     	{ SPane:{
 		title:"I/O Schedulers",
-		description:" Set the active I/O elevator algorithm. The I/O Scheduler decides how to prioritize and handle I/O requests. More info: <a href='http://timos.me/tm/wiki/ioscheduler'>Wiki</a>"
+		description:"Set the active I/O elevator algorithm. The I/O Scheduler decides how to prioritize and handle I/O requests. More info: <a href='http://timos.me/tm/wiki/ioscheduler'>Wiki</a>"
     	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
 		title:"Storage scheduler",
-		description:" Default is cfq.\n",
-		default:`cat /sys/block/sda/queue/scheduler | busybox awk 'NR>1{print $1}' RS=[ FS=]`,
+		description:"Default is cfq.\n",
+		default:$(cat /sys/block/sda/queue/scheduler | $BB awk 'NR>1{print $1}' RS=[ FS=]),
 		action:"scheduler /sys/block/sda/queue/scheduler",
-		values:[`while read values; do busybox printf "%s, \n" $values | busybox tr -d '[]'; done < /sys/block/sda/queue/scheduler`],
+		values:[`while read values; do $BB printf "%s, \n" $values | $BB tr -d '[]'; done < /sys/block/sda/queue/scheduler`],
 		notify:[
 			{
 				on:APPLY,
@@ -35,12 +37,12 @@ cat << CTAG
 	}},
 	{ SSeekBar:{
 		title:"Storage Read-Ahead",
-		description:" Default is 256.\n",
+		description:"Default is 256.\n",
 		max:4096,
 		min:64,
 		unit:" KB",
 		step:64,
-		default:`cat /sys/block/sda/queue/read_ahead_kb`,
+		default:$(cat /sys/block/sda/queue/read_ahead_kb),
 		action:"generic /sys/block/sda/queue/read_ahead_kb"
 	}},
 	{ SSpacer:{
@@ -48,14 +50,14 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"General I/O Tunables",
-		description:" Set the internal storage general tunables"
+		description:"Set the internal storage general tunables"
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
 		title:"Add Random",
-		description:" Draw entropy from spinning (rotational) storage.\n Default is Disabled.\n",
+		description:"Draw entropy from spinning (rotational) storage. Default is Disabled.\n",
 		default:0,
 		action:"generic /sys/block/sda/queue/add_random",
 		values:{
@@ -67,7 +69,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"I/O Stats",
-		description:" Maintain I/O statistics for this storage device. Disabling will break I/O monitoring apps but reduce CPU overhead.\n Default is Disabled.\n",
+		description:"Maintain I/O statistics for this storage device. Disabling will break I/O monitoring apps but reduce CPU overhead. Default is Disabled.\n",
 		default:0,
 		action:"generic /sys/block/sda/queue/iostats",
 		values:{
@@ -79,7 +81,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"Rotational",
-		description:" Treat device as rotational storage. Default is Disabled.\n",
+		description:"Treat device as rotational storage. Default is Disabled.\n",
 		default:0,
 		action:"generic /sys/block/sda/queue/rotational",
 		values:{
@@ -91,7 +93,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"No Merges",
-		description:" Types of merges (prioritization) the scheduler queue for this storage device allows. Default is All.\n",
+		description:"Types of merges (prioritization) the scheduler queue for this storage device allows. Default is All.\n",
 		default:0,
 		action:"generic /sys/block/sda/queue/nomerges",
 		values:{
@@ -103,7 +105,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"RQ Affinity",
-		description:" Try to have scheduler requests complete on the CPU core they were made from. Default is Aggressive.\n",
+		description:"Try to have scheduler requests complete on the CPU core they were made from. Default is Aggressive.\n",
 		default:2,
 		action:"generic /sys/block/sda/queue/rq_affinity",
 		values:{
@@ -115,12 +117,12 @@ cat << CTAG
 	}},
 	{ SSeekBar:{
 		title:"NR Requests",
-		description:" Maximum number of read (or write) requests that can be queued to the scheduler in the block layer. Default is 128.\n",
+		description:"Maximum number of read (or write) requests that can be queued to the scheduler in the block layer. Default is 128.\n",
 		step:128,
 		min:128,
 		max:2048,
-		default:`cat /sys/block/sda/queue/nr_requests`,
-		action:"generic /sys/block/sda/queue/nr_requests",
+		default:$(cat /sys/block/sda/queue/nr_requests),
+		action:"generic /sys/block/sda/queue/nr_requests"
 	}},
 	{ SSpacer:{
 		height:1

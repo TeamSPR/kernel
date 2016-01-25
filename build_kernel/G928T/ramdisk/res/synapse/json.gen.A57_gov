@@ -1,4 +1,4 @@
-#!/sbin/sh
+#!/sbin/busybox sh
 
 cat << CTAG
 {
@@ -6,21 +6,21 @@ cat << CTAG
     elements:[
 	{ SPane:{
 		title:"A57 big Cores CPU Governor",
-		description:" The CPU governor determines how the CPU behaves in response to changes in workload."
+		description:"The CPU governor determines how the CPU behaves in response to changes in workload."
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SDescription:{
-		description:" WARNING: If you select INTERACTIVE governor, apply it to BOTH A57 & A53 clusters to prevent scaling or other unintended issues !!"
+		description:"WARNING: If you select INTERACTIVE governor, apply it to BOTH A57 & A53 clusters to prevent scaling or other unintended issues !!"
 	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
 		title:"Current governor",
-		description:" Default is interactive.\n",
-		default:`cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor`,
+		description:"Default is interactive.\n",
+		default:$(cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor),
 		action:"governor /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor",
 		values:[
 `
@@ -59,8 +59,8 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"Profile",
-		description:" Select your profile for CPU Interactive governor.\n",
-		default:`echo $(/res/synapse/actions/tuning interactive_b)`,
+		description:"Select your profile for CPU Interactive governor.\n",
+		default:$(echo "$(/res/synapse/actions/tuning interactive_b)"),
 		action:"tuning interactive_b",
 		values:[Default, Performance, Battery,],
 		notify:[
@@ -76,8 +76,8 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"Turbo Mode",
-		description:" Forces the use of the big cores over LITTLE ones to increase UI responsiveness at the expense of power efficiency.\n\nWARNING: REBOOT is required if you DISABLE at ANY TIME !!\n",
-		default:`echo $(/res/synapse/actions/tuning interactive_turbo)`,
+		description:"Forces the use of the big cores over LITTLE ones to increase UI responsiveness at the expense of power efficiency.\n\nWARNING: REBOOT is required if you DISABLE at ANY TIME !!\n",
+		default:$(echo "$(/res/synapse/actions/tuning interactive_turbo)"),
 		action:"tuning interactive_turbo",
 		values:[Disabled, Enabled,],
 		notify:[
@@ -100,7 +100,7 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"Governor tunables",
-		description:" The various configuration items which are governor-dependent."
+		description:"The various configuration items which are governor-dependent."
 	}},
 	{ SSpacer:{
 		height:1

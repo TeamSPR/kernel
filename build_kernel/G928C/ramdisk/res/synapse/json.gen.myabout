@@ -4,7 +4,7 @@ cat << CTAG
 {
     name:"ABOUT",
     elements:[
-    	{ SLiveLabel:{
+	{ SLiveLabel:{
 		description:"\n",
 		refresh:10000000,
 		action:"echo Hello"
@@ -14,11 +14,11 @@ cat << CTAG
 		style:"bold",
 		action:"echo Welcome to SkyHigh kernel !"
 	}},
-    	{ SLiveLabel:{
+	{ SLiveLabel:{
 		refresh:10000000,
 		action:"echo by"
 	}},
-    	{ SLiveLabel:{
+	{ SLiveLabel:{
 		refresh:10000000,
 		style:"bold",
 		action:"echo UpInTheAir"

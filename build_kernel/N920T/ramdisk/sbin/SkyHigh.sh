@@ -69,6 +69,7 @@ $BB chmod 0440 /sys/kernel/hmp/up_threshold
 echo "214" > /sys/kernel/hmp/down_threshold
 $BB chmod 0440 /sys/kernel/hmp/down_threshold
 
+
 #
 # Fast e/Random Generator (frandom) support on boot
 #
@@ -107,7 +108,7 @@ chmod 444 /dev/frandom
 
 
 #
-# Fix for earhone / handsfree no in-call audio
+# Fix for earphone / handsfree no in-call audio
 #
 if [ -d "/sys/class/misc/arizona_control" ]; then
 echo "1" >/sys/class/misc/arizona_control/switch_eq_hp
@@ -154,6 +155,7 @@ fi;
 if [ "$($BB mount | grep system | grep -c ro)" -eq "1" ]; then
 	$BB mount -o remount,rw /system;
 fi;
+
 
 #
 # Init.d
