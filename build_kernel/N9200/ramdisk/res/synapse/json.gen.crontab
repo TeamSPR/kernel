@@ -51,7 +51,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"Clean app-cache",
-		description:"Clear app-cache every day at 4:30AM, only if CPU is resting (IDLE)! This can maintain free space on data partition, and clean all old junk folders (clipboard-cache, tombstones, anr logs, dropbox logs & lost+found.\n",
+		description:"Clear app-cache every day at 4:30AM, only if CPU is resting (IDLE)! This can maintain free space on data partition, and clean all old junk folders (clipboard-cache, tombstones, anr logs, dropbox logs & lost+found).\n",
 		default:$(echo "$(/res/synapse/actions/crontab cache)"),
 		action:"crontab cache",
 		values:[Disabled, Enabled,]
