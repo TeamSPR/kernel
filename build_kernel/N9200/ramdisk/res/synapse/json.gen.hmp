@@ -22,8 +22,8 @@ cat << CTAG
 				on:APPLY,
 				do:[ REFRESH, APPLY ],
 				to:[
-					"hmp_up /sys/kernel/hmp/up_threshold",
-					"hmp_down /sys/kernel/hmp/down_threshold"
+					"hmp /sys/kernel/hmp/up_threshold",
+					"hmp /sys/kernel/hmp/down_threshold"
 				],
 			}
 		]
@@ -36,7 +36,7 @@ cat << CTAG
 		description:"",
 		min:1, max:1000, unit:"", step:1,
 		default:$(cat /sys/kernel/hmp/up_threshold),
-		action:"hmp_up /sys/kernel/hmp/up_threshold"
+		action:"hmp /sys/kernel/hmp/up_threshold"
 	}},
 	{ SSpacer:{
 		height:1
@@ -46,7 +46,7 @@ cat << CTAG
 		description:"",
 		min:1, max:512, unit:"", step:1,
 		default:$(cat /sys/kernel/hmp/down_threshold),
-		action:"hmp_down /sys/kernel/hmp/down_threshold"
+		action:"hmp /sys/kernel/hmp/down_threshold"
 	}},
 	{ SSpacer:{
 		height:1
