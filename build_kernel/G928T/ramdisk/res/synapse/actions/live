@@ -29,7 +29,19 @@ battcapa)
   echo "Capacity: $(cat /sys/devices/battery.52/power_supply/battery/capacity) %"
   ;;
 battstatus)
-  echo "Status: $(cat /sys/devices/battery.52/power_supply/battery/status)"
+  TIME=$(cat /sys/devices/battery.52/power_supply/battery/time_to_full_now);
+  STATUS=$(cat /sys/devices/battery.52/power_supply/battery/status);
+	if [ "$STATUS" == Charging ]; then
+		if [ "$TIME" == -1 ]; then
+			echo Status: $STATUS;
+		else
+			TTF=$($BB awk "BEGIN { print ($TIME / 60) }");
+			TTF="$($BB printf "%.0f" $TTF)";
+			echo Status: $STATUS@n@nTime to Full: $TTF min;
+		fi;
+	else
+		echo Status: $STATUS;
+	fi;
   ;;
 batthealth)
   echo "Health: $(cat /sys/devices/battery.52/power_supply/battery/health)"
