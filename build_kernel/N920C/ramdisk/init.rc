@@ -735,7 +735,7 @@ on boot
    chown system radio /sys/class/power_supply/battery/siop_event
    chown system radio /sys/class/power_supply/battery/wc_enable
    chown system radio /sys/class/power_supply/battery/update
-   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/store_mode
+   chown media sdcard_rw /sys/class/power_supply/battery/store_mode
    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/call
    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/video
    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/music
