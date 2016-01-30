@@ -52,7 +52,6 @@ else
         echo "You need to define your device target!"
         echo "example: build_kernel.sh G928C"
         echo "example: build_kernel.sh G928T"
-        echo "example: build_kernel.sh G9287C"
         echo "example: build_kernel.sh N920C"
         echo "example: build_kernel.sh N920P"
         echo "example: build_kernel.sh N9200"
@@ -80,11 +79,6 @@ fi;
 # SM-G928 T/W8 (T-Mobile)
 if [ "$TARGET" = "G928T" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-G928T_defconfig";
-fi;
-
-# SM-G9278C (dual SIM) use same defconfig as SM-G928 C/F/G/I but specific ramdisks
-if [ "$TARGET" = "G9287C" ] ; then
-export KERNEL_CONFIG="SkyHigh_SM-G928C_MEA_defconfig";
 fi;
 
 # SM-N920 C/CD/G/I
