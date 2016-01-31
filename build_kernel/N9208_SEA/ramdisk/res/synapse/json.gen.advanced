@@ -140,7 +140,7 @@ cat << CTAG
 		description:"default = 1, stock= 3\nlower = lower wake time\n",
 		unit:"",
 		min:1,
-		max:8,
+		max:3,
 		step:1,
 		default:$(cat /sys/module/ssp_sensorhub/parameters/wl_sensorhub),
 		action:"generic /sys/module/ssp_sensorhub/parameters/wl_sensorhub"
@@ -164,7 +164,7 @@ cat << CTAG
 		description:"stock = 3\nlower = lower wake time\n",
 		unit:"",
 		min:1,
-		max:8,
+		max:3,
 		step:1,
 		default:$(cat /sys/module/ssp_input/parameters/wl_motion),
 		action:"generic /sys/module/ssp_input/parameters/wl_motion"
@@ -177,7 +177,7 @@ cat << CTAG
 		description:"stock = 3\nlower = lower wake time\n",
 		unit:"",
 		min:1,
-		max:8,
+		max:3,
 		step:1,
 		default:$(cat /sys/module/ssp_input/parameters/wl_pickup),
 		action:"generic /sys/module/ssp_input/parameters/wl_pickup"
@@ -190,7 +190,7 @@ cat << CTAG
 		description:"stock = 3\nlower = lower wake time\n",
 		unit:"",
 		min:1,
-		max:8,
+		max:3,
 		step:1,
 		default:$(cat /sys/module/ssp_input/parameters/wl_grip),
 		action:"generic /sys/module/ssp_input/parameters/wl_grip"
@@ -203,7 +203,7 @@ cat << CTAG
 		description:"stock = 3\nlower = lower wake time\n",
 		unit:"",
 		min:1,
-		max:8,
+		max:3,
 		step:1,
 		default:$(cat /sys/module/ssp_input/parameters/wl_tilt),
 		action:"generic /sys/module/ssp_input/parameters/wl_tilt"
@@ -216,7 +216,7 @@ cat << CTAG
 		description:"default = 1, stock= 3\nlower = lower wake time\n",
 		unit:"",
 		min:1,
-		max:8,
+		max:3,
 		step:1,
 		default:$(cat /sys/module/ssp_input/parameters/wl_prox),
 		action:"generic /sys/module/ssp_input/parameters/wl_prox"
@@ -240,7 +240,7 @@ cat << CTAG
 		description:"stock = 2\nhigher = lower wake time\n",
 		unit:"",
 		min:1,
-		max:8,
+		max:4,
 		step:1,
 		default:$(cat /sys/module/bcm_gps_spi/parameters/wl_divide_gps),
 		action:"generic /sys/module/bcm_gps_spi/parameters/wl_divide_gps"
