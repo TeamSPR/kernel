@@ -76,6 +76,11 @@ if [ "$TARGET" = "G928C" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-G928C_MEA_defconfig";
 fi;
 
+# SM-G928 P (Sprint)
+if [ "$TARGET" = "G928P" ] ; then
+export KERNEL_CONFIG="SkyHigh_SM-G928P_Sprint_defconfig";
+fi;
+
 # SM-G928 T/W8 (T-Mobile)
 if [ "$TARGET" = "G928T" ] ; then
 export KERNEL_CONFIG="SkyHigh_SM-G928T_defconfig";

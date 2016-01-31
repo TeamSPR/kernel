@@ -1,0 +1,43 @@
+
+on init
+#carrier
+    mkdir /carrier 0771 system system
+
+on fs
+#carrier
+    wait /dev/block/platform/15570000.ufs/by-name/CARRIER
+    check_fs /dev/block/platform/15570000.ufs/by-name/CARRIER ext4
+    mount ext4 /dev/block/platform/15570000.ufs/by-name/CARRIER /carrier nosuid nodev barrier=1
+    chown system system /carrier
+    chmod 0771 /carrier
+    restorecon -R /carrier
+
+on post-fs-data
+#ItsOn Property
+    mkdir /dev/socket/itson 02771 itson itson
+    start itsonbs
+
+# ItsOn Service
+service itsonbs /system/vendor/itson/itson-bootstrapper.sh
+    oneshot
+    critical
+    seclabel u:r:itsonbs:s0
+#
+# VOWIFI - This RILD defined here will override the service defined
+# in the main init.rc to support Sprint VoWiFi project
+#
+service ril-daemon /system/bin/rild
+    class main
+    socket rild stream 660 root radio
+    socket rild-debug stream 660 radio system
+    socket rild-cas stream 660 casdrm mmb
+#
+# VoWiFi: Added cfiat and kipc socket for Sprint VoWiFi project.
+    socket cfiat stream 660 radio inet
+    socket kipc stream 660 radio inet
+# End of VoWiFi
+#
+    user root
+    group radio cache inet misc audio log qcom_diag
+
+
