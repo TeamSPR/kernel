@@ -240,10 +240,13 @@ on boot
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads 75
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 1900
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse
@@ -302,10 +305,13 @@ on boot
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads 65 1500000:75
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 89
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 59000 1300000:39000 1700000:19000
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost
     chmod 0660 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost
     chown system system /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse
@@ -811,6 +817,7 @@ on property:ro.debuggable=1
 on property:sys.boot_completed=1
     write /proc/sys/vm/dirty_bytes 62914560
     write /proc/sys/vm/dirty_background_bytes 20971520
+    start fstrim-service
 
 # LPM
 on property:ro.bootmode=charger
@@ -836,6 +843,11 @@ service fwup /sbin/ffu -a
     critical
     oneshot
 
+service fstrim-service /init.fstrim.sh
+    disabled
+    user root
+    oneshot
+
 # SecEDS
 
 service TvoutService_C /system/bin/bintvoutservice
@@ -853,27 +865,6 @@ service cs_service /system/bin/cs
     disabled
 on property:sys.mobicoredaemon.enable=true
     start cs_service
-
-# Secure Storage startup
-service secure_storage /system/bin/secure_storage_daemon
-    class core
-    user system
-    group system
-    disabled
-
-on property:ro.securestorage.support=true
-    mkdir /dev/.secure_storage
-    chmod 0711 /dev/.secure_storage
-    chown system system /dev/.secure_storage
-    restorecon -R /dev/.secure_storage
-    start secure_storage
-
-on property:ro.securestorage.knox=true
-    mkdir /dev/.secure_storage
-    chmod 0711 /dev/.secure_storage
-    chown system system /dev/.secure_storage
-    restorecon -R /dev/.secure_storage
-    start secure_storage
 
 # umount service
 service umount_service /system/bin/umount /preload
