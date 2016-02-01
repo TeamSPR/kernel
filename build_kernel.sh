@@ -70,9 +70,17 @@ fi;
 if [ -e $BK/$TARGET/ramdisk.gz ]; then
 	rm -rf $BK/$TARGET/ramdisk.gz
 fi;
-if [ -e $BK/$TARGET/ramdisk/lib/modules/*.ko ]; then
-	rm $BK/$TARGET/ramdisk/lib/modules/*.ko;
+if [ -e $BK/$TARGET/ramdisk/lib/modules/ ]; then
+	cd ${KERNELDIR}/$BK/$TARGET
+	find . -type f -name "*.ko" -exec rm -f {} \;
+	cd ${KERNELDIR}
 fi;
+if [ -e $BK/system/lib/modules/ ]; then
+	cd ${KERNELDIR}/$BK/system
+	find . -type f -name "*.ko" -exec rm -f {} \;
+fi;
+
+cd ${KERNELDIR}
 
 # cleanup old output files
 rm -rf ${KERNELDIR}/output/$TARGET/*
@@ -121,13 +129,13 @@ make -j5 modules ARCH=arm64  || exit 1;
 
 # find modules
 for i in $(find "$KERNELDIR" -name '*.ko'); do
-	cp -av "$i" ./$BK/$TARGET/ramdisk/lib/modules/;
+	cp -av "$i" ./$BK/system/lib/modules/;
 done;
 
-if [ -f "./$BK/$TARGET/ramdisk/lib/modules/*" ]; then
-chmod 755 ./$BK/$TARGET/ramdisk/lib/modules/*
-${CROSS_COMPILE}strip --strip-debug ./$BK/$TARGET/ramdisk/lib/modules/*.ko
-${CROSS_COMPILE}strip --strip-unneeded ./$BK/$TARGET/ramdisk/lib/modules/*
+if [ -f "./$BK/system/lib/modules/*" ]; then
+chmod 0755 ./$BK/system/lib/modules/*
+${CROSS_COMPILE}strip --strip-debug ./$BK/system/lib/modules/*.ko
+${CROSS_COMPILE}strip --strip-unneeded ./$BK/system/lib/modules/*
 fi;
 
 # fix ramdisk permissions
@@ -171,6 +179,7 @@ echo
 echo "${bldcya}***** Make archives *****${txtrst}"
 
 cp ./$TARGET/boot.img ${KERNELDIR}/output/$TARGET/
+cp -R ./system ${KERNELDIR}/output/$TARGET/
 cp -R ./META-INF ${KERNELDIR}/output/$TARGET/
 
 cd ${KERNELDIR}/output/$TARGET
