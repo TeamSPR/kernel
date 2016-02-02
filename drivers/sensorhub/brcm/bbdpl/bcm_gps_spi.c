@@ -104,7 +104,7 @@
 
 #include <linux/moduleparam.h>
 
-static int wl_divide_gps = 2;
+static int wl_divide_gps = 4;
 module_param(wl_divide_gps, int, 0644);
 
 #define xCONFIG_SPI_BCM4773_DMA       0
