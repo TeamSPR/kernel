@@ -67,8 +67,8 @@ fi;
 if [ -e $BK/$TARGET/Image ]; then
 	rm -rf $BK/$TARGET/Image
 fi;
-if [ -e $BK/$TARGET/ramdisk.gz ]; then
-	rm -rf $BK/$TARGET/ramdisk.gz
+if [ -e $BK/$TARGET/ramdisk.lzo ]; then
+	rm -rf $BK/$TARGET/ramdisk.lzo
 fi;
 if [ -e $BK/$TARGET/ramdisk/lib/modules/ ]; then
 	cd ${KERNELDIR}/$BK/$TARGET
@@ -148,7 +148,7 @@ rm -f ramdisk_fix_permissions.sh
 
 # make ramdisk
 cd ${KERNELDIR}/$BK
-./mkbootfs ./$TARGET/ramdisk | gzip > ./$TARGET/ramdisk.gz
+./mkbootfs ./$TARGET/ramdisk | lzop > ./$TARGET/ramdisk.lzo
 
 echo
 echo "Done"
@@ -162,10 +162,10 @@ echo "${bldcya}***** Make boot.img *****${txtrst}"
 read -p "Do you want to use a stock (s) or custom generated (c) dt.img? (s/c) > " dt
 echo
 if [ "$dt" = "c" -o "$dt" = "C" ]; then
-./mkbootimg --kernel ./$TARGET/Image --dt ${KERNELDIR}/dt.img --ramdisk ./$TARGET/ramdisk.gz --base 0x10000000 --kernel_offset 0x10008000 --ramdisk_offset 0x11000000 --tags_offset 0x10000100 --pagesize 2048 -o ./$TARGET/boot.img
+./mkbootimg --kernel ./$TARGET/Image --dt ${KERNELDIR}/dt.img --ramdisk ./$TARGET/ramdisk.lzo --base 0x10000000 --kernel_offset 0x10008000 --ramdisk_offset 0x11000000 --tags_offset 0x10000100 --pagesize 2048 -o ./$TARGET/boot.img
 fi
 if [ "$dt" = "s" -o "$dt" = "S" ]; then
-./mkbootimg --kernel ./$TARGET/Image --dt ./$TARGET/dt.img --ramdisk ./$TARGET/ramdisk.gz --base 0x10000000 --kernel_offset 0x10008000 --ramdisk_offset 0x11000000 --tags_offset 0x10000100 --pagesize 2048 -o ./$TARGET/boot.img
+./mkbootimg --kernel ./$TARGET/Image --dt ./$TARGET/dt.img --ramdisk ./$TARGET/ramdisk.lzo --base 0x10000000 --kernel_offset 0x10008000 --ramdisk_offset 0x11000000 --tags_offset 0x10000100 --pagesize 2048 -o ./$TARGET/boot.img
 fi
 
 echo -n "SEANDROIDENFORCE" >> ./$TARGET/boot.img
