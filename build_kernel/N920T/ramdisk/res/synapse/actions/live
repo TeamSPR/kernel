@@ -139,16 +139,39 @@ LiveMemory)
   while read -r TYPE MEM KB; do
 	export KB
 	if [ "$TYPE" = "MemTotal:" ]; then
-		TOTAL="$((MEM / 1024)) MB";
+		TOTAL=$((MEM / 1024));
 	elif [ "$TYPE" = "MemFree:" ]; then
-		CACHED=$((MEM / 1024));
-	elif [ "$TYPE" = "Cached:" ]; then
 		FREE=$((MEM / 1024));
+	elif [ "$TYPE" = "Cached:" ]; then
+		CACHED=$((MEM / 1024));
 	fi;
   done < /proc/meminfo;
-		
-  FREE="$((FREE + CACHED)) MB";
-  $BB echo "Total: $TOTAL@nFree: $FREE";
+
+  FREE="$((FREE + CACHED))";
+  USED="$((TOTAL - FREE))";
+
+  $BB echo "Total: $TOTAL MB@nUsed: $USED MB@nFree: $FREE MB";
+;;
+LiveSwap)
+  while read -r TYPE MEM KB; do
+	export KB
+	if [ "$TYPE" = "SwapTotal:" ]; then
+		TOTAL=$((MEM / 1024));
+	elif [ "$TYPE" = "SwapFree:" ]; then
+		FREE=$((MEM / 1024));
+	elif [ "$TYPE" = "SwapCached:" ]; then
+		CACHED=$((MEM / 1024));
+	fi;
+  done < /proc/meminfo;
+
+  FREE="$((FREE + CACHED))";
+  USED="$((TOTAL - FREE))";
+
+  if [ "$TOTAL" == 0 ]; then
+	$BB echo "Swap: disabled";
+  else
+	$BB echo "Total: $TOTAL MB@nUsed: $USED MB@nFree: $FREE MB";
+  fi;
 ;;
 LiveUpTime)
   TOTAL=$($BB awk '{ print $1 }' /proc/uptime);

@@ -6,12 +6,15 @@ cat << CTAG
 {
     name:MEMORY,
     elements:[
-	{ SPane:{
-		title:"Memory state"
-	}},
 	{ SLiveLabel:{
+		title:"Memory state",
 		refresh:1000,
 		action:"live LiveMemory"
+	}},
+	{ SLiveLabel:{
+		title:"Swap state",
+		refresh:1000,
+		action:"live LiveSwap"
 	}},
 	{ SSpacer:{
 		height:1
