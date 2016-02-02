@@ -160,27 +160,14 @@ cat << CTAG
 		height:1
 	}},
 	{ SSeekBar:{
-		title:"sig_motion_sensor",
-		description:"stock = 3\nlower = lower wake time\n",
+		title:"ssp_iio",
+		description:"sig_motion_sensor, pickup_gesture, tilt_detector & proximity_sensor wakelock timeout controls.\n\nstock = 3\nlower = lower wake time\n",
 		unit:"",
 		min:1,
 		max:3,
 		step:1,
-		default:$(cat /sys/module/ssp_input/parameters/wl_motion),
-		action:"generic /sys/module/ssp_input/parameters/wl_motion"
-	}},
-	{ SSpacer:{
-		height:1
-	}},
-	{ SSeekBar:{
-		title:"pickup_gesture",
-		description:"stock = 3\nlower = lower wake time\n",
-		unit:"",
-		min:1,
-		max:3,
-		step:1,
-		default:$(cat /sys/module/ssp_input/parameters/wl_pickup),
-		action:"generic /sys/module/ssp_input/parameters/wl_pickup"
+		default:$(cat /sys/module/ssp_iio/parameters/wl_ssp),
+		action:"generic /sys/module/ssp_iio/parameters/wl_ssp"
 	}},
 	{ SSpacer:{
 		height:1
@@ -192,34 +179,8 @@ cat << CTAG
 		min:1,
 		max:3,
 		step:1,
-		default:$(cat /sys/module/ssp_input/parameters/wl_grip),
-		action:"generic /sys/module/ssp_input/parameters/wl_grip"
-	}},
-	{ SSpacer:{
-		height:1
-	}},
-	{ SSeekBar:{
-		title:"tilt_detector",
-		description:"stock = 3\nlower = lower wake time\n",
-		unit:"",
-		min:1,
-		max:3,
-		step:1,
-		default:$(cat /sys/module/ssp_input/parameters/wl_tilt),
-		action:"generic /sys/module/ssp_input/parameters/wl_tilt"
-	}},
-	{ SSpacer:{
-		height:1
-	}},
-	{ SSeekBar:{
-		title:"proximity_sensor",
-		description:"default = 1, stock= 3\nlower = lower wake time\n",
-		unit:"",
-		min:1,
-		max:3,
-		step:1,
-		default:$(cat /sys/module/ssp_input/parameters/wl_prox),
-		action:"generic /sys/module/ssp_input/parameters/wl_prox"
+		default:$(cat /sys/module/sx9310/parameters/wl_grip),
+		action:"generic /sys/module/sx9310/parameters/wl_grip"
 	}},
 	{ SSpacer:{
 		height:1
@@ -231,19 +192,6 @@ cat << CTAG
 		action:"generic /sys/module/wakeup/parameters/enable_bcm4773_wl",
 		values:{ Y:"Enabled", N:"Disabled"
 		}
-	}},
-	{ SSpacer:{
-		height:1
-	}},
-	{ SSeekBar:{
-		title:"bcm4773_gps",
-		description:"stock = 2\nhigher = lower wake time\n",
-		unit:"",
-		min:1,
-		max:4,
-		step:1,
-		default:$(cat /sys/module/bcm_gps_spi/parameters/wl_divide_gps),
-		action:"generic /sys/module/bcm_gps_spi/parameters/wl_divide_gps"
 	}},
 	{ SSpacer:{
 		height:1
