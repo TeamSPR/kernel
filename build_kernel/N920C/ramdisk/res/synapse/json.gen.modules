@@ -61,7 +61,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"UDF",
-		description:"The new file system used on mount some CD-ROMs and DVDs written in packet mode. Default is Disabled.\n",
+		description:"The new file system used to mount some CD-ROMs and DVDs written in packet mode. Default is Disabled.\n",
 		default:$(echo "$(/res/synapse/actions/modules udf)"),
 		action:"modules udf",
 		values:[Disabled, Enabled,]

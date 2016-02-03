@@ -52,7 +52,7 @@ cat << CTAG
 		height:1
 	}},
 	{ SDescription:{ 
-		description:"Input is the live current limit coming through the USB port into the device at 5V. Charge is the desired target current to charge the battery. Now is the actual current limit applied to the battery."
+		description:"Input is the live current limit coming through the USB port into the device at 5/9V. Charge is the desired target current to charge the battery. Now is the actual current limit applied to the battery."
 	}},
 	{ SSpacer:{
 		height:1
