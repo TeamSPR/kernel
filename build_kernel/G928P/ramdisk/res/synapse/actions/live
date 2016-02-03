@@ -273,4 +273,9 @@ check_cron)
 		echo "SERVICE OFFLINE";
 	fi;
   ;;
+Live_modules)
+  for i in $(lsmod | awk '{print $1}'); do
+	echo "$i@n";
+  done;
+  ;;
 esac
