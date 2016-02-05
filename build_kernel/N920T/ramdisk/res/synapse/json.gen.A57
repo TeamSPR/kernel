@@ -20,27 +20,10 @@ cat << CTAG
 		height:1
 	}},
 	{ SSeekBar:{
-		title:"A57 big Cores MAX frequency (Screen ON)",
-		description:"Set the maximum frequency the CPU scales down to.\n",
-		default:$(cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq),
-		action:"cpu_freq /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq",
-		values:{
-`
-			for FREQ in $(cat /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_freq_table); do
-				LABEL=$(($FREQ / 1000))
-				echo "$FREQ:\"${LABEL} MHz\", "
-			done
-`
-		}
-	}},
-	{ SSpacer:{
-		height:1
-	}},
-	{ SSeekBar:{
-		title:"A57 big Cores MAX frequency (Screen OFF)",
+		title:"A57 big Cores MAX frequency",
 		description:"Set the maximum frequency the CPU scales up to.\n",
-		default:$(cat /sys/devices/system/cpu/cpu4/cpufreq/screen_off_scaling_mhz_cl1),
-		action:"generic /sys/devices/system/cpu/cpu4/cpufreq/screen_off_scaling_mhz_cl1",
+		default:2100000,
+		action:"generic /sys/devices/system/cpu/cpu4/cpufreq/ren_max_freq",
 		values:{
 `
 			for FREQ in $(cat /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_freq_table); do
@@ -54,10 +37,10 @@ cat << CTAG
 		height:1
 	}},
 	{ SSeekBar:{
-		title:"A57 big Cores MIN frequency (Screen ON)",
+		title:"A57 big Cores MIN frequency",
 		description:"Set the minimum frequency the CPU scales down to.\n",
-		default:$(cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq),
-		action:"cpu_freq /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq",
+		default:800000,
+		action:"generic /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq",
 		values:{
 `
 			for FREQ in $(cat /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_freq_table); do
