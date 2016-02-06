@@ -29,7 +29,6 @@ case $1 in
   ;;
   restart)
     	am force-stop com.af.synapse 2> /dev/null;
-    	$BB sleep 1;
     	reset_uci;
 	$BB sync;
     	$BB sleep 1;
