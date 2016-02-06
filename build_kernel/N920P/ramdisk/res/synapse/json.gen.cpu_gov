@@ -69,16 +69,10 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-	{ SPane:{
-		title:"Interactive Governor Tuning"
-	}},
-	{ SSpacer:{
-		height:1
-	}},
 	{ SLiveLabel:{
-		title:"A53 Load",
+		title:"Interactive Load",
 		refresh:500,
-		action:"live Live_A53_interactive"
+		action:"live Live_interactive"
 	}},
 	{ SOptionList:{
 		title:"A53 Profile",
@@ -96,11 +90,6 @@ cat << CTAG
 	}},
 	{ SSpacer:{
 		height:1
-	}},
-	{ SLiveLabel:{
-		title:"A57 Load",
-		refresh:500,
-		action:"live Live_A57_interactive"
 	}},
 	{ SOptionList:{
 		title:"A57 Profile",

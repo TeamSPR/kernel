@@ -117,22 +117,20 @@ LiveCPUFrequency_big)
 
 $BB echo "Core 4: $CPU4@nCore 5: $CPU5@nCore 6: $CPU6@nCore 7: $CPU7";
 ;;
-Live_A53_interactive)
+Live_interactive)
 if [ -d /sys/devices/system/cpu/cpu0/cpufreq/interactive ]; then
   while read -r C0 C1 C2 C3; do
   done < /sys/devices/system/cpu/cpu0/cpufreq/interactive/cpu_util 2> /dev/null;
-  $BB echo "Core 0: $C0@nCore 1: $C1@nCore 2: $C2@nCore 3: $C3";
+  $BB echo "Core 0: $C0@nCore 1: $C1@nCore 2: $C2@nCore 3: $C3@n";
 else
-  $BB echo "Interactive Offline";
+  $BB echo "A53 Interactive Offline@n";
 fi;
-;;
-Live_A57_interactive)
 if [ -d /sys/devices/system/cpu/cpu4/cpufreq/interactive ]; then
   while read -r C4 C5 C6 C7; do
   done < /sys/devices/system/cpu/cpu4/cpufreq/interactive/cpu_util 2> /dev/null;
   $BB echo "Core 4: $C4@nCore 5: $C5@nCore 6: $C6@nCore 7: $C7";
 else
-  $BB echo "Interactive Offline";
+  $BB echo "A57 Interactive Offline";
 fi;
 ;;
 LiveMemory)
