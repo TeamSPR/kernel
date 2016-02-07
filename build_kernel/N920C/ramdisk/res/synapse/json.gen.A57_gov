@@ -35,7 +35,7 @@ cat << CTAG
 								SSeekBar: {
 									title:"block_cycles_offline_screen_on",
 									description:"How many sampling_rate cycles need to occur before a core is allowed to go OFFLINE while the screen is ON.",
-									min:1, max:20, step:1, unit:""
+									min:1, max:60, step:1, unit:""
 								}
 							}},
 							{ "block_cycles_online_screen_off" : {
