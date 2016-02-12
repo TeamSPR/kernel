@@ -245,6 +245,9 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 
 HOSTCC       = $(CCACHE) gcc
 HOSTCXX      = $(CCACHE) g++
+
+GRAPHITE   = -fgraphite-identity -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block -floop-flatten -floop-nest-optimize
+
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89
 HOSTCXXFLAGS = -O2
@@ -262,8 +265,8 @@ HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -Ofast -fomit-fram
 HOSTCXXFLAGS = -Ofast
 endif
 ifdef CONFIG_CC_GRAPHITE_OPTIMIZATION
-HOSTCFLAGS   = -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
-HOSTCXXFLAGS = -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
+HOSTCFLAGS   = $(GRAPHITE)
+HOSTCXXFLAGS = $(GRAPHITE)
 endif
 
 # Decide whether to build built-in, modular, or both.
@@ -351,8 +354,8 @@ LD		= $(CROSS_COMPILE)ld
 CC		= $(CCACHE) $(CROSS_COMPILE)gcc
 CPP		= $(CC) -E
 ifdef CONFIG_CC_GRAPHITE_OPTIMIZATION
-CC		+= -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
-CPP		+= -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
+CC		+= $(GRAPHITE)
+CPP		+= $(GRAPHITE)
 endif
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
@@ -383,7 +386,7 @@ AFLAGS_MODULE   =
 LDFLAGS_MODULE  =
 CFLAGS_KERNEL	=
 ifdef CONFIG_CC_GRAPHITE_OPTIMIZATION
-CFLAGS_KERNEL	= -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
+CFLAGS_KERNEL	= $(GRAPHITE)
 endif
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
@@ -628,7 +631,7 @@ ifdef CONFIG_CC_OPTIMIZE_FAST
 KBUILD_CFLAGS	+= -Ofast
 endif
 ifdef CONFIG_CC_GRAPHITE_OPTIMIZATION
-KBUILD_CFLAGS	+= -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
+KBUILD_CFLAGS	+= $(GRAPHITE)
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
