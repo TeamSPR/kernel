@@ -131,14 +131,6 @@ ln -s /res/synapse/uci /sbin/uci
 
 
 #
-# NTFS r/o from /mnt/ntfs
-#
-mkdir -p /mnt/ntfs
-chmod 777 /mnt/ntfs
-mount -o mode=0777,gid=1000 -t tmpfs tmpfs /mnt/ntfs
-
-
-#
 # Kernel custom test
 #
 if [ -e /data/.SkyHigh_test.log ]; then
