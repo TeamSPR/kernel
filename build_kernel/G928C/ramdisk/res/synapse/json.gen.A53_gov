@@ -217,14 +217,14 @@ cat << CTAG
 								SSeekBar: {
 									title:"sampling_rate",
 									description:"Sets the interval for which the governor polls frequency changes in load while the screen is ON.",
-									min:10000, max:100000, step:1000, unit:" ms"
+									min:10000, max:200000, step:1000, unit:" ms"
 								}
 							}},
 							{ "sampling_rate_screen_off" : {
 								SSeekBar: {
 									title:"sampling_rate_screen_off",
 									description:"Sets the interval for which the governor polls frequency changes in load while the screen is OFF.",
-									min:10000, max:100000, step:1000, unit:" ms"
+									min:10000, max:200000, step:1000, unit:" ms"
 								}
 							}},
 							{ "super_conservative_screen_off" : {
