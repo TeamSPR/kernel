@@ -11,6 +11,12 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SDescription:{
+		description:"WARNING: After changing governor, press 'Restart Synapse' button to refresh tunables and prevent errors !"
+	}},
+	{ SSpacer:{
+		height:1
+	}},
 	{ SOptionList:{
 		title:"Current governor",
 		description:"Set your governor for BOTH A57 & A53 cores. Default is interactive.\n",
@@ -27,9 +33,6 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
-	{ SDescription:{
-		description:"After changing governor, press 'Restart Synapse' button to refresh tunables !"
-	}},
 	{ SButton:{
 		label:"Restart Synapse",
 		action:"devtools restart"
@@ -40,15 +43,18 @@ cat << CTAG
 	{ SPane:{
 		title:"Ktoonservative Governor Tuning"
 	}},
+	{ SDescription:{
+		description:"1. Select & apply Ktoonservative governor above.\n2. Press the 'Restart Synapse' button above !\n3. Select & apply your profile below."
+	}},
 	{ SSpacer:{
 		height:1
 	}},
 	{ SOptionList:{
 		title:"A57 & A53 Profile",
-		description:"Select your profile for CPU Ktoonservative governor. User profile allows for user selected tunables without being overidden. Ktoonsified is performance/battery orientated, whilst Performance is suitable for gaming.\n",
+		description:"Select your profile for CPU Ktoonservative governor. User profile allows for user selected tunables without being overidden.\n",
 		default:$(echo "$(/res/synapse/actions/tuning ktoonservative)"),
 		action:"tuning ktoonservative",
-		values:[User, Default, Battery, Balanced, Ktoonsified, Performance,],
+		values:[User, Default, Battery,],
 		notify:[
 			{
 				on:APPLY,
@@ -65,6 +71,9 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"Interactive Governor Tuning"
+	}},
+	{ SDescription:{
+		description:"1. Select & apply Interactive governor above.\n2. Press the 'Restart Synapse' button above !\n3. Select & apply your profile below."
 	}},
 	{ SSpacer:{
 		height:1
