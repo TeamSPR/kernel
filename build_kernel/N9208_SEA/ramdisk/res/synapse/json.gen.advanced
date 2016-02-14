@@ -92,7 +92,7 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"Freeze Timeout",
-		description:"Controls how long it will cost at most to freeze all user space processes or all freezable kernel threads.\n",
+		description:"Controls how long it will cost at most to freeze all user space processes or all freezable kernel threads.",
 	}},
 	{ SSpacer:{
 		height:1
