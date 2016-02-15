@@ -191,6 +191,32 @@ spcm_service)
     echo Disabled
   fi
   ;;
+SystemUpdateService)
+  P=/res/synapse/SkyHigh/SystemUpdateService
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Enabled ]; then
+    echo Enabled > $P
+	pm enable com.google.android.gms/.update.SystemUpdateActivity
+	pm enable com.google.android.gms/.update.SystemUpdateService
+	pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver
+	pm enable com.google.android.gms/.update.SystemUpdateService$Receiver
+	pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver
+	pm enable com.google.android.gsf/.update.SystemUpdateActivity
+	pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity
+	pm enable com.google.android.gsf/.update.SystemUpdateService
+	pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
+	pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
+  elif [ "$2" == Disabled ]; then
+    echo Disabled > $P
+	# Nothing to do here
+  fi; fi
+  copy=$(cat $P)
+  if [ "$copy" == Enabled ]; then
+    echo Enabled
+  elif [ "$copy" == Disabled ]; then
+    echo Disabled
+  fi
+  ;;
 esac;
 
 $BB mount -t rootfs -o remount,ro rootfs;
