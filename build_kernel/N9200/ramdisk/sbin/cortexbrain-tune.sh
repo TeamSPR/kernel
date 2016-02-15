@@ -18,7 +18,6 @@ cortexbrain_background_process=$(cat /res/synapse/SkyHigh/cortexbrain_background
 cortexbrain_system=$(cat /res/synapse/SkyHigh/cortexbrain_system);
 cortexbrain_wifi_auto=$(cat /res/synapse/SkyHigh/cortexbrain_wifi_auto);
 cortexbrain_media_manager=$(cat /res/synapse/SkyHigh/cortexbrain_media_manager);
-cortexbrain_system
 
 # ==============================================================
 # GLOBAL VARIABLES || without "local" also a variable in a function is global
