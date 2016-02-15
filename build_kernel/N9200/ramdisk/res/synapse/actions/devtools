@@ -20,12 +20,22 @@ case $1 in
   cleardata)
 	echo "0" > /sys/kernel/dyn_fsync/Dyn_fsync_active;
 	am force-stop com.af.synapse 2> /dev/null;
-	$BB sleep 1;
-	$BB rm -R /data/data/com.af.synapse/databases;
-	$BB rm -R /data/data/com.af.synapse/cache;
+	$BB rm -R /data/data/com.af.synapse/*;
+	$BB rm -f /data/dalvik-cache/arm64/data@app@com.af.synapse*;
+	$BB rm -f /data/dalvik-cache/profiles/com.af.synapse;
 	$BB sync;
 	$BB sleep 1;
 	/system/bin/reboot;
+  ;;
+  cleardata_reboot_recovery)
+	echo "0" > /sys/kernel/dyn_fsync/Dyn_fsync_active;
+	am force-stop com.af.synapse 2> /dev/null;
+	$BB rm -R /data/data/com.af.synapse/*;
+	$BB rm -f /data/dalvik-cache/arm64/data@app@com.af.synapse*;
+	$BB rm -f /data/dalvik-cache/profiles/com.af.synapse;
+	$BB sync;
+	$BB sleep 1;
+	reboot recovery;
   ;;
   restart)
     	am force-stop com.af.synapse 2> /dev/null;
