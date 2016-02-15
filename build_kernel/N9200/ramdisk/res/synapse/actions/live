@@ -271,6 +271,14 @@ check_cron)
 		echo "SERVICE OFFLINE";
 	fi;
   ;;
+check_cortex)
+  CORTEX_CHECK=$(pgrep -f "/sbin/busybox sh /sbin/cortexbrain-tune.sh" | wc -l);
+	if [ "$CORTEX_CHECK" != 0 ]; then
+		echo "SERVICE ONLINE";
+	else
+		echo "SERVICE OFFLINE";
+	fi;
+  ;;
 Live_modules)
   for i in $(lsmod | awk '{print $1}'); do
 	echo "$i@n";
