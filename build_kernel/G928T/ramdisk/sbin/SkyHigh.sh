@@ -192,5 +192,8 @@ fi;
 # Run Cortexbrain script
 # Cortex parent should be ROOT/INIT and not Synapse
 #
-sleep 30
-$BB nohup $BB sh /sbin/cortexbrain-tune.sh > /dev/null 2>&1 &
+cortexbrain_background_process=$(cat /res/synapse/SkyHigh/cortexbrain_background_process);
+if [ "$cortexbrain_background_process" == "1" ]; then
+	sleep 30
+	$BB nohup $BB sh /sbin/cortexbrain-tune.sh > /dev/null 2>&1 &
+fi;
