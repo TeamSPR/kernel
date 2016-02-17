@@ -53,7 +53,7 @@ cat << CTAG
 	}},
 	{ SOptionList:{
 		title:"System-Tweaks",
-		description:"Enable or Disable System-Tweaks. Possible increase in UI speed.\n",
+		description:"Enable or Disable System-Tweaks. Possible increase in UI speed. Disabling requires REBOOT.\n",
 		default:$(echo "$(/res/synapse/actions/cortex cortexbrain_system)"),
 		action:"cortex cortexbrain_system",
 		values:[Disabled, Enabled,]
