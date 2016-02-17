@@ -53,13 +53,6 @@ cat << CTAG
 		height:1
 	}},
 	{ SButton:{
-		label:"Clear Synapse Data & Reboot Recovery",
-		action:"devtools cleardata_reboot_recovery"
-	}},
-	{ SSpacer:{
-		height:1
-	}},
-	{ SButton:{
 		label:"Restart Synapse",
 		action:"devtools restart"
 	}},
