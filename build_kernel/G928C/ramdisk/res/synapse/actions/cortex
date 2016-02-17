@@ -94,6 +94,27 @@ cortexbrain_kernel)
     echo Enabled
   fi
   ;;
+cortexbrain_nmi_auto)
+  P=/res/synapse/SkyHigh/cortexbrain_nmi_auto
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
+    echo 0 > $P
+	echo "0" > /proc/sys/kernel/nmi_watchdog;
+  elif [ $2 == Enabled ]; then
+    echo 1 > $P
+	echo "1" > /proc/sys/kernel/nmi_watchdog;
+  elif [ $2 == Auto ]; then
+    echo 2 > $P
+  fi; fi
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
+    echo Disabled
+  elif [ "$copy" == 1 ]; then
+    echo Enabled
+  elif [ "$copy" == 2 ]; then
+    echo Auto
+  fi
+  ;;
 esac
 
 $BB mount -t rootfs -o remount,ro rootfs;

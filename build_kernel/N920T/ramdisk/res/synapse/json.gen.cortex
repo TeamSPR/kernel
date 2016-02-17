@@ -71,6 +71,16 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SOptionList:{
+		title:"nmi_watchdog",
+		description:"The NMI Watchdog is a debugging feature to catch hardware hangs that cause a kernel panic. On some systems it can generate a lot of interrupts, causing a noticeable increase in power usage. Setting to 'Auto' will disable nmi_watchdog when the screen is OFF & auto enable when the screen is ON.\n",
+		default:$(echo "$(/res/synapse/actions/cortex cortexbrain_nmi_auto)"),
+		action:"cortex cortexbrain_nmi_auto",
+		values:[Disabled, Enabled, Auto,]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
     ]
 }
 CTAG

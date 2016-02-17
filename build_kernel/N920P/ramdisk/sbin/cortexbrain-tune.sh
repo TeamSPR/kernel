@@ -19,6 +19,7 @@ cortexbrain_kernel=$(cat /res/synapse/SkyHigh/cortexbrain_kernel);
 cortexbrain_system=$(cat /res/synapse/SkyHigh/cortexbrain_system);
 cortexbrain_wifi_auto=$(cat /res/synapse/SkyHigh/cortexbrain_wifi_auto);
 cortexbrain_media_manager=$(cat /res/synapse/SkyHigh/cortexbrain_media_manager);
+cortexbrain_nmi_auto=$(cat /res/synapse/SkyHigh/cortexbrain_nmi_auto);
 
 # ==============================================================
 # GLOBAL VARIABLES || without "local" also a variable in a function is global
@@ -47,6 +48,7 @@ cortexbrain_kernel=$(cat /res/synapse/SkyHigh/cortexbrain_kernel);
 cortexbrain_system=$(cat /res/synapse/SkyHigh/cortexbrain_system);
 cortexbrain_wifi_auto=$(cat /res/synapse/SkyHigh/cortexbrain_wifi_auto);
 cortexbrain_media_manager=$(cat /res/synapse/SkyHigh/cortexbrain_media_manager);
+cortexbrain_nmi_auto=$(cat /res/synapse/SkyHigh/cortexbrain_nmi_auto);
 log -p i -t "$FILE_NAME" "*** CONFIG ***: READED";
 }
 
@@ -133,6 +135,24 @@ MEDIA_MANAGER()
 	fi;
 }
 
+NMI_AUTO()
+{
+	if [ "$cortexbrain_nmi_auto" == "2" ]; then
+
+		local state="$1";
+
+		if [ "${state}" == "awake" ]; then
+			echo "1" > /proc/sys/kernel/nmi_watchdog;
+		elif [ "${state}" == "sleep" ]; then
+			echo "0" > /proc/sys/kernel/nmi_watchdog;
+		fi;
+
+		log -p i -t "$FILE_NAME" "*** NMI_AUTO ***: $state ***: done";
+	else
+		log -p i -t "$FILE_NAME" "*** NMI_AUTO: Disabled ***";
+	fi;
+}
+
 # ==============================================================
 # TWEAKS: if Screen-ON
 # ==============================================================
@@ -143,6 +163,8 @@ AWAKE_MODE()
 	DONT_KILL_CORTEX;
 
 	MEDIA_MANAGER "awake";
+
+	NMI_AUTO "awake";
 
 	if [ "$DUMPSYS" == 1 ]; then
 	# Check the data state, DATA_DISABLED = 0, DATA_ENABLED = 2
@@ -180,6 +202,8 @@ SLEEP_MODE()
 	READ_CONFIG;
 
 	MEDIA_MANAGER "sleep";
+
+	NMI_AUTO "sleep";
 
 	if [ "$DUMPSYS" == 1 ]; then
 		# Check the call state, CALL_STATE_IDLE (not on call) = 0, CALL_STATE_RINGING = 1, CALL_STATE_OFFHOOK (on call) = 2
