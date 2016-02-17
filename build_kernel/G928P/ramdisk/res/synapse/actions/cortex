@@ -79,6 +79,21 @@ cortexbrain_system)
     echo Enabled
   fi
   ;;
+cortexbrain_kernel)
+  P=/res/synapse/SkyHigh/cortexbrain_kernel
+  if [ ! -z "$2" ]; then
+  if [ "$2" == Disabled ]; then
+    echo 0 > $P
+  elif [ $2 == Enabled ]; then
+    echo 1 > $P
+  fi; fi
+  copy=$(cat $P)
+  if [ "$copy" == 0 ]; then
+    echo Disabled
+  elif [ "$copy" == 1 ]; then
+    echo Enabled
+  fi
+  ;;
 esac
 
 $BB mount -t rootfs -o remount,ro rootfs;

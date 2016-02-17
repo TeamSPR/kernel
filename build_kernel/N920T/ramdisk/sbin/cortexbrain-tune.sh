@@ -15,6 +15,7 @@
 
 # read setting from profile to boot value
 cortexbrain_background_process=$(cat /res/synapse/SkyHigh/cortexbrain_background_process);
+cortexbrain_kernel=$(cat /res/synapse/SkyHigh/cortexbrain_kernel);
 cortexbrain_system=$(cat /res/synapse/SkyHigh/cortexbrain_system);
 cortexbrain_wifi_auto=$(cat /res/synapse/SkyHigh/cortexbrain_wifi_auto);
 cortexbrain_media_manager=$(cat /res/synapse/SkyHigh/cortexbrain_media_manager);
@@ -42,6 +43,7 @@ fi;
 READ_CONFIG()
 {
 cortexbrain_background_process=$(cat /res/synapse/SkyHigh/cortexbrain_background_process);
+cortexbrain_kernel=$(cat /res/synapse/SkyHigh/cortexbrain_kernel);
 cortexbrain_system=$(cat /res/synapse/SkyHigh/cortexbrain_system);
 cortexbrain_wifi_auto=$(cat /res/synapse/SkyHigh/cortexbrain_wifi_auto);
 cortexbrain_media_manager=$(cat /res/synapse/SkyHigh/cortexbrain_media_manager);
@@ -58,6 +60,24 @@ DONT_KILL_CORTEX()
 
 	log -p i -t "$FILE_NAME" "*** DONT_KILL_CORTEX ***";
 }
+
+# ==============================================================
+# KERNEL-TWEAKS
+# ==============================================================
+KERNEL_TWEAKS()
+{
+	if [ "$cortexbrain_kernel" == "1" ]; then
+		echo "0" > /proc/sys/vm/oom_kill_allocating_task;
+		echo "0" > /proc/sys/vm/panic_on_oom;
+		echo "30" > /proc/sys/kernel/panic;
+		echo "0" > /proc/sys/kernel/panic_on_oops;
+
+		log -p i -t "$FILE_NAME" "*** KERNEL_TWEAKS ***: enabled";
+	else
+		echo "kernel_tweaks disabled";
+	fi;
+}
+KERNEL_TWEAKS;
 
 # ==============================================================
 # SYSTEM-TWEAKS

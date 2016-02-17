@@ -61,6 +61,16 @@ cat << CTAG
 	{ SSpacer:{
 		height:1
 	}},
+	{ SOptionList:{
+		title:"Kernel-Tweaks",
+		description:"Enable or Disable Kernel-Tweaks. Disabling requires REBOOT.\n",
+		default:$(echo "$(/res/synapse/actions/cortex cortexbrain_kernel)"),
+		action:"cortex cortexbrain_kernel",
+		values:[Disabled, Enabled,]
+	}},
+	{ SSpacer:{
+		height:1
+	}},
     ]
 }
 CTAG
