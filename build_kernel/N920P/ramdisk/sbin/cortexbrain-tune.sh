@@ -239,31 +239,24 @@ SLEEP_MODE()
 
 # Dynamic value do not change/delete
 cortexbrain_background_process=1;
-already_awake=0;
-already_sleep=0;
-if [ "$cortexbrain_background_process" == 1 ]; then
-	(while [ 1 ]; do
-sleep 5;
-	SCREEN_OFF=$(cat /sys/class/backlight/panel/brightness); ## Adjusted for SkyHigh Note 5 Exynos7420 kernel
 
-		# AWAKE State. all system ON.
-		if [ "$SCREEN_OFF" != 0 ] && [ "$already_awake" == 0 ]; then
-		AWAKE_MODE;
-		already_awake=1;
-		already_sleep=0;
-		sleep 2;
+if [ "$cortexbrain_background_process" -eq "1" ] && [ "$(pgrep -f "/sbin/cortexbrain-tune.sh" | wc -l)" -eq "2" ]; then
+	(while true; do
+		sleep "3";
 
-		# SLEEP state. All system to power save.
-                elif [ "$SCREEN_OFF" == 0 ] && [ "$already_sleep" == 0 ]; then
-                SLEEP_MODE;
-                already_awake=0;
-                already_sleep=1;
-		sleep 2;
+		SCREEN_OFF=$(cat /sys/class/backlight/panel/brightness);
+
+		if [ "$SCREEN_OFF" != 0 ]; then
+			# AWAKE State. all system ON
+			AWAKE_MODE;
+
+		elif [ "$SCREEN_OFF" == 0 ]; then
+			# SLEEP state. All system to power save
+			SLEEP_MODE;
 		fi;
-
 	done &);
-	else
-	if [ "$cortexbrain_background_process" == 0 ]; then
+else
+	if [ "$cortexbrain_background_process" -eq "0" ]; then
 		echo "Cortex background disabled!"
 	else
 		echo "Cortex background process already running!";
