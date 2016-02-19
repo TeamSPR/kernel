@@ -11,6 +11,12 @@
  */
 #include <linux/battery/sec_battery.h>
 
+static unsigned int STORE_MODE_CHARGING_MAX = 70;
+static unsigned int STORE_MODE_CHARGING_MIN = 60;
+
+module_param_named(store_mode_max, STORE_MODE_CHARGING_MAX, uint, S_IWUSR | S_IRUGO);
+module_param_named(store_mode_min, STORE_MODE_CHARGING_MIN, uint, S_IWUSR | S_IRUGO);
+
 const char *charger_chip_name;
 
 #if defined(CONFIG_WIRELESS_CHARGER_HIGH_VOLTAGE)
@@ -6866,7 +6872,7 @@ static int __devinit sec_battery_probe(struct platform_device *pdev)
 	battery->test_mode = 0;
 	battery->factory_mode = false;
 #if defined(CONFIG_STORE_MODE)
-	battery->store_mode = true;
+	battery->store_mode = false;
 	value.intval = battery->store_mode;
 	psy_do_property(battery->pdata->charger_name, set,
 			POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX, value);
