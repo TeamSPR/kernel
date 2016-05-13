@@ -452,7 +452,7 @@ static int sco_sock_bind(struct socket *sock, struct sockaddr *addr, int alen)
 {
 	struct sockaddr_sco sa;
 	struct sock *sk = sock->sk;
-	int len, err = 0;
+	int err = 0;
 
 	BT_DBG("sk %p %pMR", sk, &sa.sco_bdaddr);
 
