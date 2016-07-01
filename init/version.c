@@ -41,10 +41,10 @@ EXPORT_SYMBOL_GPL(init_uts_ns);
 
 /* FIXED STRINGS! Don't touch! */
 const char linux_banner[] =
-	"Linux version " UTS_RELEASE " (UpInTheAir)"
+	"Linux version " UTS_RELEASE " (tdhite)"
 	"(" LINUX_COMPILER ") " UTS_VERSION "\n";
 
 const char linux_proc_banner[] =
 	"%s version %s"
-	" (UpInTheAir)"
+	" (tdhite)"
 	" (" LINUX_COMPILER ") %s\n";
