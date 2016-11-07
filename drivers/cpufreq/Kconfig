@@ -124,6 +124,11 @@ config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	  loading your cpufreq low-level hardware driver, using the
 	  'interactive' governor for latency-sensitive workloads.
 
+config CPU_FREQ_DEFAULT_GOV_SMARTMAX_EPS
+ 	bool "smartmax_eps"
+ 	select CPU_FREQ_GOV_SMARTMAX_EPS
+ 	help
+ 	  Use the CPUFreq governor 'smartmax eps' as default
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -253,6 +258,12 @@ config CPU_FREQ_GOV_KTOONSERVATIVE
 	  For details, take a look at linux/Documentation/cpu-freq.
 
 	  If in doubt, say N.
+
+config CPU_FREQ_GOV_SMARTMAX_EPS
+ 	tristate "'smartmax EPS' cpufreq policy governor"
+ 	select CPU_FREQ_TABLE
+ 	help
+ 	  'smartmax EPS' is the extreme powersaving version of smartmax
 
 config GENERIC_CPUFREQ_CPU0
 	tristate "Generic CPU0 cpufreq driver"
