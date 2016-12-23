@@ -1,5 +1,26 @@
 # Change Log
 
+## [v3.40](https://github.com/TeamSPR/kernel/releases/tag/v3.40) (2016-12-16)
+[Full Changelog](https://github.com/TeamSPR/kernel/compare/v3.36b...v3.40)
+
+## [v3.36b](https://github.com/TeamSPR/kernel/releases/tag/v3.36b) (2016-12-16)
+[Full Changelog](https://github.com/TeamSPR/kernel/compare/v3.36a...v3.36b)
+
+## [v3.36a](https://github.com/TeamSPR/kernel/releases/tag/v3.36a) (2016-11-27)
+[Full Changelog](https://github.com/TeamSPR/kernel/compare/v3.36...v3.36a)
+
+## [v3.36](https://github.com/TeamSPR/kernel/releases/tag/v3.36) (2016-11-13)
+[Full Changelog](https://github.com/TeamSPR/kernel/compare/v3.35...v3.36)
+
+## [v3.35](https://github.com/TeamSPR/kernel/releases/tag/v3.35) (2016-11-13)
+[Full Changelog](https://github.com/TeamSPR/kernel/compare/v3.34...v3.35)
+
+## [v3.34](https://github.com/TeamSPR/kernel/releases/tag/v3.34) (2016-10-02)
+[Full Changelog](https://github.com/TeamSPR/kernel/compare/v3.22...v3.34)
+
+## [v3.22](https://github.com/TeamSPR/kernel/releases/tag/v3.22) (2016-10-02)
+[Full Changelog](https://github.com/TeamSPR/kernel/compare/v3.21...v3.22)
+
 ## [v3.21](https://github.com/TeamSPR/kernel/releases/tag/v3.21) (2016-07-07)
 [Full Changelog](https://github.com/TeamSPR/kernel/compare/v3.2...v3.21)
 
