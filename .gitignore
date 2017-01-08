@@ -112,3 +112,6 @@ all.config
 
 # Kdevelop4
 *.kdev4
+
+# Galaxy S6
+fips_fmp_utils
