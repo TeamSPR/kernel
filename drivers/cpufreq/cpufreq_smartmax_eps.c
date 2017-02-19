@@ -39,6 +39,13 @@
 #include <linux/slab.h>
 #include <linux/kernel_stat.h>
 
+/* Note: these override those in cpufreq_governor.h */
+#define LATENCY_MULTIPLIER			(1000)
+#define MIN_LATENCY_MULTIPLIER			(100)
+#define TRANSITION_LATENCY_LIMIT		(10 * 1000 * 1000)
+
+#include "cpufreq_governor.h"
+
 #ifdef CONFIG_CPU_FREQ_GOV_SMARTMAX_EPS_TEGRA
 extern int tegra_input_boost (struct cpufreq_policy *policy,
 		       unsigned int target_freq,
@@ -279,10 +286,6 @@ static bool boost_running = false;
 static unsigned int ideal_freq;
 static bool is_suspended = false;
 static unsigned int min_sampling_rate;
-
-#define LATENCY_MULTIPLIER			(1000)
-#define MIN_LATENCY_MULTIPLIER			(100)
-#define TRANSITION_LATENCY_LIMIT		(10 * 1000 * 1000)
 
 /*
  * The polling frequency of this governor depends on the capability of

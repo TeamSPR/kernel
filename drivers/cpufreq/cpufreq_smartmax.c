@@ -44,6 +44,12 @@
 #include <linux/earlysuspend.h>
 #endif
 
+/* Note: these will override the definitions in cpufreq_governor.h */
+#define LATENCY_MULTIPLIER			(1000)
+#define MIN_LATENCY_MULTIPLIER			(100)
+
+#include "cpufreq_governor.h"
+
 /******************** Tunable parameters: ********************/
 
 /*
@@ -207,9 +213,6 @@ static bool is_suspended = false;
 #ifdef CONFIG_HAS_EARLYSUSPEND
 static struct early_suspend smartmax_early_suspend_handler;
 #endif
-
-#define LATENCY_MULTIPLIER			(1000)
-#define MIN_LATENCY_MULTIPLIER			(100)
 
 static int cpufreq_governor_smartmax(struct cpufreq_policy *policy,
 		unsigned int event);
