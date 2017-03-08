@@ -33,7 +33,9 @@
 #include "f_fs.c"
 #include "f_audio_source.c"
 #include "f_midi.c"
+#define NEED_FSG_ADD_LUN
 #include "f_mass_storage.c"
+#undef NEED_FSG_ADD_LUN
 #include "f_adb.c"
 #ifdef CONFIG_USB_ANDROID_SAMSUNG_MTP
 #include "f_mtp_samsung.c"

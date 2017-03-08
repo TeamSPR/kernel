@@ -3607,6 +3607,7 @@ fsg_common_from_params(struct fsg_common *common,
 	return fsg_common_init(common, cdev, &cfg);
 }
 
+#ifdef NEED_FSG_ADD_LUN
 /*
  * This API allows to add luns devices when MSC is being enabled.
  */
@@ -3630,3 +3631,4 @@ static int fsg_add_lun(struct fsg_common *common,
 
 	return rc;
 }
+#endif
