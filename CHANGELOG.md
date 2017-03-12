@@ -1,5 +1,8 @@
 # Change Log
 
+## [v4.02](https://github.com/TeamSPR/kernel/releases/tag/v4.02) (2017-03-12)
+[Full Changelog](https://github.com/TeamSPR/kernel/compare/v4.01...v4.02)
+
 ## [v4.01](https://github.com/TeamSPR/kernel/releases/tag/v4.01) (2017-03-05)
 [Full Changelog](https://github.com/TeamSPR/kernel/compare/v4.00...v4.01)
 
